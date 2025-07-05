@@ -1,0 +1,4296 @@
+{
+  "resourceType": "Bundle",
+  "type": "batch",
+  "entry": [ {
+    "fullUrl": "urn:uuid:9d1056bc-3730-31fd-876a-8e23df133e3a",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "9d1056bc-3730-31fd-876a-8e23df133e3a",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 11
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 230
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "9d1056bc-3730-31fd-876a-8e23df133e3a"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MARY, QUEEN AND MOTHER CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3149618000"
+      } ],
+      "address": [ {
+        "line": [ "7601 WATSON ROAD" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631195001",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|9d1056bc-3730-31fd-876a-8e23df133e3a"
+    }
+  }, {
+    "fullUrl": "urn:uuid:f26255cc-767b-3d9c-bd40-779029b9058b",
+    "resource": {
+      "resourceType": "Location",
+      "id": "f26255cc-767b-3d9c-bd40-779029b9058b",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "f26255cc-767b-3d9c-bd40-779029b9058b"
+      } ],
+      "status": "active",
+      "name": "MARY, QUEEN AND MOTHER CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3149618000"
+      } ],
+      "address": {
+        "line": [ "7601 WATSON ROAD" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631195001",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.328759,
+        "latitude": 38.577671
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "9d1056bc-3730-31fd-876a-8e23df133e3a"
+        },
+        "display": "MARY, QUEEN AND MOTHER CENTER"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|f26255cc-767b-3d9c-bd40-779029b9058b"
+    }
+  }, {
+    "fullUrl": "urn:uuid:58c8f151-14ab-3efc-b57a-ca1797b21b22",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "58c8f151-14ab-3efc-b57a-ca1797b21b22",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 4
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "58c8f151-14ab-3efc-b57a-ca1797b21b22"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "LUTHERAN HOME HOSPICE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733341515"
+      } ],
+      "address": [ {
+        "line": [ "2825 BLOOMFIELD ROAD" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637036335",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|58c8f151-14ab-3efc-b57a-ca1797b21b22"
+    }
+  }, {
+    "fullUrl": "urn:uuid:411a85a5-e818-3c9d-bf79-6f4f67b93af6",
+    "resource": {
+      "resourceType": "Location",
+      "id": "411a85a5-e818-3c9d-bf79-6f4f67b93af6",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "411a85a5-e818-3c9d-bf79-6f4f67b93af6"
+      } ],
+      "status": "active",
+      "name": "LUTHERAN HOME HOSPICE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733341515"
+      } ],
+      "address": {
+        "line": [ "2825 BLOOMFIELD ROAD" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637036335",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.56259769701086,
+        "latitude": 37.29396181093571
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "58c8f151-14ab-3efc-b57a-ca1797b21b22"
+        },
+        "display": "LUTHERAN HOME HOSPICE"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|411a85a5-e818-3c9d-bf79-6f4f67b93af6"
+    }
+  }, {
+    "fullUrl": "urn:uuid:99d1aa56-a495-3e6d-a36c-6191abdcad6c",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "99d1aa56-a495-3e6d-a36c-6191abdcad6c",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 1
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "99d1aa56-a495-3e6d-a36c-6191abdcad6c"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MERCY HOSPICE SOUTH-DE GREEFF HOSPICE HOUSE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3145257390"
+      } ],
+      "address": [ {
+        "line": [ "10024 KENNERLY ROAD" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631282106",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|99d1aa56-a495-3e6d-a36c-6191abdcad6c"
+    }
+  }, {
+    "fullUrl": "urn:uuid:0f5ca850-940b-3234-b90c-da7bb778b266",
+    "resource": {
+      "resourceType": "Location",
+      "id": "0f5ca850-940b-3234-b90c-da7bb778b266",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "0f5ca850-940b-3234-b90c-da7bb778b266"
+      } ],
+      "status": "active",
+      "name": "MERCY HOSPICE SOUTH-DE GREEFF HOSPICE HOUSE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3145257390"
+      } ],
+      "address": {
+        "line": [ "10024 KENNERLY ROAD" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631282106",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.3855916,
+        "latitude": 38.5074325
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "99d1aa56-a495-3e6d-a36c-6191abdcad6c"
+        },
+        "display": "MERCY HOSPICE SOUTH-DE GREEFF HOSPICE HOUSE"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|0f5ca850-940b-3234-b90c-da7bb778b266"
+    }
+  }, {
+    "fullUrl": "urn:uuid:d918743d-792b-3172-a7d3-41a1f55c88f5",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "d918743d-792b-3172-a7d3-41a1f55c88f5",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 96
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "d918743d-792b-3172-a7d3-41a1f55c88f5"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "SOUTHEAST HOSPITAL",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5736515500"
+      } ],
+      "address": [ {
+        "line": [ "1701 LACEY ST" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637015230",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|d918743d-792b-3172-a7d3-41a1f55c88f5"
+    }
+  }, {
+    "fullUrl": "urn:uuid:77dbb705-0693-32cb-981e-e7f1f2f5ed47",
+    "resource": {
+      "resourceType": "Location",
+      "id": "77dbb705-0693-32cb-981e-e7f1f2f5ed47",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "77dbb705-0693-32cb-981e-e7f1f2f5ed47"
+      } ],
+      "status": "active",
+      "name": "SOUTHEAST HOSPITAL",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5736515500"
+      } ],
+      "address": {
+        "line": [ "1701 LACEY ST" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637015230",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.53980118441639,
+        "latitude": 37.310750549999995
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "d918743d-792b-3172-a7d3-41a1f55c88f5"
+        },
+        "display": "SOUTHEAST HOSPITAL"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|77dbb705-0693-32cb-981e-e7f1f2f5ed47"
+    }
+  }, {
+    "fullUrl": "urn:uuid:2bd84794-579d-3064-a5d4-2dfcf5a51a63",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "2bd84794-579d-3064-a5d4-2dfcf5a51a63",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 20
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "2bd84794-579d-3064-a5d4-2dfcf5a51a63"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "CAPE GIRARDEAU BEHAVIORAL HEALTH LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6016305669"
+      } ],
+      "address": [ {
+        "line": [ "639 S SILVER SPRINGS RD" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637037539",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|2bd84794-579d-3064-a5d4-2dfcf5a51a63"
+    }
+  }, {
+    "fullUrl": "urn:uuid:a6f78e6e-9c22-3e04-b851-0d2a322ec760",
+    "resource": {
+      "resourceType": "Location",
+      "id": "a6f78e6e-9c22-3e04-b851-0d2a322ec760",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "a6f78e6e-9c22-3e04-b851-0d2a322ec760"
+      } ],
+      "status": "active",
+      "name": "CAPE GIRARDEAU BEHAVIORAL HEALTH LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6016305669"
+      } ],
+      "address": {
+        "line": [ "639 S SILVER SPRINGS RD" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637037539",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.56510548286914,
+        "latitude": 37.28769303716486
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "2bd84794-579d-3064-a5d4-2dfcf5a51a63"
+        },
+        "display": "CAPE GIRARDEAU BEHAVIORAL HEALTH LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|a6f78e6e-9c22-3e04-b851-0d2a322ec760"
+    }
+  }, {
+    "fullUrl": "urn:uuid:9fa8d778-6b4a-3ea4-a707-b3190dedcc07",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "9fa8d778-6b4a-3ea4-a707-b3190dedcc07",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 1
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 274
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "9fa8d778-6b4a-3ea4-a707-b3190dedcc07"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "LUTHERAN HOME, THE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733350158"
+      } ],
+      "address": [ {
+        "line": [ "2825 BLOOMFIELD ROAD" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637036335",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|9fa8d778-6b4a-3ea4-a707-b3190dedcc07"
+    }
+  }, {
+    "fullUrl": "urn:uuid:38fb9a0b-b7c1-39e0-8ee2-ea135c097ced",
+    "resource": {
+      "resourceType": "Location",
+      "id": "38fb9a0b-b7c1-39e0-8ee2-ea135c097ced",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "38fb9a0b-b7c1-39e0-8ee2-ea135c097ced"
+      } ],
+      "status": "active",
+      "name": "LUTHERAN HOME, THE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733350158"
+      } ],
+      "address": {
+        "line": [ "2825 BLOOMFIELD ROAD" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637036335",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.56259769701086,
+        "latitude": 37.29396181093571
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "9fa8d778-6b4a-3ea4-a707-b3190dedcc07"
+        },
+        "display": "LUTHERAN HOME, THE"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|38fb9a0b-b7c1-39e0-8ee2-ea135c097ced"
+    }
+  }, {
+    "fullUrl": "urn:uuid:8d902e1e-955f-3681-a089-bb9aaa20b42c",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "8d902e1e-955f-3681-a089-bb9aaa20b42c",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 136
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "8d902e1e-955f-3681-a089-bb9aaa20b42c"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "CHESTERFIELD SPINE CENTER, LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6368984695"
+      } ],
+      "address": [ {
+        "line": [ "1130 TOWN AND COUNTRY COMMONS" ],
+        "city": "TOWN AND COUNTRY",
+        "state": "MO",
+        "postalCode": "630178200",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|8d902e1e-955f-3681-a089-bb9aaa20b42c"
+    }
+  }, {
+    "fullUrl": "urn:uuid:0dffd75f-f6d0-30c2-b0f7-74b8bef0bd4c",
+    "resource": {
+      "resourceType": "Location",
+      "id": "0dffd75f-f6d0-30c2-b0f7-74b8bef0bd4c",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "0dffd75f-f6d0-30c2-b0f7-74b8bef0bd4c"
+      } ],
+      "status": "active",
+      "name": "CHESTERFIELD SPINE CENTER, LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6368984695"
+      } ],
+      "address": {
+        "line": [ "1130 TOWN AND COUNTRY COMMONS" ],
+        "city": "TOWN AND COUNTRY",
+        "state": "MO",
+        "postalCode": "630178200",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.4634532,
+        "latitude": 38.6122751
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "8d902e1e-955f-3681-a089-bb9aaa20b42c"
+        },
+        "display": "CHESTERFIELD SPINE CENTER, LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|0dffd75f-f6d0-30c2-b0f7-74b8bef0bd4c"
+    }
+  }, {
+    "fullUrl": "urn:uuid:3919eb40-a6a2-365b-bc19-3b8fc6fc2a37",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "3919eb40-a6a2-365b-bc19-3b8fc6fc2a37",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 169
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 381
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "3919eb40-a6a2-365b-bc19-3b8fc6fc2a37"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "FREEMAN HEALTH SYSTEM - FREEMAN WEST",
+      "telecom": [ {
+        "system": "phone",
+        "value": "4173471111"
+      } ],
+      "address": [ {
+        "line": [ "1102 WEST 32ND STREET" ],
+        "city": "WEBB CITY",
+        "state": "MO",
+        "postalCode": "648702902",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|3919eb40-a6a2-365b-bc19-3b8fc6fc2a37"
+    }
+  }, {
+    "fullUrl": "urn:uuid:d1b4ab71-73e0-3d8d-affb-19d35bca0008",
+    "resource": {
+      "resourceType": "Location",
+      "id": "d1b4ab71-73e0-3d8d-affb-19d35bca0008",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "d1b4ab71-73e0-3d8d-affb-19d35bca0008"
+      } ],
+      "status": "active",
+      "name": "FREEMAN HEALTH SYSTEM - FREEMAN WEST",
+      "telecom": [ {
+        "system": "phone",
+        "value": "4173471111"
+      } ],
+      "address": {
+        "line": [ "1102 WEST 32ND STREET" ],
+        "city": "WEBB CITY",
+        "state": "MO",
+        "postalCode": "648702902",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.4634702,
+        "latitude": 37.1435741
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "3919eb40-a6a2-365b-bc19-3b8fc6fc2a37"
+        },
+        "display": "FREEMAN HEALTH SYSTEM - FREEMAN WEST"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|d1b4ab71-73e0-3d8d-affb-19d35bca0008"
+    }
+  }, {
+    "fullUrl": "urn:uuid:6bc3128b-0987-34a4-a0f2-58376edd6256",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "6bc3128b-0987-34a4-a0f2-58376edd6256",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 30
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 92
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 19
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 6
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "6bc3128b-0987-34a4-a0f2-58376edd6256"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "PULASKI MEDICAL CLINIC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5737742715"
+      } ],
+      "address": [ {
+        "line": [ "1000 GW LANE" ],
+        "city": "WAYNESVILLE",
+        "state": "MO",
+        "postalCode": "655832339",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|6bc3128b-0987-34a4-a0f2-58376edd6256"
+    }
+  }, {
+    "fullUrl": "urn:uuid:b9e7c66e-8746-3c10-a596-a450e6350544",
+    "resource": {
+      "resourceType": "Location",
+      "id": "b9e7c66e-8746-3c10-a596-a450e6350544",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "b9e7c66e-8746-3c10-a596-a450e6350544"
+      } ],
+      "status": "active",
+      "name": "PULASKI MEDICAL CLINIC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5737742715"
+      } ],
+      "address": {
+        "line": [ "1000 GW LANE" ],
+        "city": "WAYNESVILLE",
+        "state": "MO",
+        "postalCode": "655832339",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -92.2266876,
+        "latitude": 37.8141419
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "6bc3128b-0987-34a4-a0f2-58376edd6256"
+        },
+        "display": "PULASKI MEDICAL CLINIC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|b9e7c66e-8746-3c10-a596-a450e6350544"
+    }
+  }, {
+    "fullUrl": "urn:uuid:8e79db54-4e47-3a11-a6dc-25552dcc05a7",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "8e79db54-4e47-3a11-a6dc-25552dcc05a7",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 456
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "8e79db54-4e47-3a11-a6dc-25552dcc05a7"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MERCY HOSPITAL JEFFERSON",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6369331000"
+      } ],
+      "address": [ {
+        "line": [ "1400 HIGHWAY 61" ],
+        "city": "IMPERIAL",
+        "state": "MO",
+        "postalCode": "63052",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|8e79db54-4e47-3a11-a6dc-25552dcc05a7"
+    }
+  }, {
+    "fullUrl": "urn:uuid:eda932da-b673-3a2d-bafc-2c753cc5bdb8",
+    "resource": {
+      "resourceType": "Location",
+      "id": "eda932da-b673-3a2d-bafc-2c753cc5bdb8",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "eda932da-b673-3a2d-bafc-2c753cc5bdb8"
+      } ],
+      "status": "active",
+      "name": "MERCY HOSPITAL JEFFERSON",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6369331000"
+      } ],
+      "address": {
+        "line": [ "1400 HIGHWAY 61" ],
+        "city": "IMPERIAL",
+        "state": "MO",
+        "postalCode": "63052",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.3784525,
+        "latitude": 38.3697763
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "8e79db54-4e47-3a11-a6dc-25552dcc05a7"
+        },
+        "display": "MERCY HOSPITAL JEFFERSON"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|eda932da-b673-3a2d-bafc-2c753cc5bdb8"
+    }
+  }, {
+    "fullUrl": "urn:uuid:9e2b6e92-7c01-33cb-a7a1-e2e647a92aae",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "9e2b6e92-7c01-33cb-a7a1-e2e647a92aae",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 2
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 86
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "9e2b6e92-7c01-33cb-a7a1-e2e647a92aae"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "PARKDALE MANOR CARE CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6605828161"
+      } ],
+      "address": [ {
+        "line": [ "814 WEST SOUTH AVENUE" ],
+        "city": "MARYVILLE",
+        "state": "MO",
+        "postalCode": "644682772",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|9e2b6e92-7c01-33cb-a7a1-e2e647a92aae"
+    }
+  }, {
+    "fullUrl": "urn:uuid:b0a61668-fc42-371c-8988-edbd4340b6fb",
+    "resource": {
+      "resourceType": "Location",
+      "id": "b0a61668-fc42-371c-8988-edbd4340b6fb",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "b0a61668-fc42-371c-8988-edbd4340b6fb"
+      } ],
+      "status": "active",
+      "name": "PARKDALE MANOR CARE CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6605828161"
+      } ],
+      "address": {
+        "line": [ "814 WEST SOUTH AVENUE" ],
+        "city": "MARYVILLE",
+        "state": "MO",
+        "postalCode": "644682772",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.88382042886795,
+        "latitude": 40.334757052803845
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "9e2b6e92-7c01-33cb-a7a1-e2e647a92aae"
+        },
+        "display": "PARKDALE MANOR CARE CENTER"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|b0a61668-fc42-371c-8988-edbd4340b6fb"
+    }
+  }, {
+    "fullUrl": "urn:uuid:f9277a66-3e08-3e1a-8e1b-32293f4ae6f4",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "f9277a66-3e08-3e1a-8e1b-32293f4ae6f4",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 1
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "f9277a66-3e08-3e1a-8e1b-32293f4ae6f4"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "KANSAS CARENOW URGENT CARE LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "9132037964"
+      } ],
+      "address": [ {
+        "line": [ "3500 W 95TH ST" ],
+        "city": "RAYTOWN",
+        "state": "MO",
+        "postalCode": "641336509",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|f9277a66-3e08-3e1a-8e1b-32293f4ae6f4"
+    }
+  }, {
+    "fullUrl": "urn:uuid:0c7afd29-e98b-3dcd-b986-33bd51fb3b68",
+    "resource": {
+      "resourceType": "Location",
+      "id": "0c7afd29-e98b-3dcd-b986-33bd51fb3b68",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "0c7afd29-e98b-3dcd-b986-33bd51fb3b68"
+      } ],
+      "status": "active",
+      "name": "KANSAS CARENOW URGENT CARE LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "9132037964"
+      } ],
+      "address": {
+        "line": [ "3500 W 95TH ST" ],
+        "city": "RAYTOWN",
+        "state": "MO",
+        "postalCode": "641336509",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.4630468,
+        "latitude": 39.0168425
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "f9277a66-3e08-3e1a-8e1b-32293f4ae6f4"
+        },
+        "display": "KANSAS CARENOW URGENT CARE LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|0c7afd29-e98b-3dcd-b986-33bd51fb3b68"
+    }
+  }, {
+    "fullUrl": "urn:uuid:78d25aa8-0271-387a-9f4e-d02467d2f486",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "78d25aa8-0271-387a-9f4e-d02467d2f486",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 83
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "78d25aa8-0271-387a-9f4e-d02467d2f486"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "STATE OF MISSOURI",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3145127800"
+      } ],
+      "address": [ {
+        "line": [ "1901 PENNSYLVANIA AVE" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631331325",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|78d25aa8-0271-387a-9f4e-d02467d2f486"
+    }
+  }, {
+    "fullUrl": "urn:uuid:97ec8acf-3eed-3280-9513-7469a3c00866",
+    "resource": {
+      "resourceType": "Location",
+      "id": "97ec8acf-3eed-3280-9513-7469a3c00866",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "97ec8acf-3eed-3280-9513-7469a3c00866"
+      } ],
+      "status": "active",
+      "name": "STATE OF MISSOURI",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3145127800"
+      } ],
+      "address": {
+        "line": [ "1901 PENNSYLVANIA AVE" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631331325",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.31422311098314,
+        "latitude": 38.686302299999994
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "78d25aa8-0271-387a-9f4e-d02467d2f486"
+        },
+        "display": "STATE OF MISSOURI"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|97ec8acf-3eed-3280-9513-7469a3c00866"
+    }
+  }, {
+    "fullUrl": "urn:uuid:b9b351bb-1f02-33e1-a018-9e9e6bcab859",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "b9b351bb-1f02-33e1-a018-9e9e6bcab859",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 32
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 63
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 3
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 16
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "b9b351bb-1f02-33e1-a018-9e9e6bcab859"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "NORTHWEST HEALTH SERVICES INC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8162387788"
+      } ],
+      "address": [ {
+        "line": [ "5001 LAKE AVE" ],
+        "city": "ST. JOSEPH",
+        "state": "MO",
+        "postalCode": "645041170",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|b9b351bb-1f02-33e1-a018-9e9e6bcab859"
+    }
+  }, {
+    "fullUrl": "urn:uuid:c821428f-57bc-307f-be96-73aff79c0ab0",
+    "resource": {
+      "resourceType": "Location",
+      "id": "c821428f-57bc-307f-be96-73aff79c0ab0",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "c821428f-57bc-307f-be96-73aff79c0ab0"
+      } ],
+      "status": "active",
+      "name": "NORTHWEST HEALTH SERVICES INC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8162387788"
+      } ],
+      "address": {
+        "line": [ "5001 LAKE AVE" ],
+        "city": "ST. JOSEPH",
+        "state": "MO",
+        "postalCode": "645041170",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.861947,
+        "latitude": 39.723102
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "b9b351bb-1f02-33e1-a018-9e9e6bcab859"
+        },
+        "display": "NORTHWEST HEALTH SERVICES INC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|c821428f-57bc-307f-be96-73aff79c0ab0"
+    }
+  }, {
+    "fullUrl": "urn:uuid:fb771db8-464c-3cc7-b47c-7ee8b75b4033",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "fb771db8-464c-3cc7-b47c-7ee8b75b4033",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 23
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "fb771db8-464c-3cc7-b47c-7ee8b75b4033"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "HICKORY PLAZA",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6366779977"
+      } ],
+      "address": [ {
+        "line": [ "#4 HICKORY RIDGE ROAD, SUITE 600" ],
+        "city": "HILLSBORO",
+        "state": "MO",
+        "postalCode": "630505117",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|fb771db8-464c-3cc7-b47c-7ee8b75b4033"
+    }
+  }, {
+    "fullUrl": "urn:uuid:6356e9d1-1f02-367f-affd-e8fba6e41b12",
+    "resource": {
+      "resourceType": "Location",
+      "id": "6356e9d1-1f02-367f-affd-e8fba6e41b12",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "6356e9d1-1f02-367f-affd-e8fba6e41b12"
+      } ],
+      "status": "active",
+      "name": "HICKORY PLAZA",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6366779977"
+      } ],
+      "address": {
+        "line": [ "#4 HICKORY RIDGE ROAD, SUITE 600" ],
+        "city": "HILLSBORO",
+        "state": "MO",
+        "postalCode": "630505117",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.5629034,
+        "latitude": 38.2322766
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "fb771db8-464c-3cc7-b47c-7ee8b75b4033"
+        },
+        "display": "HICKORY PLAZA"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|6356e9d1-1f02-367f-affd-e8fba6e41b12"
+    }
+  }, {
+    "fullUrl": "urn:uuid:5ee74f83-6bb1-3906-b117-b169b2d20e47",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "5ee74f83-6bb1-3906-b117-b169b2d20e47",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 33
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "5ee74f83-6bb1-3906-b117-b169b2d20e47"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "URGENT SPECIALISTS LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6362201470"
+      } ],
+      "address": [ {
+        "line": [ "14169 MANCHESTER RD STE C" ],
+        "city": "MANCHESTER",
+        "state": "MO",
+        "postalCode": "630114525",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|5ee74f83-6bb1-3906-b117-b169b2d20e47"
+    }
+  }, {
+    "fullUrl": "urn:uuid:418f6b54-c46e-3317-8306-5e5f2ce232d6",
+    "resource": {
+      "resourceType": "Location",
+      "id": "418f6b54-c46e-3317-8306-5e5f2ce232d6",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "418f6b54-c46e-3317-8306-5e5f2ce232d6"
+      } ],
+      "status": "active",
+      "name": "URGENT SPECIALISTS LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6362201470"
+      } ],
+      "address": {
+        "line": [ "14169 MANCHESTER RD STE C" ],
+        "city": "MANCHESTER",
+        "state": "MO",
+        "postalCode": "630114525",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.5107453,
+        "latitude": 38.5925305
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "5ee74f83-6bb1-3906-b117-b169b2d20e47"
+        },
+        "display": "URGENT SPECIALISTS LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|418f6b54-c46e-3317-8306-5e5f2ce232d6"
+    }
+  }, {
+    "fullUrl": "urn:uuid:7a802330-3cbc-33d2-a8c0-ff7a7ad46044",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "7a802330-3cbc-33d2-a8c0-ff7a7ad46044",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 114
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "7a802330-3cbc-33d2-a8c0-ff7a7ad46044"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MERCY HOSPITAL SOUTH",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3145251000"
+      } ],
+      "address": [ {
+        "line": [ "10010 KENNERLY RD" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631282106",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|7a802330-3cbc-33d2-a8c0-ff7a7ad46044"
+    }
+  }, {
+    "fullUrl": "urn:uuid:7d8413d4-4a3d-3177-9e55-e3aa8ea81a14",
+    "resource": {
+      "resourceType": "Location",
+      "id": "7d8413d4-4a3d-3177-9e55-e3aa8ea81a14",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "7d8413d4-4a3d-3177-9e55-e3aa8ea81a14"
+      } ],
+      "status": "active",
+      "name": "MERCY HOSPITAL SOUTH",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3145251000"
+      } ],
+      "address": {
+        "line": [ "10010 KENNERLY RD" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631282106",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.38330256066584,
+        "latitude": 38.50613535
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "7a802330-3cbc-33d2-a8c0-ff7a7ad46044"
+        },
+        "display": "MERCY HOSPITAL SOUTH"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|7d8413d4-4a3d-3177-9e55-e3aa8ea81a14"
+    }
+  }, {
+    "fullUrl": "urn:uuid:bd061604-4468-3a10-a223-696765471a81",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "bd061604-4468-3a10-a223-696765471a81",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 10
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 142
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "bd061604-4468-3a10-a223-696765471a81"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "NORTHWEST MISSOURI PSYCHIATRIC REHAB CTR",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8163872300"
+      } ],
+      "address": [ {
+        "line": [ "3505 FREDERICK AVENUE" ],
+        "city": "SAINT JOSEPH",
+        "state": "MO",
+        "postalCode": "645062914",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|bd061604-4468-3a10-a223-696765471a81"
+    }
+  }, {
+    "fullUrl": "urn:uuid:4ab5507f-f4ac-3685-8e07-0b2c6258dd96",
+    "resource": {
+      "resourceType": "Location",
+      "id": "4ab5507f-f4ac-3685-8e07-0b2c6258dd96",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "4ab5507f-f4ac-3685-8e07-0b2c6258dd96"
+      } ],
+      "status": "active",
+      "name": "NORTHWEST MISSOURI PSYCHIATRIC REHAB CTR",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8163872300"
+      } ],
+      "address": {
+        "line": [ "3505 FREDERICK AVENUE" ],
+        "city": "SAINT JOSEPH",
+        "state": "MO",
+        "postalCode": "645062914",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.81149691795393,
+        "latitude": 39.780849450000005
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "bd061604-4468-3a10-a223-696765471a81"
+        },
+        "display": "NORTHWEST MISSOURI PSYCHIATRIC REHAB CTR"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|4ab5507f-f4ac-3685-8e07-0b2c6258dd96"
+    }
+  }, {
+    "fullUrl": "urn:uuid:65cdeb18-07e3-3385-a743-8389eabb32bc",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "65cdeb18-07e3-3385-a743-8389eabb32bc",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 2
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "65cdeb18-07e3-3385-a743-8389eabb32bc"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "URGENT CARE TRAVEL INC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "4179523205"
+      } ],
+      "address": [ {
+        "line": [ "5931 E 32ND STREET" ],
+        "city": "JOPLIN",
+        "state": "MO",
+        "postalCode": "648044468",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|65cdeb18-07e3-3385-a743-8389eabb32bc"
+    }
+  }, {
+    "fullUrl": "urn:uuid:02b7fcb3-d0cf-3ebc-81fe-44f406c04843",
+    "resource": {
+      "resourceType": "Location",
+      "id": "02b7fcb3-d0cf-3ebc-81fe-44f406c04843",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "02b7fcb3-d0cf-3ebc-81fe-44f406c04843"
+      } ],
+      "status": "active",
+      "name": "URGENT CARE TRAVEL INC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "4179523205"
+      } ],
+      "address": {
+        "line": [ "5931 E 32ND STREET" ],
+        "city": "JOPLIN",
+        "state": "MO",
+        "postalCode": "648044468",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.48480973730943,
+        "latitude": 37.05414855
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "65cdeb18-07e3-3385-a743-8389eabb32bc"
+        },
+        "display": "URGENT CARE TRAVEL INC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|02b7fcb3-d0cf-3ebc-81fe-44f406c04843"
+    }
+  }, {
+    "fullUrl": "urn:uuid:bec87429-964b-37b2-a715-e23d024a11e1",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "bec87429-964b-37b2-a715-e23d024a11e1",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 127
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "bec87429-964b-37b2-a715-e23d024a11e1"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "UNIVERSITY HEALTH LAKEWOOD MEDICAL CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8164047000"
+      } ],
+      "address": [ {
+        "line": [ "7900 LEES SUMMIT RD" ],
+        "city": "RAYTOWN",
+        "state": "MO",
+        "postalCode": "641334997",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|bec87429-964b-37b2-a715-e23d024a11e1"
+    }
+  }, {
+    "fullUrl": "urn:uuid:a7b1a097-8cc9-3314-809a-b6812094bf8d",
+    "resource": {
+      "resourceType": "Location",
+      "id": "a7b1a097-8cc9-3314-809a-b6812094bf8d",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "a7b1a097-8cc9-3314-809a-b6812094bf8d"
+      } ],
+      "status": "active",
+      "name": "UNIVERSITY HEALTH LAKEWOOD MEDICAL CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8164047000"
+      } ],
+      "address": {
+        "line": [ "7900 LEES SUMMIT RD" ],
+        "city": "RAYTOWN",
+        "state": "MO",
+        "postalCode": "641334997",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.4630468,
+        "latitude": 39.0168425
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "bec87429-964b-37b2-a715-e23d024a11e1"
+        },
+        "display": "UNIVERSITY HEALTH LAKEWOOD MEDICAL CENTER"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|a7b1a097-8cc9-3314-809a-b6812094bf8d"
+    }
+  }, {
+    "fullUrl": "urn:uuid:1677ea6b-4a8f-36f8-898a-a7fbda5c7821",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "1677ea6b-4a8f-36f8-898a-a7fbda5c7821",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 61
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 180
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "1677ea6b-4a8f-36f8-898a-a7fbda5c7821"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "SSM HEALTH ST CLARE HOSPITAL - FENTON",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6364962000"
+      } ],
+      "address": [ {
+        "line": [ "1015 BOWLES" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631226498",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|1677ea6b-4a8f-36f8-898a-a7fbda5c7821"
+    }
+  }, {
+    "fullUrl": "urn:uuid:0f5c04e6-fe5f-37db-8a49-fd8eb5a5b826",
+    "resource": {
+      "resourceType": "Location",
+      "id": "0f5c04e6-fe5f-37db-8a49-fd8eb5a5b826",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "0f5c04e6-fe5f-37db-8a49-fd8eb5a5b826"
+      } ],
+      "status": "active",
+      "name": "SSM HEALTH ST CLARE HOSPITAL - FENTON",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6364962000"
+      } ],
+      "address": {
+        "line": [ "1015 BOWLES" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631226498",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.4761733,
+        "latitude": 38.5277402
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "1677ea6b-4a8f-36f8-898a-a7fbda5c7821"
+        },
+        "display": "SSM HEALTH ST CLARE HOSPITAL - FENTON"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|0f5c04e6-fe5f-37db-8a49-fd8eb5a5b826"
+    }
+  }, {
+    "fullUrl": "urn:uuid:ac620955-61f7-303c-b793-e89be14aebb0",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "ac620955-61f7-303c-b793-e89be14aebb0",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 51
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 387
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 88
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 61
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "ac620955-61f7-303c-b793-e89be14aebb0"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "ASPIRE WELLNESS STL LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6365947883"
+      } ],
+      "address": [ {
+        "line": [ "1738 GILSINN LN" ],
+        "city": "FENTON",
+        "state": "MO",
+        "postalCode": "630262004",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|ac620955-61f7-303c-b793-e89be14aebb0"
+    }
+  }, {
+    "fullUrl": "urn:uuid:a821df5d-7ade-3528-b9ca-db5924b90503",
+    "resource": {
+      "resourceType": "Location",
+      "id": "a821df5d-7ade-3528-b9ca-db5924b90503",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "a821df5d-7ade-3528-b9ca-db5924b90503"
+      } ],
+      "status": "active",
+      "name": "ASPIRE WELLNESS STL LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6365947883"
+      } ],
+      "address": {
+        "line": [ "1738 GILSINN LN" ],
+        "city": "FENTON",
+        "state": "MO",
+        "postalCode": "630262004",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.4635297,
+        "latitude": 38.5395263
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "ac620955-61f7-303c-b793-e89be14aebb0"
+        },
+        "display": "ASPIRE WELLNESS STL LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|a821df5d-7ade-3528-b9ca-db5924b90503"
+    }
+  }, {
+    "fullUrl": "urn:uuid:ca692a75-2935-3c8d-8e40-7d8ab535e1f2",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "ca692a75-2935-3c8d-8e40-7d8ab535e1f2",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 7
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 120
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "ca692a75-2935-3c8d-8e40-7d8ab535e1f2"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "HERITAGE CARE CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3145217471"
+      } ],
+      "address": [ {
+        "line": [ "4401 NORTH HANLEY ROAD" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631342710",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|ca692a75-2935-3c8d-8e40-7d8ab535e1f2"
+    }
+  }, {
+    "fullUrl": "urn:uuid:6756a39b-a933-31a1-bedb-befbb0d670c4",
+    "resource": {
+      "resourceType": "Location",
+      "id": "6756a39b-a933-31a1-bedb-befbb0d670c4",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "6756a39b-a933-31a1-bedb-befbb0d670c4"
+      } ],
+      "status": "active",
+      "name": "HERITAGE CARE CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3145217471"
+      } ],
+      "address": {
+        "line": [ "4401 NORTH HANLEY ROAD" ],
+        "city": "SAINT LOUIS",
+        "state": "MO",
+        "postalCode": "631342710",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.31706342857143,
+        "latitude": 38.721458734693876
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "ca692a75-2935-3c8d-8e40-7d8ab535e1f2"
+        },
+        "display": "HERITAGE CARE CENTER"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|6756a39b-a933-31a1-bedb-befbb0d670c4"
+    }
+  }, {
+    "fullUrl": "urn:uuid:a8865343-339b-3318-a749-25303dec2fbe",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "a8865343-339b-3318-a749-25303dec2fbe",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 6
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 172
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "a8865343-339b-3318-a749-25303dec2fbe"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "LIFE CARE CENTER OF GRANDVIEW",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8167657714"
+      } ],
+      "address": [ {
+        "line": [ "6301 EAST 125TH ST" ],
+        "city": "GRANDVIEW",
+        "state": "MO",
+        "postalCode": "640301884",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|a8865343-339b-3318-a749-25303dec2fbe"
+    }
+  }, {
+    "fullUrl": "urn:uuid:9f92d897-48d9-3a51-91ea-6daa5a7cd9d8",
+    "resource": {
+      "resourceType": "Location",
+      "id": "9f92d897-48d9-3a51-91ea-6daa5a7cd9d8",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "9f92d897-48d9-3a51-91ea-6daa5a7cd9d8"
+      } ],
+      "status": "active",
+      "name": "LIFE CARE CENTER OF GRANDVIEW",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8167657714"
+      } ],
+      "address": {
+        "line": [ "6301 EAST 125TH ST" ],
+        "city": "GRANDVIEW",
+        "state": "MO",
+        "postalCode": "640301884",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.520793,
+        "latitude": 38.897872
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "a8865343-339b-3318-a749-25303dec2fbe"
+        },
+        "display": "LIFE CARE CENTER OF GRANDVIEW"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|9f92d897-48d9-3a51-91ea-6daa5a7cd9d8"
+    }
+  }, {
+    "fullUrl": "urn:uuid:67aac7f4-7925-3871-ba92-4410e67f3c39",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "67aac7f4-7925-3871-ba92-4410e67f3c39",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 14
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "67aac7f4-7925-3871-ba92-4410e67f3c39"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MOSAIC MEDICAL CENTER - MARYVILLE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6605622600"
+      } ],
+      "address": [ {
+        "line": [ "2016 S MAIN ST" ],
+        "city": "MARYVILLE",
+        "state": "MO",
+        "postalCode": "644682655",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|67aac7f4-7925-3871-ba92-4410e67f3c39"
+    }
+  }, {
+    "fullUrl": "urn:uuid:6660495b-e1b6-3368-a28e-1d0475df1075",
+    "resource": {
+      "resourceType": "Location",
+      "id": "6660495b-e1b6-3368-a28e-1d0475df1075",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "6660495b-e1b6-3368-a28e-1d0475df1075"
+      } ],
+      "status": "active",
+      "name": "MOSAIC MEDICAL CENTER - MARYVILLE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6605622600"
+      } ],
+      "address": {
+        "line": [ "2016 S MAIN ST" ],
+        "city": "MARYVILLE",
+        "state": "MO",
+        "postalCode": "644682655",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.87660710787983,
+        "latitude": 40.32509245
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "67aac7f4-7925-3871-ba92-4410e67f3c39"
+        },
+        "display": "MOSAIC MEDICAL CENTER - MARYVILLE"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|6660495b-e1b6-3368-a28e-1d0475df1075"
+    }
+  }, {
+    "fullUrl": "urn:uuid:877c2e3d-bf48-3c91-9427-56ab19c3e2cc",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "877c2e3d-bf48-3c91-9427-56ab19c3e2cc",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 49
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 492
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 196
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 69
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "877c2e3d-bf48-3c91-9427-56ab19c3e2cc"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "COMMUNITY TREATMENT INC.",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6362966206"
+      } ],
+      "address": [ {
+        "line": [ "21 MUNICIPAL DR" ],
+        "city": "ARNOLD",
+        "state": "MO",
+        "postalCode": "630101012",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|877c2e3d-bf48-3c91-9427-56ab19c3e2cc"
+    }
+  }, {
+    "fullUrl": "urn:uuid:488f5ed0-113c-3f2a-a64f-203731fdf165",
+    "resource": {
+      "resourceType": "Location",
+      "id": "488f5ed0-113c-3f2a-a64f-203731fdf165",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "488f5ed0-113c-3f2a-a64f-203731fdf165"
+      } ],
+      "status": "active",
+      "name": "COMMUNITY TREATMENT INC.",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6362966206"
+      } ],
+      "address": {
+        "line": [ "21 MUNICIPAL DR" ],
+        "city": "ARNOLD",
+        "state": "MO",
+        "postalCode": "630101012",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.4024317167354,
+        "latitude": 38.44484406582632
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "877c2e3d-bf48-3c91-9427-56ab19c3e2cc"
+        },
+        "display": "COMMUNITY TREATMENT INC."
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|488f5ed0-113c-3f2a-a64f-203731fdf165"
+    }
+  }, {
+    "fullUrl": "urn:uuid:0fb81a4a-b283-3c80-ae8b-5aabc1e30928",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "0fb81a4a-b283-3c80-ae8b-5aabc1e30928",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 40
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 469
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 49
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 38
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "0fb81a4a-b283-3c80-ae8b-5aabc1e30928"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "BETTY JEAN KERR PEOPLES HEALTH CENTERS",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3146338921"
+      } ],
+      "address": [ {
+        "line": [ "49 N FLORISSANT RD STE 101" ],
+        "city": "FERGUSON",
+        "state": "MO",
+        "postalCode": "631352310",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|0fb81a4a-b283-3c80-ae8b-5aabc1e30928"
+    }
+  }, {
+    "fullUrl": "urn:uuid:4c03fcfc-2012-3010-93d3-9fbfe40e8c89",
+    "resource": {
+      "resourceType": "Location",
+      "id": "4c03fcfc-2012-3010-93d3-9fbfe40e8c89",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "4c03fcfc-2012-3010-93d3-9fbfe40e8c89"
+      } ],
+      "status": "active",
+      "name": "BETTY JEAN KERR PEOPLES HEALTH CENTERS",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3146338921"
+      } ],
+      "address": {
+        "line": [ "49 N FLORISSANT RD STE 101" ],
+        "city": "FERGUSON",
+        "state": "MO",
+        "postalCode": "631352310",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.30590805737232,
+        "latitude": 38.74642828032126
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "0fb81a4a-b283-3c80-ae8b-5aabc1e30928"
+        },
+        "display": "BETTY JEAN KERR PEOPLES HEALTH CENTERS"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|4c03fcfc-2012-3010-93d3-9fbfe40e8c89"
+    }
+  }, {
+    "fullUrl": "urn:uuid:abf05bcf-b327-33a0-aaf5-3d37161df785",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "abf05bcf-b327-33a0-aaf5-3d37161df785",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 29
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 132
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 14
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 31
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "abf05bcf-b327-33a0-aaf5-3d37161df785"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MERCY HOSPITAL CARTHAGE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "4173580188"
+      } ],
+      "address": [ {
+        "line": [ "1615 HAZEL AVE STE 101" ],
+        "city": "CARTHAGE",
+        "state": "MO",
+        "postalCode": "648363020",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|abf05bcf-b327-33a0-aaf5-3d37161df785"
+    }
+  }, {
+    "fullUrl": "urn:uuid:1da00704-62e3-3a4b-88f9-e05d31f37bd8",
+    "resource": {
+      "resourceType": "Location",
+      "id": "1da00704-62e3-3a4b-88f9-e05d31f37bd8",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "1da00704-62e3-3a4b-88f9-e05d31f37bd8"
+      } ],
+      "status": "active",
+      "name": "MERCY HOSPITAL CARTHAGE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "4173580188"
+      } ],
+      "address": {
+        "line": [ "1615 HAZEL AVE STE 101" ],
+        "city": "CARTHAGE",
+        "state": "MO",
+        "postalCode": "648363020",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.319275,
+        "latitude": 37.15113
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "abf05bcf-b327-33a0-aaf5-3d37161df785"
+        },
+        "display": "MERCY HOSPITAL CARTHAGE"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|1da00704-62e3-3a4b-88f9-e05d31f37bd8"
+    }
+  }, {
+    "fullUrl": "urn:uuid:2b3bc107-163b-365c-8a36-6b239b86de3b",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "2b3bc107-163b-365c-8a36-6b239b86de3b",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 38
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 307
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 43
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 65
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "2b3bc107-163b-365c-8a36-6b239b86de3b"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "OZARK TRICO HLT CR - PINEVILLE CLINIC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "4178458300"
+      } ],
+      "address": [ {
+        "line": [ "927 N HWY 71 BUSINESS" ],
+        "city": "JOPLIN",
+        "state": "MO",
+        "postalCode": "648013084",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|2b3bc107-163b-365c-8a36-6b239b86de3b"
+    }
+  }, {
+    "fullUrl": "urn:uuid:53885e97-39d2-3978-9c87-55c9c74b337d",
+    "resource": {
+      "resourceType": "Location",
+      "id": "53885e97-39d2-3978-9c87-55c9c74b337d",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "53885e97-39d2-3978-9c87-55c9c74b337d"
+      } ],
+      "status": "active",
+      "name": "OZARK TRICO HLT CR - PINEVILLE CLINIC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "4178458300"
+      } ],
+      "address": {
+        "line": [ "927 N HWY 71 BUSINESS" ],
+        "city": "JOPLIN",
+        "state": "MO",
+        "postalCode": "648013084",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.51323,
+        "latitude": 37.08418
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "2b3bc107-163b-365c-8a36-6b239b86de3b"
+        },
+        "display": "OZARK TRICO HLT CR - PINEVILLE CLINIC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|53885e97-39d2-3978-9c87-55c9c74b337d"
+    }
+  }, {
+    "fullUrl": "urn:uuid:17b8d43b-3bd7-36e6-ac27-f903041b26a4",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "17b8d43b-3bd7-36e6-ac27-f903041b26a4",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 5
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 190
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "17b8d43b-3bd7-36e6-ac27-f903041b26a4"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "DELMAR GARDENS OF MERAMEC VALLEY",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6363430016"
+      } ],
+      "address": [ {
+        "line": [ "#1 ARBOR TERRACE" ],
+        "city": "FENTON",
+        "state": "MO",
+        "postalCode": "630263900",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|17b8d43b-3bd7-36e6-ac27-f903041b26a4"
+    }
+  }, {
+    "fullUrl": "urn:uuid:8283564c-1cc4-3740-add5-b03fbf996e13",
+    "resource": {
+      "resourceType": "Location",
+      "id": "8283564c-1cc4-3740-add5-b03fbf996e13",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "8283564c-1cc4-3740-add5-b03fbf996e13"
+      } ],
+      "status": "active",
+      "name": "DELMAR GARDENS OF MERAMEC VALLEY",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6363430016"
+      } ],
+      "address": {
+        "line": [ "#1 ARBOR TERRACE" ],
+        "city": "FENTON",
+        "state": "MO",
+        "postalCode": "630263900",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.46319401794221,
+        "latitude": 38.5021122
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "17b8d43b-3bd7-36e6-ac27-f903041b26a4"
+        },
+        "display": "DELMAR GARDENS OF MERAMEC VALLEY"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|8283564c-1cc4-3740-add5-b03fbf996e13"
+    }
+  }, {
+    "fullUrl": "urn:uuid:4b1eae3f-7f9d-3690-8f3e-918d5344782b",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "4b1eae3f-7f9d-3690-8f3e-918d5344782b",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 60
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 1546
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 585
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 473
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "4b1eae3f-7f9d-3690-8f3e-918d5344782b"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "COMMUNITY TREATMENT INC.",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6363210150"
+      } ],
+      "address": [ {
+        "line": [ "4300 GRAVOIS RD" ],
+        "city": "HOUSE SPRINGS",
+        "state": "MO",
+        "postalCode": "630512304",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|4b1eae3f-7f9d-3690-8f3e-918d5344782b"
+    }
+  }, {
+    "fullUrl": "urn:uuid:10c68032-6c45-3b63-beb1-45bd179c5176",
+    "resource": {
+      "resourceType": "Location",
+      "id": "10c68032-6c45-3b63-beb1-45bd179c5176",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "10c68032-6c45-3b63-beb1-45bd179c5176"
+      } ],
+      "status": "active",
+      "name": "COMMUNITY TREATMENT INC.",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6363210150"
+      } ],
+      "address": {
+        "line": [ "4300 GRAVOIS RD" ],
+        "city": "HOUSE SPRINGS",
+        "state": "MO",
+        "postalCode": "630512304",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.5704033,
+        "latitude": 38.4105518
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "4b1eae3f-7f9d-3690-8f3e-918d5344782b"
+        },
+        "display": "COMMUNITY TREATMENT INC."
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|10c68032-6c45-3b63-beb1-45bd179c5176"
+    }
+  }, {
+    "fullUrl": "urn:uuid:1549714c-76fc-31f0-9ebd-882a7530ae72",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "1549714c-76fc-31f0-9ebd-882a7530ae72",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 31
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 392
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 25
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 18
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "1549714c-76fc-31f0-9ebd-882a7530ae72"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "SWOPE HEALTH SERVICES",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8169235800"
+      } ],
+      "address": [ {
+        "line": [ "8800 BLUE RIDGE BLVD" ],
+        "city": "KANSAS CITY",
+        "state": "MO",
+        "postalCode": "641384061",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|1549714c-76fc-31f0-9ebd-882a7530ae72"
+    }
+  }, {
+    "fullUrl": "urn:uuid:5d815150-e99c-3f02-b68e-daa3f267ab03",
+    "resource": {
+      "resourceType": "Location",
+      "id": "5d815150-e99c-3f02-b68e-daa3f267ab03",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "5d815150-e99c-3f02-b68e-daa3f267ab03"
+      } ],
+      "status": "active",
+      "name": "SWOPE HEALTH SERVICES",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8169235800"
+      } ],
+      "address": {
+        "line": [ "8800 BLUE RIDGE BLVD" ],
+        "city": "KANSAS CITY",
+        "state": "MO",
+        "postalCode": "641384061",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.498765,
+        "latitude": 38.963888
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "1549714c-76fc-31f0-9ebd-882a7530ae72"
+        },
+        "display": "SWOPE HEALTH SERVICES"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|5d815150-e99c-3f02-b68e-daa3f267ab03"
+    }
+  }, {
+    "fullUrl": "urn:uuid:92a237d7-a60a-3fba-a565-3aff45c4e39e",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "92a237d7-a60a-3fba-a565-3aff45c4e39e",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 14
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 120
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "92a237d7-a60a-3fba-a565-3aff45c4e39e"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "LIFE CARE CENTER OF CAPE GIRARDEAU",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733352086"
+      } ],
+      "address": [ {
+        "line": [ "365 SOUTH BROADVIEW STREET" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637035725",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|92a237d7-a60a-3fba-a565-3aff45c4e39e"
+    }
+  }, {
+    "fullUrl": "urn:uuid:4c758524-19a3-3082-bfd1-03d41efa3941",
+    "resource": {
+      "resourceType": "Location",
+      "id": "4c758524-19a3-3082-bfd1-03d41efa3941",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "4c758524-19a3-3082-bfd1-03d41efa3941"
+      } ],
+      "status": "active",
+      "name": "LIFE CARE CENTER OF CAPE GIRARDEAU",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733352086"
+      } ],
+      "address": {
+        "line": [ "365 SOUTH BROADVIEW STREET" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637035725",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.55657,
+        "latitude": 37.298863
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "92a237d7-a60a-3fba-a565-3aff45c4e39e"
+        },
+        "display": "LIFE CARE CENTER OF CAPE GIRARDEAU"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|4c758524-19a3-3082-bfd1-03d41efa3941"
+    }
+  }, {
+    "fullUrl": "urn:uuid:30c29a8a-c183-3f22-a4be-357e847f3a8c",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "30c29a8a-c183-3f22-a4be-357e847f3a8c",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 3
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "30c29a8a-c183-3f22-a4be-357e847f3a8c"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MOSAIC MEDICAL CENTER - MARYVILLE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6605622600"
+      } ],
+      "address": [ {
+        "line": [ "2016 S MAIN ST" ],
+        "city": "MARYVILLE",
+        "state": "MO",
+        "postalCode": "644682655",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|30c29a8a-c183-3f22-a4be-357e847f3a8c"
+    }
+  }, {
+    "fullUrl": "urn:uuid:e6588969-37f6-329f-ba01-f6b1016336bf",
+    "resource": {
+      "resourceType": "Location",
+      "id": "e6588969-37f6-329f-ba01-f6b1016336bf",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "e6588969-37f6-329f-ba01-f6b1016336bf"
+      } ],
+      "status": "active",
+      "name": "MOSAIC MEDICAL CENTER - MARYVILLE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6605622600"
+      } ],
+      "address": {
+        "line": [ "2016 S MAIN ST" ],
+        "city": "MARYVILLE",
+        "state": "MO",
+        "postalCode": "644682655",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.87660710787983,
+        "latitude": 40.32509245
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "30c29a8a-c183-3f22-a4be-357e847f3a8c"
+        },
+        "display": "MOSAIC MEDICAL CENTER - MARYVILLE"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|e6588969-37f6-329f-ba01-f6b1016336bf"
+    }
+  }, {
+    "fullUrl": "urn:uuid:1f46a8f9-98ca-3ca0-a981-b5f4913f2e37",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "1f46a8f9-98ca-3ca0-a981-b5f4913f2e37",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 1
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "1f46a8f9-98ca-3ca0-a981-b5f4913f2e37"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "HOSPICE PARTNERS OF KANSAS, LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8168750420"
+      } ],
+      "address": [ {
+        "line": [ "4721 S CLIFF AVE STE 220" ],
+        "city": "SAINT JOSEPH",
+        "state": "MO",
+        "postalCode": "645062458",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|1f46a8f9-98ca-3ca0-a981-b5f4913f2e37"
+    }
+  }, {
+    "fullUrl": "urn:uuid:e80331fc-5132-3807-babc-cc011c3fcd9d",
+    "resource": {
+      "resourceType": "Location",
+      "id": "e80331fc-5132-3807-babc-cc011c3fcd9d",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "e80331fc-5132-3807-babc-cc011c3fcd9d"
+      } ],
+      "status": "active",
+      "name": "HOSPICE PARTNERS OF KANSAS, LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8168750420"
+      } ],
+      "address": {
+        "line": [ "4721 S CLIFF AVE STE 220" ],
+        "city": "SAINT JOSEPH",
+        "state": "MO",
+        "postalCode": "645062458",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.8466322,
+        "latitude": 39.7686055
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "1f46a8f9-98ca-3ca0-a981-b5f4913f2e37"
+        },
+        "display": "HOSPICE PARTNERS OF KANSAS, LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|e80331fc-5132-3807-babc-cc011c3fcd9d"
+    }
+  }, {
+    "fullUrl": "urn:uuid:19dcd484-224e-3cf3-9c68-5a2a794b1438",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "19dcd484-224e-3cf3-9c68-5a2a794b1438",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 1
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "19dcd484-224e-3cf3-9c68-5a2a794b1438"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "EDGEWOOD MANOR HEALTH CARE CENTER LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8163587858"
+      } ],
+      "address": [ {
+        "line": [ "11900 JESSICA LN" ],
+        "city": "RAYTOWN",
+        "state": "MO",
+        "postalCode": "641382649",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|19dcd484-224e-3cf3-9c68-5a2a794b1438"
+    }
+  }, {
+    "fullUrl": "urn:uuid:a30f6ed6-75b6-3f67-97d7-9fa49689868c",
+    "resource": {
+      "resourceType": "Location",
+      "id": "a30f6ed6-75b6-3f67-97d7-9fa49689868c",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "a30f6ed6-75b6-3f67-97d7-9fa49689868c"
+      } ],
+      "status": "active",
+      "name": "EDGEWOOD MANOR HEALTH CARE CENTER LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8163587858"
+      } ],
+      "address": {
+        "line": [ "11900 JESSICA LN" ],
+        "city": "RAYTOWN",
+        "state": "MO",
+        "postalCode": "641382649",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.443557,
+        "latitude": 38.976963
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "19dcd484-224e-3cf3-9c68-5a2a794b1438"
+        },
+        "display": "EDGEWOOD MANOR HEALTH CARE CENTER LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|a30f6ed6-75b6-3f67-97d7-9fa49689868c"
+    }
+  }, {
+    "fullUrl": "urn:uuid:eda54fc8-4d9c-3055-b9ca-b583d408628a",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "eda54fc8-4d9c-3055-b9ca-b583d408628a",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 28
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 225
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 21
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 20
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "eda54fc8-4d9c-3055-b9ca-b583d408628a"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "JOHNS HEALTHCARE SERVICES LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733043143"
+      } ],
+      "address": [ {
+        "line": [ "2001 INDEPENDENCE ST STE A" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637035805",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|eda54fc8-4d9c-3055-b9ca-b583d408628a"
+    }
+  }, {
+    "fullUrl": "urn:uuid:96dcd80f-c782-3b37-833d-fc6090d4400b",
+    "resource": {
+      "resourceType": "Location",
+      "id": "96dcd80f-c782-3b37-833d-fc6090d4400b",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "96dcd80f-c782-3b37-833d-fc6090d4400b"
+      } ],
+      "status": "active",
+      "name": "JOHNS HEALTHCARE SERVICES LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733043143"
+      } ],
+      "address": {
+        "line": [ "2001 INDEPENDENCE ST STE A" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637035805",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.548028,
+        "latitude": 37.306397
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "eda54fc8-4d9c-3055-b9ca-b583d408628a"
+        },
+        "display": "JOHNS HEALTHCARE SERVICES LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|96dcd80f-c782-3b37-833d-fc6090d4400b"
+    }
+  }, {
+    "fullUrl": "urn:uuid:07654c0a-d407-35bb-861a-d339f7914a41",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "07654c0a-d407-35bb-861a-d339f7914a41",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 4
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "07654c0a-d407-35bb-861a-d339f7914a41"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MIDWEST TOTAL URGENT CARE, LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5737686986"
+      } ],
+      "address": [ {
+        "line": [ "8 N FRENCH LN" ],
+        "city": "PERRYVILLE",
+        "state": "MO",
+        "postalCode": "637751577",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|07654c0a-d407-35bb-861a-d339f7914a41"
+    }
+  }, {
+    "fullUrl": "urn:uuid:03aea85d-71a4-36c9-b623-c94003516e20",
+    "resource": {
+      "resourceType": "Location",
+      "id": "03aea85d-71a4-36c9-b623-c94003516e20",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "03aea85d-71a4-36c9-b623-c94003516e20"
+      } ],
+      "status": "active",
+      "name": "MIDWEST TOTAL URGENT CARE, LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5737686986"
+      } ],
+      "address": {
+        "line": [ "8 N FRENCH LN" ],
+        "city": "PERRYVILLE",
+        "state": "MO",
+        "postalCode": "637751577",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.88355336486487,
+        "latitude": 37.727064500000004
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "07654c0a-d407-35bb-861a-d339f7914a41"
+        },
+        "display": "MIDWEST TOTAL URGENT CARE, LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|03aea85d-71a4-36c9-b623-c94003516e20"
+    }
+  }, {
+    "fullUrl": "urn:uuid:1f4472fe-97b0-3637-8eda-9d9cf3e4f7ca",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "1f4472fe-97b0-3637-8eda-9d9cf3e4f7ca",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 10
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 128
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "1f4472fe-97b0-3637-8eda-9d9cf3e4f7ca"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "LUTHERAN SENIOR SERVICES AT MERAMEC BLUFFS",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6368610600"
+      } ],
+      "address": [ {
+        "line": [ "50 MERAMEC TRAILS DRIVE" ],
+        "city": "BALLWIN",
+        "state": "MO",
+        "postalCode": "630213303",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|1f4472fe-97b0-3637-8eda-9d9cf3e4f7ca"
+    }
+  }, {
+    "fullUrl": "urn:uuid:c66480a5-8738-3aea-937f-5cf58d043e38",
+    "resource": {
+      "resourceType": "Location",
+      "id": "c66480a5-8738-3aea-937f-5cf58d043e38",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "c66480a5-8738-3aea-937f-5cf58d043e38"
+      } ],
+      "status": "active",
+      "name": "LUTHERAN SENIOR SERVICES AT MERAMEC BLUFFS",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6368610600"
+      } ],
+      "address": {
+        "line": [ "50 MERAMEC TRAILS DRIVE" ],
+        "city": "BALLWIN",
+        "state": "MO",
+        "postalCode": "630213303",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.5385549,
+        "latitude": 38.5936028
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "1f4472fe-97b0-3637-8eda-9d9cf3e4f7ca"
+        },
+        "display": "LUTHERAN SENIOR SERVICES AT MERAMEC BLUFFS"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|c66480a5-8738-3aea-937f-5cf58d043e38"
+    }
+  }, {
+    "fullUrl": "urn:uuid:c27d5dc6-9ec0-395b-bdd7-94b5b90d0ce9",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "c27d5dc6-9ec0-395b-bdd7-94b5b90d0ce9",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 29
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 122
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 19
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 12
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "c27d5dc6-9ec0-395b-bdd7-94b5b90d0ce9"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "MOSAIC MEDICAL CENTER - MARYVILLE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6605622525"
+      } ],
+      "address": [ {
+        "line": [ "2016 S MAIN ST" ],
+        "city": "MARYVILLE",
+        "state": "MO",
+        "postalCode": "644682655",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|c27d5dc6-9ec0-395b-bdd7-94b5b90d0ce9"
+    }
+  }, {
+    "fullUrl": "urn:uuid:52ed08d3-08e1-3975-bc46-19381dcf3947",
+    "resource": {
+      "resourceType": "Location",
+      "id": "52ed08d3-08e1-3975-bc46-19381dcf3947",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "52ed08d3-08e1-3975-bc46-19381dcf3947"
+      } ],
+      "status": "active",
+      "name": "MOSAIC MEDICAL CENTER - MARYVILLE",
+      "telecom": [ {
+        "system": "phone",
+        "value": "6605622525"
+      } ],
+      "address": {
+        "line": [ "2016 S MAIN ST" ],
+        "city": "MARYVILLE",
+        "state": "MO",
+        "postalCode": "644682655",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.87660710787983,
+        "latitude": 40.32509245
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "c27d5dc6-9ec0-395b-bdd7-94b5b90d0ce9"
+        },
+        "display": "MOSAIC MEDICAL CENTER - MARYVILLE"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|52ed08d3-08e1-3975-bc46-19381dcf3947"
+    }
+  }, {
+    "fullUrl": "urn:uuid:bf70f9e0-a71d-3e97-9295-e26fce0a5e5e",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "bf70f9e0-a71d-3e97-9295-e26fce0a5e5e",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 28
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 164
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 17
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 14
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "bf70f9e0-a71d-3e97-9295-e26fce0a5e5e"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "SOUTHEAST MISSOURI HOSPITAL PHYSICIANS LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733316750"
+      } ],
+      "address": [ {
+        "line": [ "25 DOCTORS PARK" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637034927",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|bf70f9e0-a71d-3e97-9295-e26fce0a5e5e"
+    }
+  }, {
+    "fullUrl": "urn:uuid:110613ae-4953-3c4e-95e0-3f26c86bb708",
+    "resource": {
+      "resourceType": "Location",
+      "id": "110613ae-4953-3c4e-95e0-3f26c86bb708",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "110613ae-4953-3c4e-95e0-3f26c86bb708"
+      } ],
+      "status": "active",
+      "name": "SOUTHEAST MISSOURI HOSPITAL PHYSICIANS LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5733316750"
+      } ],
+      "address": {
+        "line": [ "25 DOCTORS PARK" ],
+        "city": "CAPE GIRARDEAU",
+        "state": "MO",
+        "postalCode": "637034927",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.5752434,
+        "latitude": 37.2960926
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "bf70f9e0-a71d-3e97-9295-e26fce0a5e5e"
+        },
+        "display": "SOUTHEAST MISSOURI HOSPITAL PHYSICIANS LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|110613ae-4953-3c4e-95e0-3f26c86bb708"
+    }
+  }, {
+    "fullUrl": "urn:uuid:c8f54338-3a4f-31e3-89a9-42dc344757e7",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "c8f54338-3a4f-31e3-89a9-42dc344757e7",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 17
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "c8f54338-3a4f-31e3-89a9-42dc344757e7"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "PHELPS COUNTY REGIONAL MEDICAL CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5734588899"
+      } ],
+      "address": [ {
+        "line": [ "1000 W 10TH ST" ],
+        "city": "WAYNESVILLE",
+        "state": "MO",
+        "postalCode": "655832339",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|c8f54338-3a4f-31e3-89a9-42dc344757e7"
+    }
+  }, {
+    "fullUrl": "urn:uuid:cc321e60-cb98-3fc1-89aa-c7efb1bc8953",
+    "resource": {
+      "resourceType": "Location",
+      "id": "cc321e60-cb98-3fc1-89aa-c7efb1bc8953",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "cc321e60-cb98-3fc1-89aa-c7efb1bc8953"
+      } ],
+      "status": "active",
+      "name": "PHELPS COUNTY REGIONAL MEDICAL CENTER",
+      "telecom": [ {
+        "system": "phone",
+        "value": "5734588899"
+      } ],
+      "address": {
+        "line": [ "1000 W 10TH ST" ],
+        "city": "WAYNESVILLE",
+        "state": "MO",
+        "postalCode": "655832339",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -92.2266876,
+        "latitude": 37.8141419
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "c8f54338-3a4f-31e3-89a9-42dc344757e7"
+        },
+        "display": "PHELPS COUNTY REGIONAL MEDICAL CENTER"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|cc321e60-cb98-3fc1-89aa-c7efb1bc8953"
+    }
+  }, {
+    "fullUrl": "urn:uuid:394caf5e-f9a7-3142-ad27-91b9b98ee4f7",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "394caf5e-f9a7-3142-ad27-91b9b98ee4f7",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 45
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 679
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 153
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 133
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "394caf5e-f9a7-3142-ad27-91b9b98ee4f7"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "WESTGLEN FAMILY PHYSICIANS, LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3668577156"
+      } ],
+      "address": [ {
+        "line": [ "225 CLARKSON RD" ],
+        "city": "MANCHESTER",
+        "state": "MO",
+        "postalCode": "630217723",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|394caf5e-f9a7-3142-ad27-91b9b98ee4f7"
+    }
+  }, {
+    "fullUrl": "urn:uuid:cbc899ad-c83e-3b62-b3df-58b17c67a9d7",
+    "resource": {
+      "resourceType": "Location",
+      "id": "cbc899ad-c83e-3b62-b3df-58b17c67a9d7",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "cbc899ad-c83e-3b62-b3df-58b17c67a9d7"
+      } ],
+      "status": "active",
+      "name": "WESTGLEN FAMILY PHYSICIANS, LLC",
+      "telecom": [ {
+        "system": "phone",
+        "value": "3668577156"
+      } ],
+      "address": {
+        "line": [ "225 CLARKSON RD" ],
+        "city": "MANCHESTER",
+        "state": "MO",
+        "postalCode": "630217723",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -90.5107453,
+        "latitude": 38.5925305
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "394caf5e-f9a7-3142-ad27-91b9b98ee4f7"
+        },
+        "display": "WESTGLEN FAMILY PHYSICIANS, LLC"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|cbc899ad-c83e-3b62-b3df-58b17c67a9d7"
+    }
+  }, {
+    "fullUrl": "urn:uuid:c114fda1-bfbd-37d6-9ffa-59f72163f7a8",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "c114fda1-bfbd-37d6-9ffa-59f72163f7a8",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 5
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 0
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/bed-count-extension",
+        "valueInteger": 96
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "c114fda1-bfbd-37d6-9ffa-59f72163f7a8"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "LIVING COMMUNITY OF ST JOSEPH",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8166718500"
+      } ],
+      "address": [ {
+        "line": [ "1202 HEARTLAND ROAD" ],
+        "city": "SAINT JOSEPH",
+        "state": "MO",
+        "postalCode": "645063200",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|c114fda1-bfbd-37d6-9ffa-59f72163f7a8"
+    }
+  }, {
+    "fullUrl": "urn:uuid:4765592b-023f-3ddc-a179-1509656386e4",
+    "resource": {
+      "resourceType": "Location",
+      "id": "4765592b-023f-3ddc-a179-1509656386e4",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "4765592b-023f-3ddc-a179-1509656386e4"
+      } ],
+      "status": "active",
+      "name": "LIVING COMMUNITY OF ST JOSEPH",
+      "telecom": [ {
+        "system": "phone",
+        "value": "8166718500"
+      } ],
+      "address": {
+        "line": [ "1202 HEARTLAND ROAD" ],
+        "city": "SAINT JOSEPH",
+        "state": "MO",
+        "postalCode": "645063200",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -94.8466322,
+        "latitude": 39.7686055
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "c114fda1-bfbd-37d6-9ffa-59f72163f7a8"
+        },
+        "display": "LIVING COMMUNITY OF ST JOSEPH"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|4765592b-023f-3ddc-a179-1509656386e4"
+    }
+  }, {
+    "fullUrl": "urn:uuid:2d73142e-84f7-3a0a-b31e-38b60b968a15",
+    "resource": {
+      "resourceType": "Organization",
+      "id": "2d73142e-84f7-3a0a-b31e-38b60b968a15",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-organization" ]
+      },
+      "extension": [ {
+        "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+        "valueInteger": 227
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-procedures-extension",
+        "valueInteger": 732
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-labs-extension",
+        "valueInteger": 90
+      }, {
+        "url": "http://synthetichealth.github.io/synthea/utilization-prescriptions-extension",
+        "valueInteger": 68
+      } ],
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "2d73142e-84f7-3a0a-b31e-38b60b968a15"
+      } ],
+      "active": true,
+      "type": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+          "code": "prov",
+          "display": "Healthcare Provider"
+        } ],
+        "text": "Healthcare Provider"
+      } ],
+      "name": "Cape Girardeau Community-Based Outpatient Clinic",
+      "telecom": [ {
+        "system": "phone",
+        "value": "573-339-0909"
+      } ],
+      "address": [ {
+        "line": [ "3051 William St." ],
+        "city": "Cape Girardeau",
+        "state": "MO",
+        "postalCode": "63703",
+        "country": "US"
+      } ]
+    },
+    "request": {
+      "method": "POST",
+      "url": "Organization",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|2d73142e-84f7-3a0a-b31e-38b60b968a15"
+    }
+  }, {
+    "fullUrl": "urn:uuid:84a75cd2-7e53-3ebc-9f04-6a8a1dea7819",
+    "resource": {
+      "resourceType": "Location",
+      "id": "84a75cd2-7e53-3ebc-9f04-6a8a1dea7819",
+      "meta": {
+        "profile": [ "http://hl7.org/fhir/us/core/StructureDefinition/us-core-location" ]
+      },
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "84a75cd2-7e53-3ebc-9f04-6a8a1dea7819"
+      } ],
+      "status": "active",
+      "name": "Cape Girardeau Community-Based Outpatient Clinic",
+      "telecom": [ {
+        "system": "phone",
+        "value": "573-339-0909"
+      } ],
+      "address": {
+        "line": [ "3051 William St." ],
+        "city": "Cape Girardeau",
+        "state": "MO",
+        "postalCode": "63703",
+        "country": "US"
+      },
+      "position": {
+        "longitude": -89.568634,
+        "latitude": 37.30073
+      },
+      "managingOrganization": {
+        "identifier": {
+          "system": "https://github.com/synthetichealth/synthea",
+          "value": "2d73142e-84f7-3a0a-b31e-38b60b968a15"
+        },
+        "display": "Cape Girardeau Community-Based Outpatient Clinic"
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|84a75cd2-7e53-3ebc-9f04-6a8a1dea7819"
+    }
+  }, {
+    "fullUrl": "urn:uuid:bb1ad573-19b8-9cd8-68fb-0e6f684df992",
+    "resource": {
+      "resourceType": "Location",
+      "id": "bb1ad573-19b8-9cd8-68fb-0e6f684df992",
+      "identifier": [ {
+        "system": "https://github.com/synthetichealth/synthea",
+        "value": "bb1ad573-19b8-9cd8-68fb-0e6f684df992"
+      } ],
+      "status": "active",
+      "description": "Patient's Home",
+      "mode": "kind",
+      "physicalType": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+          "code": "ho",
+          "display": "House"
+        } ]
+      }
+    },
+    "request": {
+      "method": "POST",
+      "url": "Location",
+      "ifNoneExist": "identifier=https://github.com/synthetichealth/synthea|bb1ad573-19b8-9cd8-68fb-0e6f684df992"
+    }
+  } ]
+}
