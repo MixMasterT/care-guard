@@ -45,7 +45,7 @@ pip install -r requirements.txt
 Run the Streamlit app on port 8091:
 
 ```bash
-streamlit run montor.py --server.port 8091
+streamlit run monitor.py --server.port 8091
 ```
 
 The application will be available at `http://localhost:8091`
