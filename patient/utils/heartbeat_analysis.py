@@ -76,7 +76,6 @@ def analyze_heartbeat_data() -> Optional[Dict]:
             "avg_interval_ms": round(sum(intervals) / len(intervals), 1)
         }
         
-        print(f"📊 Heartbeat analysis: {summary}")
         return summary
         
     except Exception as e:

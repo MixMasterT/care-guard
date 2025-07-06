@@ -80,24 +80,34 @@ class HeartbeatServer:
             traceback.print_exc()
     
     def broadcast_websocket_event(self, event_data: Dict):
-        """Queue a message for all WebSocket clients."""
+        """Broadcast a message directly to all WebSocket clients."""
         message = json.dumps(event_data)
-        print(f"📥 Queuing WebSocket message: {event_data}")
         
-        if self.websocket_message_queue and self.websocket_loop:
+        if self.websocket_loop:
             try:
-                # Put message on queue for async processing using the stored loop
-                asyncio.run_coroutine_threadsafe(
-                    self.websocket_message_queue.put(message), 
-                    self.websocket_loop
-                )
-                print(f"✅ Message queued successfully")
+                # Create a task to broadcast to all clients
+                async def broadcast_to_all():
+                    disconnected_clients = set()
+                    for websocket in self.websocket_clients:
+                        try:
+                            await websocket.send(message)
+                        except websockets.exceptions.ConnectionClosed:
+                            disconnected_clients.add(websocket)
+                        except Exception as e:
+                            logger.warning(f"Error sending to client {websocket.remote_address}: {e}")
+                            disconnected_clients.add(websocket)
+                    
+                    # Remove disconnected clients
+                    if disconnected_clients:
+                        with self.websocket_lock:
+                            self.websocket_clients -= disconnected_clients
+                
+                # Schedule the broadcast task
+                asyncio.run_coroutine_threadsafe(broadcast_to_all(), self.websocket_loop)
             except Exception as e:
-                print(f"❌ Failed to queue message: {e}")
-                import traceback
-                traceback.print_exc()
+                logger.error(f"Failed to schedule broadcast: {e}")
         else:
-            print(f"❌ WebSocket message queue or loop not initialized")
+            logger.error("WebSocket loop not initialized")
     
     def is_client_connected(self, client_socket) -> bool:
         """Check if client socket is still connected."""
@@ -115,36 +125,36 @@ class HeartbeatServer:
         # Set the scenario running flag
         self.scenario_running = True
         
-        # Load heartbeat data
-        heartbeat_times = self.load_heartbeat_data(scenario)
-        if not heartbeat_times:
+        # Load heartbeat data (these are absolute offsets from start in milliseconds)
+        heartbeat_offsets = self.load_heartbeat_data(scenario)
+        if not heartbeat_offsets:
             logger.error(f"No heartbeat data found for scenario: {scenario}")
             self.scenario_running = False
             return
         
-        # Calculate intervals between heartbeats
-        intervals = []
-        for i in range(1, len(heartbeat_times)):
-            interval = heartbeat_times[i] - heartbeat_times[i-1]
-            intervals.append(interval)
-        
-        # Stream heartbeat events
-        start_time = time.time() * 1000  # Convert to milliseconds
+        # Record the scenario start time
+        scenario_start_time = time.time() * 1000  # Convert to milliseconds
         event_count = 0
+        previous_offset = 0  # Initialize previous offset to 0
         
-        for interval in intervals:
+        # Process each heartbeat offset
+        for i, offset_ms in enumerate(heartbeat_offsets):
             # Check if scenario should continue running
             if not self.running or not self.scenario_running:
                 logger.info(f"Scenario {scenario} stopped early")
                 break
-                
-            # Wait for the interval
-            time.sleep(interval / 1000.0)  # Convert milliseconds to seconds
             
-            # Check again after sleep in case scenario was stopped during sleep
-            if not self.scenario_running:
-                logger.info(f"Scenario {scenario} stopped during sleep")
-                break
+            # Calculate wait time as difference between current and previous offset
+            wait_time = offset_ms - previous_offset
+            
+            # Wait for the calculated interval
+            if wait_time > 0:
+                time.sleep(wait_time / 1000.0)  # Convert milliseconds to seconds
+                
+                # Check again after sleep in case scenario was stopped during sleep
+                if not self.scenario_running:
+                    logger.info(f"Scenario {scenario} stopped during sleep")
+                    break
             
             # Send heartbeat event
             current_time = time.time() * 1000
@@ -153,14 +163,17 @@ class HeartbeatServer:
                 "scenario": scenario,
                 "event_type": "heartbeat",
                 "event_number": event_count,
-                "interval_ms": interval
+                "interval_ms": wait_time,
+                "elapsed_ms": int(current_time - scenario_start_time)
             }
             
             self.broadcast_event(event_data)
             event_count += 1
             
-            print(f"💓 SENT HEARTBEAT EVENT {event_count}: {event_data}")
             logger.debug(f"Sent heartbeat event {event_count}: {event_data}")
+            
+            # Update previous offset for next iteration
+            previous_offset = offset_ms
         
         # Reset the scenario running flag
         self.scenario_running = False
@@ -171,7 +184,8 @@ class HeartbeatServer:
                 "timestamp": int(time.time() * 1000),
                 "scenario": scenario,
                 "event_type": "scenario_complete",
-                "total_events": event_count
+                "total_events": event_count,
+                "total_duration_ms": int(time.time() * 1000 - scenario_start_time)
             }
             self.broadcast_event(completion_event)
             logger.info(f"Completed heartbeat scenario: {scenario}")
@@ -243,11 +257,9 @@ class HeartbeatServer:
             logger.info(f"WebSocket server will start on {self.host}:{self.websocket_port}")
             
             # Start WebSocket server in a separate thread
-            print(f"🧵 Starting WebSocket server thread...")
             websocket_thread = threading.Thread(target=self.start_websocket_server)
             websocket_thread.daemon = True
             websocket_thread.start()
-            print(f"✅ WebSocket server thread started")
             
             # Accept client connections
             while self.running:
@@ -269,16 +281,14 @@ class HeartbeatServer:
     
     def start_websocket_server(self):
         """Start the WebSocket server."""
-        print(f"🚀 Starting WebSocket server on {self.host}:{self.websocket_port}")
+        logger.info(f"Starting WebSocket server on {self.host}:{self.websocket_port}")
         
         async def websocket_handler(websocket):
             """Handle WebSocket connections."""
-            print(f"🔌 New WebSocket client connected from {websocket.remote_address}")
-            logger.info(f"New WebSocket client connected")
+            logger.info(f"New WebSocket client connected from {websocket.remote_address}")
             
             with self.websocket_lock:
                 self.websocket_clients.add(websocket)
-                print(f"✅ WebSocket client added. Total clients: {len(self.websocket_clients)}")
             
             try:
                 # Send welcome message
@@ -289,25 +299,15 @@ class HeartbeatServer:
                 }
                 await websocket.send(json.dumps(welcome))
                 
-                # Create a task to forward messages from queue to this client
-                async def forward_messages():
-                    """Forward messages from queue to this WebSocket client."""
-                    while True:
-                        try:
-                            # Wait for a message from the queue
-                            message = await self.websocket_message_queue.get()
-                            print(f"📤 Forwarding message to client: {message[:100]}...")
-                            await websocket.send(message)
-                            print(f"✅ Message forwarded successfully")
-                        except websockets.exceptions.ConnectionClosed:
-                            print(f"🔌 Client disconnected, stopping message forwarding")
-                            break
-                        except Exception as e:
-                            print(f"❌ Error forwarding message: {e}")
-                            break
-                
-                # Start the message forwarding task
-                forward_task = asyncio.create_task(forward_messages())
+                # If a scenario is currently running, send the current state to the new client
+                if self.current_scenario and self.scenario_running:
+                    current_scenario_event = {
+                        "timestamp": int(time.time() * 1000),
+                        "event_type": "scenario_started",
+                        "scenario": self.current_scenario,
+                        "message": f"Current scenario: {self.current_scenario}"
+                    }
+                    await websocket.send(json.dumps(current_scenario_event))
                 
                 # Handle incoming messages from client
                 async for message in websocket:
@@ -320,12 +320,12 @@ class HeartbeatServer:
                                 self.start_scenario(scenario)
                         elif command_data.get('command') == 'stop_scenario':
                             self.stop_scenario()
+                        elif command_data.get('type') == 'client_heartbeat':
+                            # Client heartbeat - just log it to show client is alive
+                            logger.debug(f"Client heartbeat received from {websocket.remote_address}")
                     except json.JSONDecodeError:
                         logger.warning(f"Invalid JSON from WebSocket client: {message}")
                 
-                # Cancel the forwarding task when client disconnects
-                forward_task.cancel()
-                        
             except websockets.exceptions.ConnectionClosed:
                 logger.info("WebSocket client disconnected")
             except Exception as e:
@@ -334,16 +334,17 @@ class HeartbeatServer:
                 with self.websocket_lock:
                     if websocket in self.websocket_clients:
                         self.websocket_clients.remove(websocket)
+                        
+                        # If no clients are connected and a scenario is running, stop it
+                        if len(self.websocket_clients) == 0 and self.scenario_running:
+                            logger.info(f"No clients connected, stopping orphaned scenario: {self.current_scenario}")
+                            self.stop_scenario()
         
         # Create and run event loop for WebSocket server
         async def run_websocket_server():
-            # Initialize the message queue
-            self.websocket_message_queue = asyncio.Queue()
-            print(f"📦 WebSocket message queue initialized")
-            
             # Start the WebSocket server
             async with websockets.serve(websocket_handler, self.host, self.websocket_port) as server:
-                print(f"✅ WebSocket server started successfully")
+                logger.info("WebSocket server started successfully")
                 await asyncio.Future()  # Run forever
         
         # Run the WebSocket server in its own event loop
@@ -372,17 +373,22 @@ class HeartbeatServer:
         self.scenario_thread.start()
         logger.info(f"Started scenario thread for: {scenario}")
         
-        # Send a test message to WebSocket clients
-        test_event = {
+        # Small delay to ensure WebSocket connections are ready
+        time.sleep(0.2)
+        
+        # Send scenario_started message to WebSocket clients
+        scenario_event = {
             "timestamp": int(time.time() * 1000),
             "event_type": "scenario_started",
             "scenario": scenario,
             "message": f"Started {scenario} scenario"
         }
-        print(f"🧪 Sending test message to WebSocket clients: {test_event}")
         
-        # Use the queue-based broadcast method
-        self.broadcast_websocket_event(test_event)
+        # Use direct broadcast to all WebSocket clients
+        self.broadcast_websocket_event(scenario_event)
+        
+        # Also send via TCP for compatibility
+        self.broadcast_event(scenario_event)
     
     def stop_scenario(self):
         """Stop the current heartbeat scenario."""
