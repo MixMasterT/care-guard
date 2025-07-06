@@ -13,13 +13,21 @@ A real-time patient monitoring system with synthetic heartbeat data streaming an
 2. **Generate patient medical records (if needed):**
    This directory is git-ignored, so you will need to run this command to create some fake-patient FHIR medical records.
 
-   ```bash
-   # Check if patient records exist
-   ls patient/generated_medical_records/fhir/
+   Verify that patient records exist.
 
-   # If directory is empty, generate patient records using Synthea
+   ```bash
+      ls patient/generated_medical_records/fhir/
+   ```
+
+   If directory is empty, clone [synthea](https://github.com/synthetichealth/synthea) to generate patient records.
+
+   It does not matter where you clone synthea to. Run the following command to create patient records with Synthea.
+   Feel free to update the arguments to run_synthea as according to synthea docs.
+   **NOTE:** Docker must first be running for this to work, and it will take several minutes at least.
+
+   ```bash
    docker run --rm -it \
-     -v "$PWD":/opt/synthea \
+     -v {absolute-path-to-where-you-cloned-synthea}:/opt/synthea \
      -v "$PWD/patient/generated_medical_records/":/opt/synthea/output \
      -w /opt/synthea \
      openjdk:17 \
