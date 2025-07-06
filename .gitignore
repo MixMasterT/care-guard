@@ -1,2 +1,12 @@
 patient/generated_medical_records/*
 patient/biometric/buffer/*
+
+# Python cache directories
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python compiled files
+*.pyc
+*.pyo
+*.pyd
