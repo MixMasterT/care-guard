@@ -23,7 +23,7 @@ A real-time patient monitoring system with synthetic heartbeat data streaming an
      -v "$PWD/patient/generated_medical_records/":/opt/synthea/output \
      -w /opt/synthea \
      openjdk:17 \
-     bash -c "./gradlew build && ./run_synthea -p 10 Missouri"
+     bash -c "./gradlew build -x test && ./run_synthea -p 10 Missouri"
    ```
 
 3. **Run the monitoring system:**
