@@ -9,13 +9,14 @@ from pathlib import Path
 from typing import Dict, List, Optional
 import plotly.express as px
 import plotly.graph_objects as go
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import asyncio
 import websockets
 from pydantic import BaseModel
 from monitor_components.heartbeat_component import create_heartbeat_component
+from monitor_components.ekg_component import create_ekg_component
 import utils.heartbeat_analysis
 import utils.fhir_observations
 
@@ -50,13 +51,10 @@ def flush_heartbeat_buffer():
                     with open(pulse_temp_file, 'r') as f:
                         records = json.load(f)
                     if not isinstance(records, list):
-                        print("⚠️ Invalid JSON structure - resetting to empty array")
                         records = []
                 except json.JSONDecodeError as e:
-                    print(f"⚠️ Corrupted JSON file - resetting: {e}")
                     records = []
                 except Exception as e:
-                    print(f"⚠️ Error reading JSON file - resetting: {e}")
                     records = []
             
             # Add all buffered records
@@ -65,26 +63,43 @@ def flush_heartbeat_buffer():
             # Write back to file with atomic write
             temp_file = pulse_temp_file.with_suffix('.tmp')
             try:
+                # Ensure the directory exists before writing
+                buffer_dir.mkdir(parents=True, exist_ok=True)
+                
                 with open(temp_file, 'w') as f:
                     json.dump(records, f, indent=2, default=str)
+                
                 # Atomic move to replace the original file
-                temp_file.replace(pulse_temp_file)
-                print(f"💾 Flushed {len(heartbeat_buffer)} heartbeats to file (total: {len(records)})")
+                if temp_file.exists() and temp_file.stat().st_size > 0:
+                    temp_file.replace(pulse_temp_file)
+                else:
+                    print(f"⚠️ Temp file not created properly, skipping flush")
+                    
             except Exception as e:
                 # Clean up temp file if it exists
                 if temp_file.exists():
-                    temp_file.unlink()
-                raise e
+                    try:
+                        temp_file.unlink()
+                    except:
+                        pass  # Ignore cleanup errors
+                print(f"❌ Error writing heartbeat buffer: {e}")
+                import traceback
+                traceback.print_exc()
             
             # Clear the buffer
             heartbeat_buffer = []
+            
+            # Trigger chart refresh by updating session state
+            if 'chart_refresh_trigger' not in st.session_state:
+                st.session_state.chart_refresh_trigger = 0
+            st.session_state.chart_refresh_trigger += 1
             
         except Exception as e:
             print(f"❌ Error flushing heartbeat buffer: {e}")
             import traceback
             traceback.print_exc()
 
-def record_heartbeat(timestamp: datetime, interval_ms: int):
+def record_heartbeat(timestamp: datetime, interval_ms: int = 0):
     """Record a heartbeat event to the in-memory buffer."""
     global heartbeat_buffer
     try:
@@ -99,11 +114,13 @@ def record_heartbeat(timestamp: datetime, interval_ms: int):
             heartbeat_buffer.append(heartbeat_record.dict())
             buffer_size = len(heartbeat_buffer)
         
-        print(f"💓 Buffered heartbeat: {heartbeat_record.dict()} (buffer: {buffer_size})")
-        
         # Flush buffer if it reaches batch size
         if buffer_size >= BATCH_SIZE:
-            flush_heartbeat_buffer()
+            try:
+                flush_heartbeat_buffer()
+            except Exception as flush_error:
+                print(f"⚠️ Heartbeat buffer flush failed, continuing: {flush_error}")
+                # Don't let flush errors stop heartbeat recording
         
     except Exception as e:
         print(f"❌ Error recording heartbeat: {e}")
@@ -123,7 +140,9 @@ def clear_heartbeat_buffer():
         pulse_temp_file = buffer_dir / "pulse_temp.json"
         if pulse_temp_file.exists():
             pulse_temp_file.unlink()
-        print(f"🗑️ Cleared heartbeat buffer (memory + file)")
+        
+        # Chart data is cleared when buffer file is cleared
+        
     except Exception as e:
         print(f"❌ Error clearing heartbeat buffer: {e}")
 
@@ -293,96 +312,67 @@ class HeartbeatClient:
     def connect(self):
         """Connect to the heartbeat server."""
         try:
-            print(f"🔌 Attempting to connect to {self.host}:{self.port}")
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.connect((self.host, self.port))
-            print("✅ Socket connected successfully")
             self.connected = True
             self.running = True
             
             # Start listening thread
-            print("🧵 Starting heartbeat listener thread...")
             self.heartbeat_thread = threading.Thread(target=self._listen_for_heartbeats)
             self.heartbeat_thread.daemon = True
             self.heartbeat_thread.start()
-            print("✅ Heartbeat listener thread started")
             
             st.success("Connected to heartbeat server!")
             return True
         except Exception as e:
-            print(f"❌ Connection failed: {e}")
             st.error(f"Failed to connect to heartbeat server: {e}")
             return False
     
     def _listen_for_heartbeats(self):
         """Listen for heartbeat events from the server."""
         buffer = ""
-        print("🎧 Starting heartbeat listener thread...")
         
         while self.running and self.connected:
             try:
-                print("👂 Waiting for data from server...")
                 data = self.socket.recv(1024)
                 if not data:
-                    print("❌ No data received, connection may be closed")
                     break
                 
-                print(f"📦 Received {len(data)} bytes: {data}")
                 buffer += data.decode('utf-8')
-                print(f"📋 Buffer now contains: {repr(buffer)}")
                 
                 # Process complete messages
                 while '\n' in buffer:
                     message, buffer = buffer.split('\n', 1)
-                    print(f"📨 Processing message: {repr(message)}")
                     if message.strip():
                         try:
                             event = json.loads(message)
-                            print(f"📥 RECEIVED EVENT: {event}")
                             if event.get('event_type') == 'heartbeat':
                                 self.last_heartbeat_time = time.time()
                                 interval_ms = event.get('interval_ms', 1000)
                                 scenario = event.get('scenario', 'unknown')
                                 event_number = event.get('event_number', 0)
-                                print(f"💓 HEARTBEAT RECEIVED at {self.last_heartbeat_time}, interval: {interval_ms}ms")
                                 
-                                # Record heartbeat to JSON file
-                                heartbeat_timestamp = datetime.fromtimestamp(self.last_heartbeat_time)
-                                record_heartbeat(heartbeat_timestamp, interval_ms)
+                                # Record heartbeat to JSON file with server timestamp
+                                server_timestamp = event.get('timestamp', int(time.time() * 1000))
+                                heartbeat_timestamp = datetime.fromtimestamp(server_timestamp / 1000.0)
+                                record_heartbeat(heartbeat_timestamp, 0)  # Interval will be calculated by analysis
                                 
                                 # No longer storing heartbeat data for chart since we removed the chart
                             elif event.get('event_type') == 'scenario_started':
-                                print(f"🚀 SCENARIO STARTED: {event}")
+                                pass
                             elif event.get('event_type') == 'scenario_stopped':
-                                print(f"🛑 SCENARIO STOPPED: {event}")
                                 # Update Streamlit session state to reflect that simulation has stopped
                                 st.session_state.simulation_running = False
                                 st.session_state.current_scenario = None
-                                print(f"✅ Session state updated - simulation stopped")
                             else:
-                                print(f"📨 OTHER EVENT: {event}")
+                                pass
                         except json.JSONDecodeError:
-                            print(f"❌ Invalid JSON received: {message}")
                             pass
                             
             except Exception as e:
-                print(f"❌ Heartbeat connection error: {e}")
-                import traceback
-                traceback.print_exc()
                 break
         
-        print("🔌 Heartbeat listener thread ending")
         self.connected = False
-    
-    def disconnect(self):
-        """Disconnect from the heartbeat server."""
-        self.running = False
-        self.connected = False
-        if self.socket:
-            try:
-                self.socket.close()
-            except:
-                pass
 
 def trigger_heartbeat_scenario(scenario: str):
     """Trigger a heartbeat scenario by sending command to server."""
@@ -599,6 +589,8 @@ def main():
         st.session_state.simulation_running = False
     if 'current_scenario' not in st.session_state:
         st.session_state.current_scenario = None
+    if 'chart_refresh_counter' not in st.session_state:
+        st.session_state.chart_refresh_counter = 0
     
     # Heartbeat monitoring section
     st.subheader("💓 Heartbeat Monitoring")
@@ -614,13 +606,14 @@ def main():
         # Connection and scenario buttons
         if not st.session_state.heartbeat_client.connected:
             if st.button("🔌 Connect to Heartbeat Server"):
-                st.session_state.heartbeat_client.connect()
+                if st.session_state.heartbeat_client.connect():
+                    st.rerun()  # Force a rerun to update the UI immediately
         else:
             st.success("✅ Connected to heartbeat server")
             
             # Show current simulation status
             if st.session_state.simulation_running:
-                st.info(f"🔄 Currently running: {st.session_state.current_scenario} simulation")
+                st.info(f"🔄 Current simulation: {st.session_state.current_scenario}")
                 
                 # Show heartbeat recording status
                 buffer_dir = utils.heartbeat_analysis.ensure_biometric_buffer_dir()
@@ -636,15 +629,6 @@ def main():
                     except (json.JSONDecodeError, Exception) as e:
                         st.error(f"❌ Error reading heartbeat data: {e}")
                         file_count = 0
-                
-                # Count buffered records
-                buffered_count = len(heartbeat_buffer)
-                total_count = file_count + buffered_count
-                
-                if total_count > 0:
-                    st.write(f"📊 **Recording:** {total_count} heartbeats ({file_count} saved, {buffered_count} buffered)")
-                else:
-                    st.write("📊 **Recording:** No heartbeats captured yet")
                 
                 # When simulation is running, only show the stop button
                 if st.button("⏹️ Stop Simulation", type="secondary"):
@@ -672,22 +656,14 @@ def main():
     
     with col2:
         # Heartbeat visualization with JavaScript
-        print("💙 Heartbeat visualization section reached")
         if st.session_state.heartbeat_client.connected:
             # Debug output to Python console
             current_time = time.time()
             time_since_beat = current_time - st.session_state.heartbeat_client.last_heartbeat_time
-            print(f"💓 Heart update - Last beat: {st.session_state.heartbeat_client.last_heartbeat_time:.3f}, Time since: {time_since_beat:.3f}s")
-            
-            # Show heartbeat status
-            st.write(f"**Last Heartbeat:** {time_since_beat:.3f}s ago")
             
             # JavaScript heartbeat component with WebSocket
-            print("🔧 Creating heartbeat component...")
             heartbeat_html = create_heartbeat_component()
-            print("🔧 Rendering heartbeat component...")
-            st.components.v1.html(heartbeat_html, height=500)
-            print("✅ Heartbeat component rendered")
+            st.components.v1.html(heartbeat_html, height=200)
             
             # Add JavaScript to handle WebSocket events and update Streamlit state
             websocket_handler_script = """
@@ -695,10 +671,8 @@ def main():
             // Listen for messages from the iframe
             window.addEventListener('message', function(event) {
                 if (event.data.type === 'scenario_started') {
-                    console.log('🚀 Scenario started from WebSocket:', event.data.scenario);
                     // The scenario state will be updated by the trigger function
                 } else if (event.data.type === 'scenario_stopped') {
-                    console.log('🛑 Scenario stopped from WebSocket');
                     // Force a page reload to update the Streamlit state
                     window.location.reload();
                 }
@@ -707,13 +681,22 @@ def main():
             // Periodic check to sync state (every 2 seconds)
             setInterval(function() {
                 // This will help catch any state mismatches between frontend and backend
-                console.log('🔄 Periodic state sync check');
             }, 2000);
             </script>
             """
             st.components.v1.html(websocket_handler_script, height=0)
         else:
             st.write("**Status:** Not connected to heartbeat server")
+    
+    # EKG Chart Section
+    st.subheader("📈 Real-time EKG Monitor")
+    
+    if st.session_state.heartbeat_client.connected:
+        # EKG visualization with D3.js
+        ekg_html = create_ekg_component()
+        st.components.v1.html(ekg_html, height=350)
+    else:
+        st.info("🔌 Connect to heartbeat server to view EKG chart")
     
     st.markdown("---")
     
