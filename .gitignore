@@ -5,3 +5,8 @@ patient/biometric/buffer/*
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Python compiled files
+*.pyc
+*.pyo
+*.pyd
