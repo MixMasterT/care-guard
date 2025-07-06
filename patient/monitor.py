@@ -307,7 +307,6 @@ class HeartbeatClient:
         self.connected = False
         self.running = False
         self.heartbeat_thread = None
-        self.last_heartbeat_time = 0
         
     def connect(self):
         """Connect to the heartbeat server."""
@@ -347,7 +346,6 @@ class HeartbeatClient:
                         try:
                             event = json.loads(message)
                             if event.get('event_type') == 'heartbeat':
-                                self.last_heartbeat_time = time.time()
                                 interval_ms = event.get('interval_ms', 1000)
                                 scenario = event.get('scenario', 'unknown')
                                 event_number = event.get('event_number', 0)
@@ -355,19 +353,15 @@ class HeartbeatClient:
                                 # Record heartbeat to JSON file with server timestamp
                                 server_timestamp = event.get('timestamp', int(time.time() * 1000))
                                 heartbeat_timestamp = datetime.fromtimestamp(server_timestamp / 1000.0)
-                                record_heartbeat(heartbeat_timestamp, 0)  # Interval will be calculated by analysis
+                                record_heartbeat(heartbeat_timestamp, interval_ms)
                                 
-                                # No longer storing heartbeat data for chart since we removed the chart
-                            elif event.get('event_type') == 'scenario_started':
-                                pass
                             elif event.get('event_type') == 'scenario_stopped':
                                 # Update Streamlit session state to reflect that simulation has stopped
                                 st.session_state.simulation_running = False
                                 st.session_state.current_scenario = None
-                            else:
-                                pass
+
                         except json.JSONDecodeError:
-                            pass
+                            print('Unable to decode JSON in _listen_for_heartbeats handler')
                             
             except Exception as e:
                 break
@@ -657,9 +651,6 @@ def main():
     with col2:
         # Heartbeat visualization with JavaScript
         if st.session_state.heartbeat_client.connected:
-            # Debug output to Python console
-            current_time = time.time()
-            time_since_beat = current_time - st.session_state.heartbeat_client.last_heartbeat_time
             
             # JavaScript heartbeat component with WebSocket
             heartbeat_html = create_heartbeat_component()
