@@ -1,6 +1,9 @@
 import os
 from opensearchpy import OpenSearch
 from openai import OpenAI
+from openai.types.chat import ChatCompletionMessageParam
+import time
+from utils.logging_utils import log_llm_metadata
 
 # --- CONFIGURATION ---
 OPENSEARCH_HOST = os.environ.get("OPENSEARCH_HOST", "localhost")
@@ -41,11 +44,30 @@ def make_rag_prompt(patient_id, entries):
 # --- LLM CALL ---
 def ask_llm(prompt, model="gpt-4"):
     client = OpenAI(api_key=OPENAI_API_KEY)
+    messages: list[ChatCompletionMessageParam] = [
+        {"role": "user", "content": prompt}
+    ]
+    start = time.time()
     response = client.chat.completions.create(
         model=model,
-        messages=[{"role": "user", "content": prompt}]
+        messages=messages
     )
-    return response.choices[0].message.content
+    elapsed = time.time() - start
+    answer = response.choices[0].message.content
+    # Try to get token usage if available
+    prompt_tokens = getattr(response.usage, 'prompt_tokens', 0) if hasattr(response, 'usage') else 0
+    completion_tokens = getattr(response.usage, 'completion_tokens', 0) if hasattr(response, 'usage') else 0
+    # Log the LLM call
+    log_llm_metadata(
+        provider="openai",
+        model=model,
+        messages=messages,
+        response=answer,
+        elapsed=elapsed,
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens
+    )
+    return answer
 
 # --- MAIN AGENT LOGIC ---
 def main(patient_id):
@@ -60,6 +82,6 @@ def main(patient_id):
 if __name__ == "__main__":
     # Example usage
     patient_id = "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9" #Getting worse
-   #patient_id = "f420e6d4-55db-974f-05cb-52d06375b65f" #Getting better
+    #patient_id = "f420e6d4-55db-974f-05cb-52d06375b65f" #Getting better
     #patient_id = "29244161-9d02-b8b6-20cc-350f53ffe7a1" #Staying the same
     main(patient_id) 
