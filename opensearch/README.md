@@ -1,4 +1,4 @@
-# Medical Record Indexing System
+I# Medical Record Indexing System
 
 This system indexes patient medical records and pain diary data into OpenSearch for efficient searching and analysis.
 
@@ -166,3 +166,88 @@ The system provides detailed logging and statistics:
 - Number of records indexed per file
 - Total indexing statistics
 - Index document counts 
+
+---
+
+## How to Fix
+
+### 1. Explicitly Map the Field as `float`
+You need to set the mapping for `resource_data.item.adjudication.amount.value` to `float` (which can store both integers and decimals) before any data is indexed.
+
+#### Steps:
+- Delete the existing `fhir-medical-records` index (to clear the old mapping).
+- Update your mapping to explicitly set this field as `float`.
+- Recreate the index with the new mapping.
+- Re-run the indexer.
+
+---
+
+### 2. How to Update Your Mapping
+
+Update the FHIR mapping in your Python code like this:
+
+```python
+fhir_mapping = {
+    "mappings": {
+        "properties": {
+            "resource_type": {"type": "keyword"},
+            "patient_id": {"type": "keyword"},
+            "resource_id": {"type": "keyword"},
+            "resource_data": {
+                "type": "object",
+                "dynamic": True,
+                "properties": {
+                    "item": {
+                        "type": "object",
+                        "dynamic": True,
+                        "properties": {
+                            "adjudication": {
+                                "type": "object",
+                                "dynamic": True,
+                                "properties": {
+                                    "amount": {
+                                        "type": "object",
+                                        "dynamic": True,
+                                        "properties": {
+                                            "value": {"type": "float"}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "source_file": {"type": "keyword"},
+            "indexed_at": {"type": "date"}
+        }
+    }
+}
+```
+
+---
+
+### 3. Delete and Recreate the Index
+
+You can do this in your code (as you already do), or manually via OpenSearch Dashboards/Dev Tools:
+
+```json
+DELETE fhir-medical-records
+```
+
+Then let your script recreate it with the new mapping.
+
+---
+
+### 4. Re-run the Indexer
+
+After the above changes, re-run your indexer. The error should be resolved, and both integer and decimal values will be accepted for that field.
+
+---
+
+**Summary:**  
+- The error is due to OpenSearch type rigidity.
+- Explicitly set the mapping for `resource_data.item.adjudication.amount.value` to `float`.
+- Delete and recreate the index, then re-index.
+
+Would you like me to update your code with the correct mapping? 

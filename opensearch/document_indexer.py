@@ -66,16 +66,26 @@ class MedicalRecordIndexer:
                     "resource_id": {"type": "keyword"},
                     "resource_data": {
                         "type": "object",
-                        "enabled": True,
                         "dynamic": True,
                         "properties": {
                             "item": {
                                 "type": "object",
-                                "dynamic": True
-                            },
-                            "name": {
-                                "type": "object",
-                                "dynamic": True
+                                "dynamic": True,
+                                "properties": {
+                                    "adjudication": {
+                                        "type": "object",
+                                        "dynamic": True,
+                                        "properties": {
+                                            "amount": {
+                                                "type": "object",
+                                                "dynamic": True,
+                                                "properties": {
+                                                    "value": {"type": "float"}
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     },
