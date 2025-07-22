@@ -158,7 +158,7 @@
           }
         ],
         "gender": "male",
-        "birthDate": "1958-09-12",
+        "birthDate": "1957-03-15",
         "address": [
           {
             "extension": [
@@ -49147,6 +49147,289 @@
       "request": {
         "method": "POST",
         "url": "Provenance"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6caeebe6-5142-4aa3-977c-356bd5b909aa",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cardiac-condition-f420e6d4-55db-974f-05cb-52d06375b65f",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-condition-encounter-diagnosis"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved",
+              "display": "Resolved"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "encounter-diagnosis",
+                "display": "Encounter Diagnosis"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "64572001",
+              "display": "Postoperative state"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/f420e6d4-55db-974f-05cb-52d06375b65f",
+          "display": "Patient f420e6d4-55db-974f-05cb-52d06375b65f"
+        },
+        "onsetDateTime": "2025-06-15T08:00:00-05:00",
+        "recordedDate": "2025-06-15T08:00:00-05:00",
+        "abatementDateTime": "2025-07-15T08:00:00-05:00"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1ee0dfb4-d21e-4be0-a064-171e59d24b8c",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "coronary-disease-f420e6d4-55db-974f-05cb-52d06375b65f",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-condition-encounter-diagnosis"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "encounter-diagnosis",
+                "display": "Encounter Diagnosis"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "53741008",
+              "display": "Coronary artery disease"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/f420e6d4-55db-974f-05cb-52d06375b65f",
+          "display": "Patient f420e6d4-55db-974f-05cb-52d06375b65f"
+        },
+        "onsetDateTime": "2025-06-15T08:00:00-05:00",
+        "recordedDate": "2025-06-15T08:00:00-05:00",
+        "abatementDateTime": "2025-07-20T08:00:00-05:00"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ba6c2fec-2b7b-4eb6-bb0d-354820560b23",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "heart-failure-f420e6d4-55db-974f-05cb-52d06375b65f",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-condition-encounter-diagnosis"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "encounter-diagnosis",
+                "display": "Encounter Diagnosis"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "84114007",
+              "display": "Heart failure"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/f420e6d4-55db-974f-05cb-52d06375b65f",
+          "display": "Patient f420e6d4-55db-974f-05cb-52d06375b65f"
+        },
+        "onsetDateTime": "2025-06-15T08:00:00-05:00",
+        "recordedDate": "2025-06-15T08:00:00-05:00",
+        "abatementDateTime": "2025-07-25T08:00:00-05:00"
+      },
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:71865468-dce9-4d45-805f-246b47e2b6fa",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "cabg-procedure-f420e6d4-55db-974f-05cb-52d06375b65f",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+          ]
+        },
+        "status": "completed",
+        "category": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "387713003",
+              "display": "Surgical procedure"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "232717009",
+              "display": "Coronary artery bypass grafts"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/f420e6d4-55db-974f-05cb-52d06375b65f",
+          "display": "Patient f420e6d4-55db-974f-05cb-52d06375b65f"
+        },
+        "performedDateTime": "2025-07-11T08:00:00-05:00",
+        "recorder": {
+          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999989590",
+          "display": "Dr. Cardiac Surgeon"
+        },
+        "assistant": [
+          {
+            "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999989591",
+            "display": "Dr. Surgical Assistant"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Procedure"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:89641602-5cd3-4b1c-a016-e9d48f0fa771",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "cardiac-cath-f420e6d4-55db-974f-05cb-52d06375b65f",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+          ]
+        },
+        "status": "completed",
+        "category": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "387713003",
+              "display": "Surgical procedure"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "174166004",
+              "display": "Cardiac catheterization"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/f420e6d4-55db-974f-05cb-52d06375b65f",
+          "display": "Patient f420e6d4-55db-974f-05cb-52d06375b65f"
+        },
+        "performedDateTime": "2025-07-11T08:00:00-05:00",
+        "recorder": {
+          "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999989590",
+          "display": "Dr. Cardiac Surgeon"
+        },
+        "assistant": [
+          {
+            "reference": "Practitioner?identifier=http://hl7.org/fhir/sid/us-npi|9999989591",
+            "display": "Dr. Surgical Assistant"
+          }
+        ]
+      },
+      "request": {
+        "method": "POST",
+        "url": "Procedure"
       }
     }
   ]
