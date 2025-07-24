@@ -17,6 +17,7 @@ import websockets
 from pydantic import BaseModel
 from monitor_components.heartbeat_component import create_heartbeat_component
 from monitor_components.ekg_component import create_ekg_component
+from monitor_components.timeline_component import create_timeline_component
 import utils.heartbeat_analysis
 import utils.fhir_observations
 
@@ -185,6 +186,7 @@ def calculate_age(birth_date_str: str) -> Optional[int]:
 
 def parse_patient_data(file_path: Path) -> Dict:
     """Parse a FHIR patient file and extract relevant information."""
+    
     try:
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -267,6 +269,54 @@ def parse_patient_data(file_path: Path) -> Dict:
                         'recorded_date': resource.get('recordedDate', '')
                     }
                     patient_info['allergies'].append(allergy)
+            
+            elif resource_type == 'Procedure':
+                # Extract procedure information
+                code = resource.get('code', {})
+                coding = code.get('coding', [])
+                
+                if coding:
+                    # Get procedure date
+                    procedure_date = resource.get('performedPeriod', {}).get('start', '')
+                    if not procedure_date:
+                        procedure_date = resource.get('performedDateTime', '')
+                    
+                    # Filter out procedures older than 3 months
+                    from datetime import timezone
+                    three_months_ago = datetime.now(timezone.utc) - timedelta(days=90)
+                    if procedure_date:
+                        try:
+                            # Parse the procedure date
+                            if 'T' in procedure_date:
+                                proc_dt = datetime.fromisoformat(procedure_date.replace('Z', '+00:00'))
+                            else:
+                                proc_dt = datetime.fromisoformat(procedure_date)
+                            
+                            # Make sure procedure date is timezone-aware for comparison
+                            if proc_dt.tzinfo is None:
+                                # If procedure date is naive, assume it's in UTC
+                                proc_dt = proc_dt.replace(tzinfo=timezone.utc)
+                            
+                            # Only include procedures from the last 3 months
+                            if proc_dt >= three_months_ago:
+                                procedure = {
+                                    'code': coding[0].get('code', ''),
+                                    'display': coding[0].get('display', ''),
+                                    'system': coding[0].get('system', ''),
+                                    'clinical_status': resource.get('status', ''),
+                                    'onset_date': resource.get('performedPeriod', {}).get('start', ''),
+                                    'abatement_date': resource.get('performedPeriod', {}).get('end', ''),
+                                    'recorded_date': resource.get('performedDateTime', ''),
+                                    'is_procedure': True
+                                }
+                                patient_info['diagnoses'].append(procedure)
+                        except (ValueError, TypeError) as e:
+                            # If date parsing fails, skip this procedure
+                            print(f"Warning: Could not parse procedure date '{procedure_date}': {e}")
+                            continue
+                    else:
+                        # If no date available, skip this procedure
+                        continue
         
         return patient_info
         
@@ -470,7 +520,7 @@ def trigger_heartbeat_animation():
     # This is a placeholder - the actual triggering will happen via session state
     pass
 
-def create_diagnosis_timeline(diagnoses: List[Dict]) -> go.Figure:
+def create_diagnosis_timeline(diagnoses: List[Dict], time_window_percent: float = 100.0) -> go.Figure:
     """Create a timeline visualization of patient diagnoses."""
     if not diagnoses:
         return None
@@ -506,13 +556,32 @@ def create_diagnosis_timeline(diagnoses: List[Dict]) -> go.Figure:
                     end_date = pd.Timestamp.now(tz='UTC')
                     duration_days = (end_date - onset_dt).days
                 
+                # Determine if this is a cardiac condition
+                is_cardiac = any(keyword in display.lower() for keyword in [
+                    'postoperative', 'coronary', 'heart', 'cardiac', 'bypass', 'cabg'
+                ])
+                
+                # For cardiac conditions, ensure they have a reasonable duration for visibility
+                if is_cardiac and abatement_date is None:
+                    # If cardiac condition is active, extend it to show proper width
+                    # Give each cardiac condition a different duration to avoid overlap
+                    if 'postoperative' in display.lower():
+                        end_date = onset_dt + pd.Timedelta(days=7)  # Postoperative state: 7 days
+                    elif 'coronary' in display.lower():
+                        end_date = onset_dt + pd.Timedelta(days=14)  # Coronary disease: 14 days
+                    elif 'heart' in display.lower():
+                        end_date = onset_dt + pd.Timedelta(days=21)  # Heart failure: 21 days
+                    else:
+                        end_date = onset_dt + pd.Timedelta(days=30)  # Default: 30 days
+                
                 timeline_data.append({
                     'Diagnosis': display,
                     'Start': onset_dt,
                     'End': end_date,
                     'Status': status,
                     'Duration_Days': duration_days,
-                    'Is_Active': abatement_date is None
+                    'Is_Active': abatement_date is None,
+                    'Is_Cardiac': is_cardiac
                 })
                 
             except (ValueError, TypeError) as e:
@@ -525,28 +594,80 @@ def create_diagnosis_timeline(diagnoses: List[Dict]) -> go.Figure:
     # Create DataFrame
     df = pd.DataFrame(timeline_data)
     
-    # Sort by: 1) Active conditions first, 2) Duration (longest first), 3) Start date
-    df['Sort_Key'] = df['Is_Active'].astype(int) * 1000000 + df['Duration_Days'] * -1
-    df = df.sort_values('Sort_Key', ascending=False)
+    # Always create Display_Text column (needed for plotly)
+    df['Display_Text'] = df['Diagnosis'].copy()
+    
+    # Apply time window filtering if not showing full timeline
+    if time_window_percent < 100.0:
+        # Calculate the time range to show
+        if not df.empty:
+            # Get the most recent date in the data
+            max_date = df['Start'].max()
+            
+            # Calculate the time window (6 months = ~180 days)
+            full_timeline_days = (df['Start'].max() - df['Start'].min()).days
+            if full_timeline_days == 0:
+                full_timeline_days = 1  # Avoid division by zero
+            
+            # Calculate how many days to show based on the slider percentage
+            # At 0% slider, show full timeline. At 100% slider, show 6 months
+            # Linear interpolation between full timeline and 6 months
+            progress = time_window_percent / 100.0
+            days_to_show = full_timeline_days - (full_timeline_days - 180) * progress
+            days_to_show = max(180, int(days_to_show))  # At least 6 months
+            
+            # Calculate the cutoff date for the visible window
+            cutoff_date = max_date - pd.Timedelta(days=days_to_show)
+            
+            # Instead of filtering out old diagnoses, mark them as past events
+            # But cardiac conditions should always show their full width
+            df['Is_Past_Event'] = (df['Start'] < cutoff_date) & (~df['Is_Cardiac'])
+            df.loc[df['Is_Past_Event'], 'Display_Text'] = df.loc[df['Is_Past_Event'], 'Diagnosis'] + ' (past event)'
+            
+            # For past events (non-cardiac), set the visual timeline to be very short (just a dot)
+            df.loc[df['Is_Past_Event'], 'End'] = df.loc[df['Is_Past_Event'], 'Start'] + pd.Timedelta(hours=1)
+    
+    # Sort by recency: most recent conditions first (by start date, then by active status)
+    df['Sort_Key'] = df['Start'].astype(np.int64) * -1  # Most recent first
+    df = df.sort_values('Sort_Key', ascending=True)
+    
+    # Reorder the y-axis to match the sorting (most recent at top)
+    df = df.iloc[::-1].reset_index(drop=True)
     
     # Ensure datetime columns are properly formatted and convert to timezone-naive
     df['Start'] = pd.to_datetime(df['Start'], utc=True).dt.tz_localize(None)
     df['End'] = pd.to_datetime(df['End'], utc=True).dt.tz_localize(None)
     
-    # Create timeline using plotly
+    # Create custom color mapping for cardiac conditions
+    color_mapping = {}
+    for idx, row in df.iterrows():
+        if row['Is_Cardiac']:
+            color_mapping[row['Diagnosis']] = 'red'  # Cardiac conditions in red
+        else:
+            # Use status-based colors for non-cardiac conditions
+            if row['Status'] == 'active':
+                color_mapping[row['Diagnosis']] = 'orange'
+            elif row['Status'] == 'resolved':
+                color_mapping[row['Diagnosis']] = 'blue'
+            elif row['Status'] == 'inactive':
+                color_mapping[row['Diagnosis']] = 'lightgray'
+            else:
+                color_mapping[row['Diagnosis']] = 'lightgray'
+    
+    # Create timeline using plotly express with explicit color mapping
     fig = px.timeline(df, 
                      x_start="Start", 
                      x_end="End", 
-                     y="Diagnosis",
-                     color="Status",
+                     y="Display_Text",  # Use display text that includes "(past event)" for old items
+                     color="Diagnosis",  # Color by diagnosis name to use custom mapping
                      title="Patient Diagnosis Timeline",
-                     hover_data=["Status"],
-                     color_discrete_map={
-                         'active': 'orange',
-                         'resolved': 'blue',
-                         'inactive': 'gray',
-                         'unknown': 'lightgray'
-                     })
+                     hover_data=["Status"])
+    
+    # Apply custom colors manually to ensure cardiac conditions are red
+    for trace in fig.data:
+        diagnosis_name = trace.name
+        if diagnosis_name in color_mapping:
+            trace.marker.color = color_mapping[diagnosis_name]
     
     # Customize the layout
     fig.update_layout(
@@ -554,15 +675,35 @@ def create_diagnosis_timeline(diagnoses: List[Dict]) -> go.Figure:
         title_font_size=20,
         xaxis_title="Time",
         yaxis_title="Diagnoses",
-        height=200 + len(diagnoses) * 20,  # Reduced height for more compact timeline
+        height=400,  # Fixed height to prevent resizing
         showlegend=True
     )
     
-    # Update x-axis to show dates nicely
-    fig.update_xaxes(
-        tickformat="%Y-%m-%d",
-        tickangle=45
-    )
+    # Update x-axis to show dates nicely and scale with time window
+    if time_window_percent < 100.0 and not df.empty:
+        # Calculate the visible time range based on slider
+        max_date = df['Start'].max()
+        full_timeline_days = (df['Start'].max() - df['Start'].min()).days
+        if full_timeline_days == 0:
+            full_timeline_days = 1
+        
+        progress = time_window_percent / 100.0
+        days_to_show = full_timeline_days - (full_timeline_days - 180) * progress
+        days_to_show = max(180, int(days_to_show))
+        
+        # Set x-axis range to show only the visible time window
+        min_visible_date = max_date - pd.Timedelta(days=days_to_show)
+        fig.update_xaxes(
+            range=[min_visible_date, max_date],
+            tickformat="%Y-%m-%d",
+            tickangle=45
+        )
+    else:
+        # Show full timeline
+        fig.update_xaxes(
+            tickformat="%Y-%m-%d",
+            tickangle=45
+        )
     
     return fig
 
@@ -763,10 +904,9 @@ def main():
             st.subheader("🏥 Diagnoses")
             
             if patient_data['diagnoses']:
-                # Create timeline first
-                timeline_fig = create_diagnosis_timeline(medical_diagnoses)
-                if timeline_fig:
-                    st.plotly_chart(timeline_fig, use_container_width=True)
+                # Create D3-based timeline component
+                timeline_html = create_timeline_component(patient_data)
+                st.components.v1.html(timeline_html, height=500)
                 
                 st.markdown("---")
                 
