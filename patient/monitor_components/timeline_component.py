@@ -14,12 +14,19 @@ def create_timeline_component(patient_data):
                 
             # Determine if this is a cardiac condition
             is_cardiac = any(keyword in display.lower() for keyword in [
-                'postoperative', 'coronary', 'heart', 'cardiac', 'bypass', 'cabg'
+                'postoperative', 'coronary', 'heart', 'cardiac', 'bypass', 'cabg', 
+                'myocardial', 'infarction', 'angina', 'stenosis', 'valve', 'aortic',
+                'percutaneous', 'intervention', 'pci'
             ])
             
             # Calculate end date
             onset_date = diagnosis.get('onset_date')
             abatement_date = diagnosis.get('abatement_date')
+            
+            # Handle procedures that might have different date fields
+            if not onset_date and diagnosis.get('is_procedure'):
+                # For procedures, try to get the performed date
+                onset_date = diagnosis.get('recorded_date')
             
             if abatement_date:
                 end_date = abatement_date
@@ -28,6 +35,8 @@ def create_timeline_component(patient_data):
                 from datetime import datetime, timedelta
                 onset_dt = datetime.fromisoformat(onset_date.replace('Z', '+00:00'))
                 if 'postoperative' in display.lower():
+                    end_dt = onset_dt + timedelta(days=7)
+                elif 'myocardial' in display.lower() or 'infarction' in display.lower():
                     end_dt = onset_dt + timedelta(days=7)
                 elif 'coronary' in display.lower():
                     end_dt = onset_dt + timedelta(days=14)

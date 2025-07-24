@@ -186,6 +186,7 @@ def calculate_age(birth_date_str: str) -> Optional[int]:
 
 def parse_patient_data(file_path: Path) -> Dict:
     """Parse a FHIR patient file and extract relevant information."""
+    
     try:
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -268,6 +269,54 @@ def parse_patient_data(file_path: Path) -> Dict:
                         'recorded_date': resource.get('recordedDate', '')
                     }
                     patient_info['allergies'].append(allergy)
+            
+            elif resource_type == 'Procedure':
+                # Extract procedure information
+                code = resource.get('code', {})
+                coding = code.get('coding', [])
+                
+                if coding:
+                    # Get procedure date
+                    procedure_date = resource.get('performedPeriod', {}).get('start', '')
+                    if not procedure_date:
+                        procedure_date = resource.get('performedDateTime', '')
+                    
+                    # Filter out procedures older than 3 months
+                    from datetime import timezone
+                    three_months_ago = datetime.now(timezone.utc) - timedelta(days=90)
+                    if procedure_date:
+                        try:
+                            # Parse the procedure date
+                            if 'T' in procedure_date:
+                                proc_dt = datetime.fromisoformat(procedure_date.replace('Z', '+00:00'))
+                            else:
+                                proc_dt = datetime.fromisoformat(procedure_date)
+                            
+                            # Make sure procedure date is timezone-aware for comparison
+                            if proc_dt.tzinfo is None:
+                                # If procedure date is naive, assume it's in UTC
+                                proc_dt = proc_dt.replace(tzinfo=timezone.utc)
+                            
+                            # Only include procedures from the last 3 months
+                            if proc_dt >= three_months_ago:
+                                procedure = {
+                                    'code': coding[0].get('code', ''),
+                                    'display': coding[0].get('display', ''),
+                                    'system': coding[0].get('system', ''),
+                                    'clinical_status': resource.get('status', ''),
+                                    'onset_date': resource.get('performedPeriod', {}).get('start', ''),
+                                    'abatement_date': resource.get('performedPeriod', {}).get('end', ''),
+                                    'recorded_date': resource.get('performedDateTime', ''),
+                                    'is_procedure': True
+                                }
+                                patient_info['diagnoses'].append(procedure)
+                        except (ValueError, TypeError) as e:
+                            # If date parsing fails, skip this procedure
+                            print(f"Warning: Could not parse procedure date '{procedure_date}': {e}")
+                            continue
+                    else:
+                        # If no date available, skip this procedure
+                        continue
         
         return patient_info
         
