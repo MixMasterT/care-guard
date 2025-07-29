@@ -1,0 +1,5 @@
+[
+  { "offset_ms": 86400000, "weight_kg": 81.8, "note_type": "daily_weight" },
+  { "offset_ms": 172800000, "weight_kg": 83.4, "note_type": "daily_weight" },
+  { "offset_ms": 259200000, "weight_kg": 85.1, "note_type": "daily_weight" }
+]
