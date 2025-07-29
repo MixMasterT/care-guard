@@ -28,28 +28,28 @@ st.set_page_config(
     layout="wide"
 )
 
-# Global heartbeat buffer for batch writing
-heartbeat_buffer = []
-BATCH_SIZE = 10  # Write to file every 10 heartbeats
+# Global biometric buffer for batch writing
+biometric_buffer = []
+BATCH_SIZE = 10  # Write to file every 10 events
 BUFFER_LOCK = threading.Lock()
 
-def flush_heartbeat_buffer():
-    """Write all buffered heartbeats to the JSON file."""
-    global heartbeat_buffer
+def flush_biometric_buffer():
+    """Write all buffered biometric events to the JSON file."""
+    global biometric_buffer
     with BUFFER_LOCK:
-        if not heartbeat_buffer:
+        if not biometric_buffer:
             return
         
         try:
             # Ensure buffer directory exists
             buffer_dir = utils.heartbeat_analysis.ensure_biometric_buffer_dir()
-            pulse_temp_file = buffer_dir / "pulse_temp.json"
+            biometric_file = buffer_dir / "simulation_biometrics.json"
             
             # Load existing records
             records = []
-            if pulse_temp_file.exists():
+            if biometric_file.exists():
                 try:
-                    with open(pulse_temp_file, 'r') as f:
+                    with open(biometric_file, 'r') as f:
                         records = json.load(f)
                     if not isinstance(records, list):
                         records = []
@@ -59,10 +59,10 @@ def flush_heartbeat_buffer():
                     records = []
             
             # Add all buffered records
-            records.extend(heartbeat_buffer)
+            records.extend(biometric_buffer)
             
             # Write back to file with atomic write
-            temp_file = pulse_temp_file.with_suffix('.tmp')
+            temp_file = biometric_file.with_suffix('.tmp')
             try:
                 # Ensure the directory exists before writing
                 buffer_dir.mkdir(parents=True, exist_ok=True)
@@ -72,7 +72,7 @@ def flush_heartbeat_buffer():
                 
                 # Atomic move to replace the original file
                 if temp_file.exists() and temp_file.stat().st_size > 0:
-                    temp_file.replace(pulse_temp_file)
+                    temp_file.replace(biometric_file)
                 else:
                     print(f"⚠️ Temp file not created properly, skipping flush")
                     
@@ -83,12 +83,12 @@ def flush_heartbeat_buffer():
                         temp_file.unlink()
                     except:
                         pass  # Ignore cleanup errors
-                print(f"❌ Error writing heartbeat buffer: {e}")
+                print(f"❌ Error writing biometric buffer: {e}")
                 import traceback
                 traceback.print_exc()
             
             # Clear the buffer
-            heartbeat_buffer = []
+            biometric_buffer = []
             
             # Trigger chart refresh by updating session state
             if 'chart_refresh_trigger' not in st.session_state:
@@ -96,56 +96,57 @@ def flush_heartbeat_buffer():
             st.session_state.chart_refresh_trigger += 1
             
         except Exception as e:
-            print(f"❌ Error flushing heartbeat buffer: {e}")
+            print(f"❌ Error flushing biometric buffer: {e}")
             import traceback
             traceback.print_exc()
 
-def record_heartbeat(timestamp: datetime, interval_ms: int = 0):
-    """Record a heartbeat event to the in-memory buffer."""
-    global heartbeat_buffer
+def record_biometric_event(event_type: str, timestamp: datetime, event_data: dict):
+    """Record a biometric event to the in-memory buffer."""
+    global biometric_buffer
     try:
-        # Create heartbeat record
-        heartbeat_record = utils.heartbeat_analysis.HeartbeatRecord(
-            timestamp=timestamp,
-            interval_ms=interval_ms
-        )
+        # Create biometric event record with medical data only
+        event_record = {
+            "event_type": event_type,
+            "timestamp": timestamp.isoformat(),
+            **event_data  # Spread medical data directly into the record
+        }
         
         # Add to buffer
         with BUFFER_LOCK:
-            heartbeat_buffer.append(heartbeat_record.dict())
-            buffer_size = len(heartbeat_buffer)
+            biometric_buffer.append(event_record)
+            buffer_size = len(biometric_buffer)
         
         # Flush buffer if it reaches batch size
         if buffer_size >= BATCH_SIZE:
             try:
-                flush_heartbeat_buffer()
+                flush_biometric_buffer()
             except Exception as flush_error:
-                print(f"⚠️ Heartbeat buffer flush failed, continuing: {flush_error}")
-                # Don't let flush errors stop heartbeat recording
+                print(f"⚠️ Biometric buffer flush failed, continuing: {flush_error}")
+                # Don't let flush errors stop event recording
         
     except Exception as e:
-        print(f"❌ Error recording heartbeat: {e}")
+        print(f"❌ Error recording biometric event: {e}")
         import traceback
         traceback.print_exc()
 
-def clear_heartbeat_buffer():
-    """Clear both the in-memory buffer and the heartbeat buffer file."""
-    global heartbeat_buffer
+def clear_biometric_buffer():
+    """Clear both the in-memory buffer and the biometric buffer file."""
+    global biometric_buffer
     try:
         # Clear in-memory buffer
         with BUFFER_LOCK:
-            heartbeat_buffer = []
+            biometric_buffer = []
         
         # Clear file buffer
         buffer_dir = utils.heartbeat_analysis.ensure_biometric_buffer_dir()
-        pulse_temp_file = buffer_dir / "pulse_temp.json"
-        if pulse_temp_file.exists():
-            pulse_temp_file.unlink()
+        biometric_file = buffer_dir / "simulation_biometrics.json"
+        if biometric_file.exists():
+            biometric_file.unlink()
         
         # Chart data is cleared when buffer file is cleared
         
     except Exception as e:
-        print(f"❌ Error clearing heartbeat buffer: {e}")
+        print(f"❌ Error clearing biometric buffer: {e}")
 
 def load_fhir_files() -> List[Path]:
     """Load all FHIR patient files from the generated_medical_records (synthea output) directory."""
@@ -367,7 +368,7 @@ class HeartbeatClient:
             self.running = True
             
             # Start listening thread
-            self.heartbeat_thread = threading.Thread(target=self._listen_for_heartbeats)
+            self.heartbeat_thread = threading.Thread(target=self._listen_for_biometrics)
             self.heartbeat_thread.daemon = True
             self.heartbeat_thread.start()
             
@@ -377,8 +378,8 @@ class HeartbeatClient:
             st.error(f"Failed to connect to heartbeat server: {e}")
             return False
     
-    def _listen_for_heartbeats(self):
-        """Listen for heartbeat events from the server."""
+    def _listen_for_biometrics(self):
+        """Listen for biometric events from the server."""
         buffer = ""
         
         while self.running and self.connected:
@@ -395,23 +396,60 @@ class HeartbeatClient:
                     if message.strip():
                         try:
                             event = json.loads(message)
-                            if event.get('event_type') == 'heartbeat':
-                                interval_ms = event.get('interval_ms', 1000)
-                                scenario = event.get('scenario', 'unknown')
-                                event_number = event.get('event_number', 0)
-                                
-                                # Record heartbeat to JSON file with server timestamp
+                            event_type = event.get('event_type')
+                            
+                            # Record only biometric events with medical data
+                            if event_type in ['heartbeat', 'respiration', 'vital_signs']:
+                                # Convert server timestamp to datetime
                                 server_timestamp = event.get('timestamp', int(time.time() * 1000))
-                                heartbeat_timestamp = datetime.fromtimestamp(server_timestamp / 1000.0)
-                                record_heartbeat(heartbeat_timestamp, interval_ms)
+                                event_timestamp = datetime.fromtimestamp(server_timestamp / 1000.0)
                                 
-                            elif event.get('event_type') == 'scenario_stopped':
+                                # Extract medical data based on event type and available fields
+                                medical_data = {}
+                                
+                                if event_type == 'heartbeat':
+                                    # Heartbeat events
+                                    medical_data = {
+                                        'interval_ms': event.get('interval_ms', 1000),
+                                        'pulse_strength': event.get('pulse_strength', 1.0)
+                                    }
+                                    record_biometric_event('heartbeat', event_timestamp, medical_data)
+                                    
+                                elif event_type == 'respiration':
+                                    # Respiration events (discrete breath completion)
+                                    print(f'recording a respiration, for event: {event}')
+                                    medical_data = {
+                                        'interval_ms': event.get('interval_ms', 0)
+                                    }
+                                    record_biometric_event('respiration', event_timestamp, medical_data)
+                                    
+                                elif event_type == 'vital_signs':
+                                    # Vital signs events can contain spo2, temperature, or ecg_rhythm
+                                    if 'spo2' in event:
+                                        medical_data = {
+                                            'spo2': event.get('spo2')
+                                        }
+                                        record_biometric_event('spo2', event_timestamp, medical_data)
+                                        
+                                    elif 'temperature' in event:
+                                        medical_data = {
+                                            'temperature': event.get('temperature')
+                                        }
+                                        record_biometric_event('temperature', event_timestamp, medical_data)
+                                        
+                                    elif 'ecg_rhythm' in event:
+                                        medical_data = {
+                                            'ecg_rhythm': event.get('ecg_rhythm')
+                                        }
+                                        record_biometric_event('ecg_rhythm', event_timestamp, medical_data)
+                                
+                            elif event_type == 'scenario_stopped':
                                 # Update Streamlit session state to reflect that simulation has stopped
                                 st.session_state.simulation_running = False
                                 st.session_state.current_scenario = None
 
                         except json.JSONDecodeError:
-                            print('Unable to decode JSON in _listen_for_heartbeats handler')
+                            print('Unable to decode JSON in _listen_for_biometrics handler')
                             
             except Exception as e:
                 break
@@ -430,9 +468,9 @@ def trigger_heartbeat_scenario(scenario: str):
         return
     
     try:
-        # Flush any remaining heartbeats and clear buffer when starting new scenario
-        flush_heartbeat_buffer()
-        clear_heartbeat_buffer()
+        # Flush any remaining biometric events and clear buffer when starting new scenario
+        flush_biometric_buffer()
+        clear_biometric_buffer()
         
         # Update session state to track simulation
         st.session_state.simulation_running = True
@@ -496,8 +534,8 @@ def stop_heartbeat_scenario():
         """
         st.components.v1.html(stop_script, height=0)
         
-        # Flush any remaining heartbeats before stopping
-        flush_heartbeat_buffer()
+        # Flush any remaining biometric events before stopping
+        flush_biometric_buffer()
         
         # Don't immediately reset session state - wait for backend confirmation
         # The session state will be updated when we receive the 'scenario_stopped' event
@@ -514,11 +552,6 @@ def stop_heartbeat_scenario():
         traceback.print_exc()
         st.error(f"Failed to stop scenario: {e}")
 
-def trigger_heartbeat_animation():
-    """Trigger heartbeat animation via JavaScript."""
-    # We'll use st.components.html to inject JavaScript that can be called
-    # This is a placeholder - the actual triggering will happen via session state
-    pass
 
 def create_diagnosis_timeline(diagnoses: List[Dict], time_window_percent: float = 100.0) -> go.Figure:
     """Create a timeline visualization of patient diagnoses."""
@@ -750,19 +783,19 @@ def main():
             if st.session_state.simulation_running:
                 st.info(f"🔄 Current simulation: {st.session_state.current_scenario}")
                 
-                # Show heartbeat recording status
+                # Show biometric recording status
                 buffer_dir = utils.heartbeat_analysis.ensure_biometric_buffer_dir()
-                pulse_temp_file = buffer_dir / "pulse_temp.json"
+                biometric_file = buffer_dir / "simulation_biometrics.json"
                 
                 # Count file records
                 file_count = 0
-                if pulse_temp_file.exists():
+                if biometric_file.exists():
                     try:
-                        with open(pulse_temp_file, 'r') as f:
+                        with open(biometric_file, 'r') as f:
                             records = json.load(f)
                         file_count = len(records) if isinstance(records, list) else 0
                     except (json.JSONDecodeError, Exception) as e:
-                        st.error(f"❌ Error reading heartbeat data: {e}")
+                        st.error(f"❌ Error reading biometric data: {e}")
                         file_count = 0
                 
                 # When simulation is running, only show the stop button
@@ -785,8 +818,8 @@ def main():
                         st.rerun()  # Force a rerun to update the UI immediately
                 
                 with scenario_col3:
-                    if st.button("🫀 Cardiac Arrest"):
-                        trigger_heartbeat_scenario("cardiac-arrest")
+                    if st.button("🚨 Critical"):
+                        trigger_heartbeat_scenario("critical")
                         st.rerun()  # Force a rerun to update the UI immediately
     
     with col2:

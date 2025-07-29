@@ -13,7 +13,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class HeartbeatServer:
+class BiometricScenarioServer:
     def __init__(self, host='localhost', port=5000, websocket_port=8092):
         self.host = host
         self.port = port
@@ -23,35 +23,36 @@ class HeartbeatServer:
         self.clients_lock = threading.Lock()
         self.websocket_clients = set()
         self.websocket_lock = threading.Lock()
-        self.websocket_message_queue = None  # Will be initialized in async context
-        self.websocket_loop = None  # Will store the WebSocket event loop
+        self.websocket_loop = None
         self.running = False
         self.current_scenario = None
         self.scenario_thread = None
-        self.scenario_running = False  # Flag to track if scenario should continue running
+        self.scenario_running = False
         
-        # Path to heartbeat data files
-        self.data_dir = Path(__file__).parent / "biometric/pulse/demo_stream_source"
+        # Path to biometric scenario data files
+        self.data_dir = Path(__file__).parent / "biometric/demo_scenarios"
         
-    def load_heartbeat_data(self, scenario: str) -> List[int]:
-        """Load heartbeat timing data from JSON file."""
+    def load_scenario_data(self, scenario: str) -> List[Dict]:
+        """Load biometric scenario data from JSON file."""
         file_path = self.data_dir / f"{scenario}.json"
         
         if not file_path.exists():
-            logger.error(f"Heartbeat data file not found: {file_path}")
+            logger.error(f"Scenario data file not found: {file_path}")
             return []
             
         try:
             with open(file_path, 'r') as f:
                 data = json.load(f)
-            logger.info(f"Loaded {len(data)} heartbeat events from {scenario}")
+            
+            logger.info(f"Loaded {len(data)} biometric events from {scenario} scenario")
             return data
+                
         except Exception as e:
-            logger.error(f"Error loading heartbeat data: {e}")
+            logger.error(f"Error loading scenario data: {e}")
             return []
     
-    def broadcast_event(self, event_data: Dict):
-        """Send heartbeat event to all connected clients."""
+    def broadcast_tcp_event(self, event_data: Dict):
+        """Send biometric event to all connected clients."""
         message = json.dumps(event_data) + '\n'
         message_bytes = message.encode('utf-8')
         
@@ -60,18 +61,15 @@ class HeartbeatServer:
             self.clients = [client for client in self.clients if self.is_client_connected(client)]
             
             # Send to remaining clients
-            print(f"📡 Broadcasting to {len(self.clients)} TCP clients: {event_data}")
+            print(f"📡 Broadcasting to {len(self.clients)} TCP clients: {event_data.get('event_type', 'unknown')}")
             for client in self.clients:
                 try:
                     client.send(message_bytes)
-                    print(f"✅ Successfully sent to TCP client")
                 except Exception as e:
                     logger.warning(f"Failed to send to TCP client: {e}")
-                    print(f"❌ Failed to send to TCP client: {e}")
                     # Client will be removed on next broadcast
         
         # Also send to WebSocket clients
-        print(f"🌐 Attempting to broadcast to WebSocket clients...")
         try:
             self.broadcast_websocket_event(event_data)
         except Exception as e:
@@ -119,16 +117,16 @@ class HeartbeatServer:
             return False
     
     def run_scenario(self, scenario: str):
-        """Run a heartbeat scenario and stream events."""
-        logger.info(f"Starting heartbeat scenario: {scenario}")
+        """Run a biometric scenario and stream events."""
+        logger.info(f"Starting biometric scenario: {scenario}")
         
         # Set the scenario running flag
         self.scenario_running = True
         
-        # Load heartbeat data (these are absolute offsets from start in milliseconds)
-        heartbeat_offsets = self.load_heartbeat_data(scenario)
-        if not heartbeat_offsets:
-            logger.error(f"No heartbeat data found for scenario: {scenario}")
+        # Load scenario data
+        scenario_events = self.load_scenario_data(scenario)
+        if not scenario_events:
+            logger.error(f"No scenario data found for: {scenario}")
             self.scenario_running = False
             return
         
@@ -137,12 +135,15 @@ class HeartbeatServer:
         event_count = 0
         previous_offset = 0  # Initialize previous offset to 0
         
-        # Process each heartbeat offset
-        for i, offset_ms in enumerate(heartbeat_offsets):
+        # Process each biometric event
+        for i, event in enumerate(scenario_events):
             # Check if scenario should continue running
             if not self.running or not self.scenario_running:
                 logger.info(f"Scenario {scenario} stopped early")
                 break
+            
+            # Get offset from event data
+            offset_ms = event.get("offset_ms", 0)
             
             # Calculate wait time as difference between current and previous offset
             wait_time = offset_ms - previous_offset
@@ -156,21 +157,83 @@ class HeartbeatServer:
                     logger.info(f"Scenario {scenario} stopped during sleep")
                     break
             
-            # Send heartbeat event
+            # Send event based on event type
             current_time = time.time() * 1000
-            event_data = {
-                "timestamp": int(current_time),
-                "scenario": scenario,
-                "event_type": "heartbeat",
-                "event_number": event_count,
-                "interval_ms": wait_time,
-                "elapsed_ms": int(current_time - scenario_start_time)
-            }
+            event_type = event.get("type", "unknown")
+            logger.info(f"Processing event type: {event_type}")
             
-            self.broadcast_event(event_data)
+            # Convert event types to match expected format
+            if event_type == "heart_beat":
+                # Heartbeat events - maintain compatibility with existing components
+                event_data = {
+                    "timestamp": int(current_time),
+                    "scenario": scenario,
+                    "event_type": "heartbeat",  # Convert to expected format
+                    "event_number": event_count,
+                    "interval_ms": event.get("interval_ms", wait_time),  # Use event's interval_ms if available
+                    "elapsed_ms": int(current_time - scenario_start_time)
+                }
+                
+                # Add pulse strength if available
+                if "pulse_strength" in event:
+                    event_data["pulse_strength"] = event["pulse_strength"]
+                    
+            elif event_type == "spo2":
+                # SpO2 events
+                event_data = {
+                    "timestamp": int(current_time),
+                    "scenario": scenario,
+                    "event_type": "vital_signs",
+                    "event_number": event_count,
+                    "interval_ms": wait_time,
+                    "elapsed_ms": int(current_time - scenario_start_time),
+                    "spo2": event.get("value")
+                }
+                
+            elif event_type == "respiration":
+                # Respiration events (discrete breath completion)
+                event_data = {
+                    "timestamp": int(current_time),
+                    "scenario": scenario,
+                    "event_type": "respiration",
+                    "event_number": event_count,
+                    "interval_ms": event.get("interval_ms", wait_time),  # Use event's interval_ms if available
+                    "elapsed_ms": int(current_time - scenario_start_time)
+                }
+                
+            elif event_type == "temperature":
+                # Temperature events
+                event_data = {
+                    "timestamp": int(current_time),
+                    "scenario": scenario,
+                    "event_type": "vital_signs",
+                    "event_number": event_count,
+                    "interval_ms": wait_time,
+                    "elapsed_ms": int(current_time - scenario_start_time),
+                    "temperature": event.get("value")
+                }
+                
+            elif event_type == "ecg_rhythm":
+                # ECG rhythm events
+                event_data = {
+                    "timestamp": int(current_time),
+                    "scenario": scenario,
+                    "event_type": "vital_signs",
+                    "event_number": event_count,
+                    "interval_ms": wait_time,
+                    "elapsed_ms": int(current_time - scenario_start_time),
+                    "ecg_rhythm": event.get("value")
+                }
+                
+            else:
+                # Unknown event type - skip or log
+                logger.info(f"Unknown event type: {event_type} - skipping")
+                continue
+            
+            self.broadcast_tcp_event(event_data)
             event_count += 1
             
-            logger.debug(f"Sent heartbeat event {event_count}: {event_data}")
+            logger.debug(f"Sent biometric event {event_count}: {event_data.get('event_type', 'unknown')}")
             
             # Update previous offset for next iteration
             previous_offset = offset_ms
@@ -187,8 +250,8 @@ class HeartbeatServer:
                 "total_events": event_count,
                 "total_duration_ms": int(time.time() * 1000 - scenario_start_time)
             }
-            self.broadcast_event(completion_event)
-            logger.info(f"Completed heartbeat scenario: {scenario}")
+            self.broadcast_tcp_event(completion_event)
+            logger.info(f"Completed biometric scenario: {scenario}")
         else:
             logger.info(f"Scenario {scenario} was stopped")
     
@@ -204,7 +267,7 @@ class HeartbeatServer:
             welcome = {
                 "timestamp": int(time.time() * 1000),
                 "event_type": "welcome",
-                "message": "Connected to heartbeat server"
+                "message": "Connected to biometric scenario server"
             }
             client_socket.send((json.dumps(welcome) + '\n').encode('utf-8'))
             
@@ -245,7 +308,7 @@ class HeartbeatServer:
             logger.info(f"Client disconnected: {client_address}")
     
     def start_server(self):
-        """Start the heartbeat server."""
+        """Start the biometric scenario server."""
         try:
             self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -253,7 +316,7 @@ class HeartbeatServer:
             self.server_socket.listen(5)
             self.running = True
             
-            logger.info(f"Heartbeat server started on {self.host}:{self.port}")
+            logger.info(f"Biometric scenario server started on {self.host}:{self.port}")
             logger.info(f"WebSocket server will start on {self.host}:{self.websocket_port}")
             
             # Start WebSocket server in a separate thread
@@ -295,7 +358,7 @@ class HeartbeatServer:
                 welcome = {
                     "timestamp": int(time.time() * 1000),
                     "event_type": "welcome",
-                    "message": "Connected to heartbeat WebSocket server"
+                    "message": "Connected to biometric scenario WebSocket server"
                 }
                 await websocket.send(json.dumps(welcome))
                 
@@ -359,7 +422,7 @@ class HeartbeatServer:
             loop.close()
     
     def start_scenario(self, scenario: str):
-        """Start a heartbeat scenario in a separate thread."""
+        """Start a biometric scenario in a separate thread."""
         # Always stop any current scenario first
         if self.scenario_thread and self.scenario_thread.is_alive():
             logger.info(f"Stopping current scenario ({self.current_scenario}) to start new one ({scenario})")
@@ -384,14 +447,15 @@ class HeartbeatServer:
             "message": f"Started {scenario} scenario"
         }
         
+        print(f"🚀 Broadcasting scenario start event: {scenario_event}")
         # Use direct broadcast to all WebSocket clients
         self.broadcast_websocket_event(scenario_event)
         
         # Also send via TCP for compatibility
-        self.broadcast_event(scenario_event)
+        self.broadcast_tcp_event(scenario_event)
     
     def stop_scenario(self):
-        """Stop the current heartbeat scenario."""
+        """Stop the current biometric scenario."""
         if self.current_scenario:
             logger.info(f"Stopping current scenario: {self.current_scenario}")
             self.current_scenario = None
@@ -411,7 +475,7 @@ class HeartbeatServer:
             logger.info("No scenario currently running")
     
     def stop_server(self):
-        """Stop the heartbeat server."""
+        """Stop the biometric scenario server."""
         self.running = False
         
         # Close all client connections
@@ -430,11 +494,11 @@ class HeartbeatServer:
             except:
                 pass
         
-        logger.info("Heartbeat server stopped")
+        logger.info("Biometric scenario server stopped")
 
 def main():
-    """Main function to run the heartbeat server."""
-    server = HeartbeatServer()
+    """Main function to run the biometric scenario server."""
+    server = BiometricScenarioServer()
     
     try:
         # Start server in a separate thread
@@ -442,8 +506,13 @@ def main():
         server_thread.daemon = True
         server_thread.start()
         
-        logger.info("Heartbeat server is running. Available scenarios: normal, irregular, cardiac-arrest")
+        print("🚀 Starting biometric scenario server...")
+        logger.info("Biometric scenario server is running. Available scenarios: normal, irregular, critical")
         logger.info("Use Ctrl+C to stop the server")
+        
+        # Give the server time to start up
+        time.sleep(2)
+        print("✅ Server startup complete")
         
         # Keep main thread alive
         while True:
