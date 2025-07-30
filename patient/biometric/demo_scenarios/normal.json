@@ -1,0 +1,3883 @@
+[
+  {
+    "type": "heart_beat",
+    "offset_ms": 0,
+    "value": 65,
+    "interval_ms": 911,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 0,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 0,
+    "value": 36.7
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 0,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 0,
+    "interval_ms": 3579
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 911,
+    "value": 60,
+    "interval_ms": 1018,
+    "pulse_strength": 0.994
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 1929,
+    "value": 64,
+    "interval_ms": 945,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 2874,
+    "value": 63,
+    "interval_ms": 953,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 3000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 3000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 3000,
+    "interval_ms": 3690
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 3827,
+    "value": 65,
+    "interval_ms": 905,
+    "pulse_strength": 1.006
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 4732,
+    "value": 67,
+    "interval_ms": 909,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 5641,
+    "value": 64,
+    "interval_ms": 922,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 6000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 6000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 6000,
+    "interval_ms": 3356
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 6563,
+    "value": 66,
+    "interval_ms": 918,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 7481,
+    "value": 67,
+    "interval_ms": 898,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 8379,
+    "value": 64,
+    "interval_ms": 973,
+    "pulse_strength": 0.989
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 9000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 9000,
+    "value": 36.6
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 9000,
+    "interval_ms": 4144
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 9352,
+    "value": 64,
+    "interval_ms": 930,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 10282,
+    "value": 63,
+    "interval_ms": 949,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 11231,
+    "value": 66,
+    "interval_ms": 917,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 12000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 12000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 12000,
+    "interval_ms": 4226
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 12148,
+    "value": 63,
+    "interval_ms": 956,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 13104,
+    "value": 60,
+    "interval_ms": 977,
+    "pulse_strength": 1.007
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 14081,
+    "value": 68,
+    "interval_ms": 904,
+    "pulse_strength": 0.992
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 14985,
+    "value": 64,
+    "interval_ms": 945,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 15000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 15000,
+    "value": 37.0
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 15000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 15000,
+    "interval_ms": 2963
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 15930,
+    "value": 68,
+    "interval_ms": 886,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 16816,
+    "value": 66,
+    "interval_ms": 910,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 17726,
+    "value": 60,
+    "interval_ms": 1012,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 17963,
+    "interval_ms": 3659
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 18000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 18000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 18000,
+    "interval_ms": 3689
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 18738,
+    "value": 60,
+    "interval_ms": 981,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 19719,
+    "value": 65,
+    "interval_ms": 918,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 20637,
+    "value": 66,
+    "interval_ms": 904,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 21000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 21000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 21000,
+    "interval_ms": 3073
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 21541,
+    "value": 68,
+    "interval_ms": 889,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 22430,
+    "value": 61,
+    "interval_ms": 979,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 23409,
+    "value": 63,
+    "interval_ms": 957,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 24000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 24000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 24000,
+    "interval_ms": 3414
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 24366,
+    "value": 63,
+    "interval_ms": 955,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 25321,
+    "value": 67,
+    "interval_ms": 864,
+    "pulse_strength": 1.011
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 26185,
+    "value": 70,
+    "interval_ms": 877,
+    "pulse_strength": 0.993
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 27000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 27000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 27000,
+    "interval_ms": 4322
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 27062,
+    "value": 63,
+    "interval_ms": 965,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 28027,
+    "value": 65,
+    "interval_ms": 924,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 28951,
+    "value": 69,
+    "interval_ms": 859,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 29810,
+    "value": 65,
+    "interval_ms": 917,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 30000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 30000,
+    "value": 36.8
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 30000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 30000,
+    "interval_ms": 3800
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 30727,
+    "value": 68,
+    "interval_ms": 867,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 31594,
+    "value": 69,
+    "interval_ms": 884,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 32478,
+    "value": 64,
+    "interval_ms": 919,
+    "pulse_strength": 1.006
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 33000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 33000,
+    "value": 37.1
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 33000,
+    "interval_ms": 4276
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 33397,
+    "value": 65,
+    "interval_ms": 922,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 34319,
+    "value": 70,
+    "interval_ms": 843,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 35162,
+    "value": 63,
+    "interval_ms": 943,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 36000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 36000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 36000,
+    "interval_ms": 4044
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 36105,
+    "value": 63,
+    "interval_ms": 953,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 37058,
+    "value": 67,
+    "interval_ms": 889,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 37947,
+    "value": 66,
+    "interval_ms": 891,
+    "pulse_strength": 1.006
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 38838,
+    "value": 65,
+    "interval_ms": 909,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 39000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 39000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 39000,
+    "interval_ms": 3433
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 39747,
+    "value": 65,
+    "interval_ms": 920,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 40667,
+    "value": 66,
+    "interval_ms": 876,
+    "pulse_strength": 1.011
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 41543,
+    "value": 60,
+    "interval_ms": 1018,
+    "pulse_strength": 0.994
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 42000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 42000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 42000,
+    "interval_ms": 4168
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 42561,
+    "value": 64,
+    "interval_ms": 938,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 43499,
+    "value": 60,
+    "interval_ms": 990,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 44489,
+    "value": 66,
+    "interval_ms": 907,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 45000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 45000,
+    "value": 36.7
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 45000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 45000,
+    "interval_ms": 3561
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 45396,
+    "value": 67,
+    "interval_ms": 902,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 46298,
+    "value": 70,
+    "interval_ms": 862,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 47160,
+    "value": 66,
+    "interval_ms": 919,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 48000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 48000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 48000,
+    "interval_ms": 4307
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 48079,
+    "value": 66,
+    "interval_ms": 909,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 48988,
+    "value": 69,
+    "interval_ms": 870,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 49858,
+    "value": 63,
+    "interval_ms": 929,
+    "pulse_strength": 1.007
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 50787,
+    "value": 67,
+    "interval_ms": 898,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 51000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 51000,
+    "value": 36.6
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 51000,
+    "interval_ms": 3874
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 51685,
+    "value": 65,
+    "interval_ms": 920,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 52605,
+    "value": 62,
+    "interval_ms": 969,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 53574,
+    "value": 68,
+    "interval_ms": 877,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 54000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 54000,
+    "value": 37.1
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 54000,
+    "interval_ms": 3702
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 54451,
+    "value": 66,
+    "interval_ms": 911,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 55362,
+    "value": 64,
+    "interval_ms": 938,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 56300,
+    "value": 65,
+    "interval_ms": 922,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 57000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 57000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 57000,
+    "interval_ms": 4104
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 57222,
+    "value": 66,
+    "interval_ms": 922,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 58144,
+    "value": 69,
+    "interval_ms": 873,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 59017,
+    "value": 69,
+    "interval_ms": 859,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 59876,
+    "value": 64,
+    "interval_ms": 932,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 60000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 60000,
+    "value": 36.9
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 60000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 60000,
+    "interval_ms": 3535
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 60808,
+    "value": 64,
+    "interval_ms": 944,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 61752,
+    "value": 64,
+    "interval_ms": 924,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 62676,
+    "value": 62,
+    "interval_ms": 965,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 63000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 63000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 63000,
+    "interval_ms": 3897
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 63641,
+    "value": 70,
+    "interval_ms": 851,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 64492,
+    "value": 64,
+    "interval_ms": 939,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 65431,
+    "value": 60,
+    "interval_ms": 986,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 66000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 66000,
+    "value": 36.6
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 66000,
+    "interval_ms": 3753
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 66417,
+    "value": 65,
+    "interval_ms": 912,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 67329,
+    "value": 60,
+    "interval_ms": 995,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 68324,
+    "value": 69,
+    "interval_ms": 847,
+    "pulse_strength": 1.007
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 69000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 69000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 69000,
+    "interval_ms": 4297
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 69171,
+    "value": 60,
+    "interval_ms": 988,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 70159,
+    "value": 69,
+    "interval_ms": 847,
+    "pulse_strength": 1.008
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 71006,
+    "value": 62,
+    "interval_ms": 967,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 71973,
+    "value": 61,
+    "interval_ms": 989,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 72000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 72000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 72000,
+    "interval_ms": 3503
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 72962,
+    "value": 63,
+    "interval_ms": 953,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 73915,
+    "value": 62,
+    "interval_ms": 961,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 74876,
+    "value": 63,
+    "interval_ms": 955,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 75000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 75000,
+    "value": 36.8
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 75000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 75000,
+    "interval_ms": 4425
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 75831,
+    "value": 63,
+    "interval_ms": 938,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 76769,
+    "value": 62,
+    "interval_ms": 965,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 77734,
+    "value": 68,
+    "interval_ms": 875,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 78000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 78000,
+    "value": 37.1
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 78000,
+    "interval_ms": 3867
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 78609,
+    "value": 64,
+    "interval_ms": 925,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 79534,
+    "value": 63,
+    "interval_ms": 945,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 80479,
+    "value": 64,
+    "interval_ms": 939,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 81000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 81000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 81000,
+    "interval_ms": 4174
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 81418,
+    "value": 60,
+    "interval_ms": 994,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 82412,
+    "value": 67,
+    "interval_ms": 879,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 83291,
+    "value": 60,
+    "interval_ms": 1001,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 84000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 84000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 84000,
+    "interval_ms": 3934
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 84292,
+    "value": 65,
+    "interval_ms": 922,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 85214,
+    "value": 60,
+    "interval_ms": 1015,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 86229,
+    "value": 64,
+    "interval_ms": 935,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 87000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 87000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 87000,
+    "interval_ms": 3624
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 87164,
+    "value": 64,
+    "interval_ms": 948,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 88112,
+    "value": 60,
+    "interval_ms": 1010,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 89122,
+    "value": 66,
+    "interval_ms": 910,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 90000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 90000,
+    "value": 36.8
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 90000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 90000,
+    "interval_ms": 3287
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 90032,
+    "value": 68,
+    "interval_ms": 866,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 90898,
+    "value": 67,
+    "interval_ms": 896,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 91794,
+    "value": 61,
+    "interval_ms": 990,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 92784,
+    "value": 63,
+    "interval_ms": 953,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 93000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 93000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 93000,
+    "interval_ms": 3786
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 93737,
+    "value": 63,
+    "interval_ms": 944,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 94681,
+    "value": 69,
+    "interval_ms": 864,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 95545,
+    "value": 65,
+    "interval_ms": 926,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 96000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 96000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 96000,
+    "interval_ms": 3529
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 96471,
+    "value": 66,
+    "interval_ms": 937,
+    "pulse_strength": 0.991
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 97408,
+    "value": 63,
+    "interval_ms": 933,
+    "pulse_strength": 1.006
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 98341,
+    "value": 65,
+    "interval_ms": 917,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 99000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 99000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 99000,
+    "interval_ms": 3141
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 99258,
+    "value": 68,
+    "interval_ms": 873,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 100131,
+    "value": 66,
+    "interval_ms": 916,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 101047,
+    "value": 67,
+    "interval_ms": 910,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 101957,
+    "value": 68,
+    "interval_ms": 882,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 102000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 102000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 102000,
+    "interval_ms": 4208
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 102839,
+    "value": 65,
+    "interval_ms": 921,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 103760,
+    "value": 64,
+    "interval_ms": 934,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 104694,
+    "value": 66,
+    "interval_ms": 911,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 105000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 105000,
+    "value": 36.7
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 105000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 105000,
+    "interval_ms": 4442
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 105605,
+    "value": 67,
+    "interval_ms": 888,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 106493,
+    "value": 64,
+    "interval_ms": 933,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 107426,
+    "value": 68,
+    "interval_ms": 875,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 108000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 108000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 108000,
+    "interval_ms": 3754
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 108301,
+    "value": 60,
+    "interval_ms": 998,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 109299,
+    "value": 63,
+    "interval_ms": 952,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 110251,
+    "value": 65,
+    "interval_ms": 889,
+    "pulse_strength": 1.011
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 111000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 111000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 111000,
+    "interval_ms": 3879
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 111140,
+    "value": 62,
+    "interval_ms": 931,
+    "pulse_strength": 1.011
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 112071,
+    "value": 63,
+    "interval_ms": 958,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 113029,
+    "value": 70,
+    "interval_ms": 842,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 113871,
+    "value": 65,
+    "interval_ms": 929,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 114000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 114000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 114000,
+    "interval_ms": 3051
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 114800,
+    "value": 63,
+    "interval_ms": 956,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 115756,
+    "value": 67,
+    "interval_ms": 899,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 116655,
+    "value": 61,
+    "interval_ms": 1009,
+    "pulse_strength": 0.992
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 117000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 117000,
+    "value": 37.1
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 117000,
+    "interval_ms": 4296
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 117664,
+    "value": 66,
+    "interval_ms": 910,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 118574,
+    "value": 69,
+    "interval_ms": 857,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 119431,
+    "value": 61,
+    "interval_ms": 1000,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 120000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 120000,
+    "value": 36.8
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 120000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 120000,
+    "interval_ms": 3740
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 120431,
+    "value": 66,
+    "interval_ms": 920,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 121351,
+    "value": 63,
+    "interval_ms": 946,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 122297,
+    "value": 65,
+    "interval_ms": 912,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 123000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 123000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 123000,
+    "interval_ms": 2972
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 123209,
+    "value": 60,
+    "interval_ms": 1012,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 124221,
+    "value": 67,
+    "interval_ms": 890,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 125111,
+    "value": 62,
+    "interval_ms": 966,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 125972,
+    "interval_ms": 3485
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 126000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 126000,
+    "value": 37.1
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 126000,
+    "interval_ms": 3564
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 126077,
+    "value": 64,
+    "interval_ms": 935,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 127012,
+    "value": 66,
+    "interval_ms": 902,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 127914,
+    "value": 67,
+    "interval_ms": 889,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 128803,
+    "value": 64,
+    "interval_ms": 940,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 129000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 129000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 129000,
+    "interval_ms": 3267
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 129743,
+    "value": 65,
+    "interval_ms": 927,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 130670,
+    "value": 63,
+    "interval_ms": 942,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 131612,
+    "value": 66,
+    "interval_ms": 894,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 132000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 132000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 132000,
+    "interval_ms": 3272
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 132506,
+    "value": 60,
+    "interval_ms": 1007,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 133513,
+    "value": 63,
+    "interval_ms": 960,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 134473,
+    "value": 63,
+    "interval_ms": 956,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 135000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 135000,
+    "value": 36.6
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 135000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 135000,
+    "interval_ms": 3553
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 135429,
+    "value": 64,
+    "interval_ms": 922,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 136351,
+    "value": 62,
+    "interval_ms": 969,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 137320,
+    "value": 65,
+    "interval_ms": 926,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 138000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 138000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 138000,
+    "interval_ms": 3363
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 138246,
+    "value": 66,
+    "interval_ms": 898,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 139144,
+    "value": 66,
+    "interval_ms": 893,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 140037,
+    "value": 62,
+    "interval_ms": 979,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 141000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 141000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 141000,
+    "interval_ms": 3604
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 141016,
+    "value": 64,
+    "interval_ms": 953,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 141969,
+    "value": 66,
+    "interval_ms": 913,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 142882,
+    "value": 60,
+    "interval_ms": 990,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 143872,
+    "value": 64,
+    "interval_ms": 939,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 144000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 144000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 144000,
+    "interval_ms": 4607
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 144811,
+    "value": 67,
+    "interval_ms": 899,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 145710,
+    "value": 63,
+    "interval_ms": 909,
+    "pulse_strength": 1.013
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 146619,
+    "value": 67,
+    "interval_ms": 904,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 147000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 147000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 147000,
+    "interval_ms": 3566
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 147523,
+    "value": 60,
+    "interval_ms": 1024,
+    "pulse_strength": 0.993
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 148547,
+    "value": 62,
+    "interval_ms": 975,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 149522,
+    "value": 65,
+    "interval_ms": 947,
+    "pulse_strength": 0.992
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 150000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 150000,
+    "value": 36.9
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 150000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 150000,
+    "interval_ms": 3654
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 150469,
+    "value": 61,
+    "interval_ms": 997,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 151466,
+    "value": 70,
+    "interval_ms": 849,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 152315,
+    "value": 67,
+    "interval_ms": 899,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 153000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 153000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 153000,
+    "interval_ms": 3738
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 153214,
+    "value": 64,
+    "interval_ms": 930,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 154144,
+    "value": 60,
+    "interval_ms": 992,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 155136,
+    "value": 60,
+    "interval_ms": 981,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 156000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 156000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 156000,
+    "interval_ms": 2925
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 156117,
+    "value": 60,
+    "interval_ms": 1025,
+    "pulse_strength": 0.992
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 157142,
+    "value": 65,
+    "interval_ms": 894,
+    "pulse_strength": 1.009
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 158036,
+    "value": 63,
+    "interval_ms": 960,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 158925,
+    "interval_ms": 3757
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 158996,
+    "value": 64,
+    "interval_ms": 936,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 159000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 159000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 159000,
+    "interval_ms": 3580
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 159932,
+    "value": 68,
+    "interval_ms": 901,
+    "pulse_strength": 0.994
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 160833,
+    "value": 65,
+    "interval_ms": 911,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 161744,
+    "value": 64,
+    "interval_ms": 919,
+    "pulse_strength": 1.006
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 162000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 162000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 162000,
+    "interval_ms": 4172
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 162663,
+    "value": 66,
+    "interval_ms": 897,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 163560,
+    "value": 60,
+    "interval_ms": 985,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 164545,
+    "value": 70,
+    "interval_ms": 876,
+    "pulse_strength": 0.993
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 165000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 165000,
+    "value": 37.0
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 165000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 165000,
+    "interval_ms": 3752
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 165421,
+    "value": 62,
+    "interval_ms": 960,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 166381,
+    "value": 61,
+    "interval_ms": 979,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 167360,
+    "value": 66,
+    "interval_ms": 899,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 168000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 168000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 168000,
+    "interval_ms": 4181
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 168259,
+    "value": 62,
+    "interval_ms": 992,
+    "pulse_strength": 0.992
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 169251,
+    "value": 62,
+    "interval_ms": 978,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 170229,
+    "value": 66,
+    "interval_ms": 900,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 171000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 171000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 171000,
+    "interval_ms": 3743
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 171129,
+    "value": 61,
+    "interval_ms": 973,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 172102,
+    "value": 65,
+    "interval_ms": 943,
+    "pulse_strength": 0.993
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 173045,
+    "value": 62,
+    "interval_ms": 986,
+    "pulse_strength": 0.994
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 174000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 174000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 174000,
+    "interval_ms": 3529
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 174031,
+    "value": 60,
+    "interval_ms": 1004,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 175035,
+    "value": 68,
+    "interval_ms": 868,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 175903,
+    "value": 60,
+    "interval_ms": 953,
+    "pulse_strength": 1.014
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 176856,
+    "value": 60,
+    "interval_ms": 1000,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 177000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 177000,
+    "value": 37.1
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 177000,
+    "interval_ms": 3211
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 177856,
+    "value": 63,
+    "interval_ms": 956,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 178812,
+    "value": 64,
+    "interval_ms": 923,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 179735,
+    "value": 67,
+    "interval_ms": 892,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 180000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 180000,
+    "value": 36.8
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 180000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 180000,
+    "interval_ms": 3971
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 180627,
+    "value": 64,
+    "interval_ms": 936,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 181563,
+    "value": 66,
+    "interval_ms": 897,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 182460,
+    "value": 61,
+    "interval_ms": 985,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 183000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 183000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 183000,
+    "interval_ms": 4854
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 183445,
+    "value": 64,
+    "interval_ms": 934,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 184379,
+    "value": 62,
+    "interval_ms": 965,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 185344,
+    "value": 68,
+    "interval_ms": 864,
+    "pulse_strength": 1.006
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 186000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 186000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 186000,
+    "interval_ms": 3719
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 186208,
+    "value": 66,
+    "interval_ms": 917,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 187125,
+    "value": 67,
+    "interval_ms": 881,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 188006,
+    "value": 69,
+    "interval_ms": 878,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 188884,
+    "value": 64,
+    "interval_ms": 931,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 189000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 189000,
+    "value": 36.6
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 189000,
+    "interval_ms": 3933
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 189815,
+    "value": 63,
+    "interval_ms": 963,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 190778,
+    "value": 69,
+    "interval_ms": 883,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 191661,
+    "value": 69,
+    "interval_ms": 857,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 192000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 192000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 192000,
+    "interval_ms": 3784
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 192518,
+    "value": 68,
+    "interval_ms": 893,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 193411,
+    "value": 62,
+    "interval_ms": 982,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 194393,
+    "value": 66,
+    "interval_ms": 897,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 195000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 195000,
+    "value": 37.1
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 195000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 195000,
+    "interval_ms": 4393
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 195290,
+    "value": 62,
+    "interval_ms": 988,
+    "pulse_strength": 0.993
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 196278,
+    "value": 61,
+    "interval_ms": 998,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 197276,
+    "value": 68,
+    "interval_ms": 900,
+    "pulse_strength": 0.994
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 198000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 198000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 198000,
+    "interval_ms": 4041
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 198176,
+    "value": 65,
+    "interval_ms": 925,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 199101,
+    "value": 66,
+    "interval_ms": 909,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 200010,
+    "value": 60,
+    "interval_ms": 987,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 200997,
+    "value": 61,
+    "interval_ms": 980,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 201000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 201000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 201000,
+    "interval_ms": 3686
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 201977,
+    "value": 60,
+    "interval_ms": 998,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 202975,
+    "value": 69,
+    "interval_ms": 830,
+    "pulse_strength": 1.013
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 203805,
+    "value": 64,
+    "interval_ms": 957,
+    "pulse_strength": 0.994
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 204000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 204000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 204000,
+    "interval_ms": 4316
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 204762,
+    "value": 66,
+    "interval_ms": 903,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 205665,
+    "value": 66,
+    "interval_ms": 919,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 206584,
+    "value": 65,
+    "interval_ms": 913,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 207000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 207000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 207000,
+    "interval_ms": 3492
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 207497,
+    "value": 68,
+    "interval_ms": 885,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 208382,
+    "value": 64,
+    "interval_ms": 939,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 209321,
+    "value": 65,
+    "interval_ms": 907,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 210000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 210000,
+    "value": 36.8
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 210000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 210000,
+    "interval_ms": 3371
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 210228,
+    "value": 68,
+    "interval_ms": 870,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 211098,
+    "value": 62,
+    "interval_ms": 954,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 212052,
+    "value": 67,
+    "interval_ms": 899,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 212951,
+    "value": 67,
+    "interval_ms": 877,
+    "pulse_strength": 1.006
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 213000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 213000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 213000,
+    "interval_ms": 3678
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 213828,
+    "value": 67,
+    "interval_ms": 893,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 214721,
+    "value": 63,
+    "interval_ms": 958,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 215679,
+    "value": 60,
+    "interval_ms": 995,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 216000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 216000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 216000,
+    "interval_ms": 4186
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 216674,
+    "value": 63,
+    "interval_ms": 970,
+    "pulse_strength": 0.994
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 217644,
+    "value": 69,
+    "interval_ms": 866,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 218510,
+    "value": 66,
+    "interval_ms": 903,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 219000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 219000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 219000,
+    "interval_ms": 3196
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 219413,
+    "value": 66,
+    "interval_ms": 921,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 220334,
+    "value": 65,
+    "interval_ms": 907,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 221241,
+    "value": 64,
+    "interval_ms": 922,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 222000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 222000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 222000,
+    "interval_ms": 4290
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 222163,
+    "value": 68,
+    "interval_ms": 888,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 223051,
+    "value": 67,
+    "interval_ms": 896,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 223947,
+    "value": 64,
+    "interval_ms": 912,
+    "pulse_strength": 1.008
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 224859,
+    "value": 70,
+    "interval_ms": 873,
+    "pulse_strength": 0.994
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 225000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 225000,
+    "value": 36.7
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 225000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 225000,
+    "interval_ms": 3621
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 225732,
+    "value": 66,
+    "interval_ms": 915,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 226647,
+    "value": 69,
+    "interval_ms": 871,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 227518,
+    "value": 60,
+    "interval_ms": 997,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 228000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 228000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 228000,
+    "interval_ms": 3871
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 228515,
+    "value": 64,
+    "interval_ms": 937,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 229452,
+    "value": 66,
+    "interval_ms": 913,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 230365,
+    "value": 60,
+    "interval_ms": 985,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 231000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 231000,
+    "value": 36.6
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 231000,
+    "interval_ms": 4375
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 231350,
+    "value": 61,
+    "interval_ms": 987,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 232337,
+    "value": 69,
+    "interval_ms": 868,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 233205,
+    "value": 70,
+    "interval_ms": 851,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 234000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 234000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 234000,
+    "interval_ms": 3210
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 234056,
+    "value": 64,
+    "interval_ms": 923,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 234979,
+    "value": 67,
+    "interval_ms": 888,
+    "pulse_strength": 1.003
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 235867,
+    "value": 64,
+    "interval_ms": 922,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 236789,
+    "value": 67,
+    "interval_ms": 891,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 237000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 237000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 237000,
+    "interval_ms": 4146
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 237680,
+    "value": 64,
+    "interval_ms": 963,
+    "pulse_strength": 0.992
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 238643,
+    "value": 64,
+    "interval_ms": 938,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 239581,
+    "value": 66,
+    "interval_ms": 946,
+    "pulse_strength": 0.988
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 240000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 240000,
+    "value": 36.8
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 240000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 240000,
+    "interval_ms": 4288
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 240527,
+    "value": 68,
+    "interval_ms": 902,
+    "pulse_strength": 0.993
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 241429,
+    "value": 65,
+    "interval_ms": 918,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 242347,
+    "value": 66,
+    "interval_ms": 936,
+    "pulse_strength": 0.991
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 243000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 243000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 243000,
+    "interval_ms": 4030
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 243283,
+    "value": 64,
+    "interval_ms": 935,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 244218,
+    "value": 63,
+    "interval_ms": 978,
+    "pulse_strength": 0.992
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 245196,
+    "value": 61,
+    "interval_ms": 986,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 246000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 246000,
+    "value": 37.0
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 246000,
+    "interval_ms": 4687
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 246182,
+    "value": 64,
+    "interval_ms": 922,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 247104,
+    "value": 66,
+    "interval_ms": 896,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 248000,
+    "value": 60,
+    "interval_ms": 998,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 248998,
+    "value": 60,
+    "interval_ms": 999,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 249000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 249000,
+    "value": 36.6
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 249000,
+    "interval_ms": 4585
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 249997,
+    "value": 66,
+    "interval_ms": 910,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 250907,
+    "value": 69,
+    "interval_ms": 882,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 251789,
+    "value": 66,
+    "interval_ms": 921,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 252000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 252000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 252000,
+    "interval_ms": 4056
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 252710,
+    "value": 63,
+    "interval_ms": 965,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 253675,
+    "value": 69,
+    "interval_ms": 856,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 254531,
+    "value": 64,
+    "interval_ms": 930,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 255000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 255000,
+    "value": 36.7
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 255000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 255000,
+    "interval_ms": 3921
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 255461,
+    "value": 65,
+    "interval_ms": 948,
+    "pulse_strength": 0.992
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 256409,
+    "value": 61,
+    "interval_ms": 976,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 257385,
+    "value": 66,
+    "interval_ms": 907,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 258000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 258000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 258000,
+    "interval_ms": 4214
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 258292,
+    "value": 68,
+    "interval_ms": 868,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 259160,
+    "value": 61,
+    "interval_ms": 987,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 260147,
+    "value": 68,
+    "interval_ms": 876,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 261000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 261000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 261000,
+    "interval_ms": 2866
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 261023,
+    "value": 62,
+    "interval_ms": 952,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 261975,
+    "value": 70,
+    "interval_ms": 858,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 262833,
+    "value": 66,
+    "interval_ms": 910,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 263743,
+    "value": 67,
+    "interval_ms": 902,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 263866,
+    "interval_ms": 2910
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 264000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 264000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 264000,
+    "interval_ms": 4546
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 264645,
+    "value": 65,
+    "interval_ms": 922,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 265567,
+    "value": 65,
+    "interval_ms": 924,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 266491,
+    "value": 68,
+    "interval_ms": 875,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 267000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 267000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 267000,
+    "interval_ms": 3612
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 267366,
+    "value": 63,
+    "interval_ms": 963,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 268329,
+    "value": 67,
+    "interval_ms": 907,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 269236,
+    "value": 60,
+    "interval_ms": 1005,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 270000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 270000,
+    "value": 37.0
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 270000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 270000,
+    "interval_ms": 4387
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 270241,
+    "value": 63,
+    "interval_ms": 961,
+    "pulse_strength": 0.997
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 271202,
+    "value": 65,
+    "interval_ms": 909,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 272111,
+    "value": 60,
+    "interval_ms": 999,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 273000,
+    "value": 98
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 273000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 273000,
+    "interval_ms": 3481
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 273110,
+    "value": 67,
+    "interval_ms": 893,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 274003,
+    "value": 64,
+    "interval_ms": 939,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 274942,
+    "value": 67,
+    "interval_ms": 871,
+    "pulse_strength": 1.008
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 275813,
+    "value": 60,
+    "interval_ms": 987,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 276000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 276000,
+    "value": 36.6
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 276000,
+    "interval_ms": 3984
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 276800,
+    "value": 65,
+    "interval_ms": 920,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 277720,
+    "value": 67,
+    "interval_ms": 891,
+    "pulse_strength": 1.001
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 278611,
+    "value": 65,
+    "interval_ms": 928,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 279000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 279000,
+    "value": 37.1
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 279000,
+    "interval_ms": 3844
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 279539,
+    "value": 60,
+    "interval_ms": 1033,
+    "pulse_strength": 0.99
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 280572,
+    "value": 66,
+    "interval_ms": 910,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 281482,
+    "value": 64,
+    "interval_ms": 921,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 282000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 282000,
+    "value": 36.9
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 282000,
+    "interval_ms": 4056
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 282403,
+    "value": 66,
+    "interval_ms": 898,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 283301,
+    "value": 68,
+    "interval_ms": 870,
+    "pulse_strength": 1.004
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 284171,
+    "value": 63,
+    "interval_ms": 920,
+    "pulse_strength": 1.01
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 285000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 285000,
+    "value": 36.7
+  },
+  {
+    "type": "ecg_rhythm",
+    "offset_ms": 285000,
+    "value": "NSR"
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 285000,
+    "interval_ms": 3705
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 285091,
+    "value": 67,
+    "interval_ms": 890,
+    "pulse_strength": 1.002
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 285981,
+    "value": 70,
+    "interval_ms": 872,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 286853,
+    "value": 66,
+    "interval_ms": 914,
+    "pulse_strength": 0.998
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 287767,
+    "value": 64,
+    "interval_ms": 958,
+    "pulse_strength": 0.993
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 288000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 288000,
+    "value": 36.8
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 288000,
+    "interval_ms": 3199
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 288725,
+    "value": 60,
+    "interval_ms": 982,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 289707,
+    "value": 62,
+    "interval_ms": 972,
+    "pulse_strength": 0.999
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 290679,
+    "value": 64,
+    "interval_ms": 921,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 291000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 291000,
+    "value": 37.1
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 291000,
+    "interval_ms": 3419
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 291600,
+    "value": 62,
+    "interval_ms": 967,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 292567,
+    "value": 64,
+    "interval_ms": 949,
+    "pulse_strength": 0.996
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 293516,
+    "value": 63,
+    "interval_ms": 968,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 294000,
+    "value": 97
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 294000,
+    "value": 36.7
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 294000,
+    "interval_ms": 4790
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 294484,
+    "value": 65,
+    "interval_ms": 923,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 295407,
+    "value": 63,
+    "interval_ms": 967,
+    "pulse_strength": 0.995
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 296374,
+    "value": 68,
+    "interval_ms": 866,
+    "pulse_strength": 1.005
+  },
+  {
+    "type": "spo2",
+    "offset_ms": 297000,
+    "value": 99
+  },
+  {
+    "type": "temperature",
+    "offset_ms": 297000,
+    "value": 36.6
+  },
+  {
+    "type": "respiration",
+    "offset_ms": 297000,
+    "interval_ms": 4059
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 297240,
+    "value": 60,
+    "interval_ms": 999,
+    "pulse_strength": 1.0
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 298239,
+    "value": 60,
+    "interval_ms": 980,
+    "pulse_strength": 1.006
+  },
+  {
+    "type": "heart_beat",
+    "offset_ms": 299219,
+    "value": 61,
+    "interval_ms": 990,
+    "pulse_strength": 0.998
+  }
+]
