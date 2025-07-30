@@ -7,8 +7,7 @@ A Streamlit application that displays patient information from Synthea-generated
 - 🎲 Random patient selection
 - 👤 Patient demographics display
 - 🏥 Diagnosis information with expandable details
-- ⚠️ Allergy information
-- 📊 Patient statistics
+- simulated heartbeat monitor that writes in 10s batches to patient/biometric/buffer/{signal_name}.json
 - 🎨 Modern, responsive UI
 
 ## Setup
