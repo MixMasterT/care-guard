@@ -1,0 +1,49 @@
+version: '3'
+services:
+  opensearch:
+    image: opensearchproject/opensearch:2.13.0
+    container_name: opensearch
+    environment:
+      - discovery.type=single-node
+      - plugins.security.disabled=true  # Disable auth for dev
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=CareGuard123!
+    ports:
+      - 9200:9200
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 2g
+
+  indexer:
+    image: python:3.9-slim
+    container_name: medical-record-indexer
+    depends_on:
+      - opensearch
+    volumes:
+      - ../patient:/app/patient
+      - ./document_indexer.py:/app/document_indexer.py
+      - ../requirements.txt:/app/requirements.txt
+    working_dir: /app
+    command: >
+      sh -c "
+        pip install opensearch-py &&
+        sleep 45 &&
+        python document_indexer.py
+      "
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.13.0
+    container_name: opensearch-dashboards
+    environment:
+      - OPENSEARCH_HOSTS=http://opensearch:9200
+      - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true
+    ports:
+      - 5601:5601
+    depends_on:
+      - opensearch
+
+volumes:
+  opensearch-data:
