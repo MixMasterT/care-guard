@@ -4,10 +4,9 @@ A Streamlit application that displays patient information from Synthea-generated
 
 ## Features
 
-- 🎲 Random patient selection
+- 🎲 Dropdown atient selection
 - 👤 Patient demographics display
-- 🏥 Diagnosis information with expandable details
-- simulated heartbeat monitor that writes in 10s batches to patient/biometric/buffer/{signal_name}.json
+- 🏥 Biometric scenarios -- 5 minute biometric streams for three scenarios: regular, irregular, and critical
 - 🎨 Modern, responsive UI
 
 ## Setup
@@ -53,17 +52,12 @@ The application will be available at `http://localhost:8091`
 
 1. **Select a Patient**: Use the sidebar to either:
 
-   - Click "🎲 Select Random Patient" for a random selection
-   - Choose a specific patient from the dropdown list
+   - Choose a patient from the dropdown list, Allen is A-OK, Mark is just so-so, and Zach is really struggling
 
 2. **View Patient Information**: The main area displays:
 
    - Patient name and demographics
-   - Diagnosis count and allergy count
-   - Detailed diagnosis information (click "🔍 Show All Diagnoses")
-   - Allergy details
-
-3. **Navigate**: Use the expandable sections to view detailed information about each diagnosis and allergy.
+   - Diagnosis information
 
 ## Data Structure
 
@@ -73,18 +67,10 @@ The application parses FHIR Bundle resources and extracts:
 - **Condition**: Diagnosis codes, descriptions, clinical status
 - **AllergyIntolerance**: Allergy information, criticality, categories
 
-## File Structure
+The application also works together with the biometric_scenario_server (see `biometric_scenario_server.py`)
+to run pseudo scenarios with various biometric streamed from the scenario server.
 
-```
-patient/
-├── montor.py          # Main Streamlit application
-├── requirements.txt   # Python dependencies
-└── README.md         # This file
-```
+The monitor.py application receives these biometrics through a TCP connection, and then writes them in batches to:
+`biometric/buffer/simulation_biometrics.json`.
 
-## Requirements
-
-- Python 3.7+
-- UV (for package management)
-- Streamlit
-- Synthea-generated FHIR data in JSON format
+Agentic monitoring solutions should consume the content from `simulation_biometrics.json` along with other health data.
