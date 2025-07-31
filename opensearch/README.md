@@ -22,32 +22,10 @@ This system indexes patient medical records and pain diary data into OpenSearch 
 
 ### Quick Start
 
-Run the indexing process:
-
+Start up the docker image:
 ```bash
-# From the project root
-python opensearch/run_indexing.py
-
-# Or directly
-python opensearch/document_indexer.py
-```
-
-### Programmatic Usage
-
-```python
-from opensearch.document_indexer import MedicalRecordIndexer
-
-# Initialize the indexer
-indexer = MedicalRecordIndexer()
-
-# Index all records
-total_indexed = indexer.index_all_records(
-    fhir_dir="patient/generated_medical_records/fhir",
-    pain_diaries_dir="patient/generated_medical_records/pain_diaries"
-)
-
-# Get statistics
-indexer.get_index_stats()
+cd opensearch
+docker-compose up -d
 ```
 
 ## Data Structure

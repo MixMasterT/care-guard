@@ -7,7 +7,7 @@ from opensearchpy import OpenSearch
 from opensearchpy.exceptions import NotFoundError, RequestError, ConnectionError
 
 class MedicalRecordIndexer:
-    def __init__(self, hosts=[{'host': 'opensearch', 'port': 9200}], http_compress=True):
+    def __init__(self, hosts=[{'host': 'localhost', 'port': 9200}], http_compress=True):
         """Initialize the OpenSearch client and create indices if they don't exist."""
         self.client = OpenSearch(hosts=hosts, http_compress=http_compress)
         self.setup_indices()
@@ -66,28 +66,7 @@ class MedicalRecordIndexer:
                     "resource_id": {"type": "keyword"},
                     "resource_data": {
                         "type": "object",
-                        "dynamic": True,
-                        "properties": {
-                            "item": {
-                                "type": "object",
-                                "dynamic": True,
-                                "properties": {
-                                    "adjudication": {
-                                        "type": "object",
-                                        "dynamic": True,
-                                        "properties": {
-                                            "amount": {
-                                                "type": "object",
-                                                "dynamic": True,
-                                                "properties": {
-                                                    "value": {"type": "float"}
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "dynamic": True
                     },
                     "source_file": {"type": "keyword"},
                     "indexed_at": {"type": "date"}
@@ -151,6 +130,19 @@ class MedicalRecordIndexer:
                 print("Recreated fhir-medical-records index")
         except Exception as e:
             print(f"Error checking/recreating fhir-medical-records index: {e}")
+        
+        # Also check and recreate pain-diaries index if needed
+        try:
+            stats = self.client.indices.stats(index="pain-diaries")
+            doc_count = stats['indices']['pain-diaries']['total']['docs']['count']
+            if doc_count > 0:
+                print(f"Found {doc_count} existing documents in pain-diaries index. Deleting and recreating to avoid mapping conflicts...")
+                self.client.indices.delete(index="pain-diaries")
+                time.sleep(2)
+                self.client.indices.create(index="pain-diaries", body=pain_diaries_mapping)
+                print("Recreated pain-diaries index")
+        except Exception as e:
+            print(f"Error checking/recreating pain-diaries index: {e}")
     
     def index_pain_diaries(self, pain_diaries_dir):
         """Index all pain diary records from the specified directory."""
