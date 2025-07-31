@@ -7,7 +7,7 @@ from opensearchpy import OpenSearch
 from opensearchpy.exceptions import NotFoundError, RequestError, ConnectionError
 
 class MedicalRecordIndexer:
-    def __init__(self, hosts=[{'host': 'localhost', 'port': 9200}], http_compress=True):
+    def __init__(self, hosts=[{'host': 'opensearch', 'port': 9200}], http_compress=True):
         """Initialize the OpenSearch client and create indices if they don't exist."""
         self.client = OpenSearch(hosts=hosts, http_compress=http_compress)
         self.setup_indices()
