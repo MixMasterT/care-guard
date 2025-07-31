@@ -48,8 +48,8 @@
   {
     "type": "blood_pressure",
     "offset_ms": 1900,
-    "systolic": 180,
-    "diastolic": 110
+    "systolic": 156,
+    "diastolic": 108
   },
   {
     "type": "heart_beat",
