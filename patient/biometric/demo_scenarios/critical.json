@@ -46,6 +46,12 @@
     "interval_ms": 1861
   },
   {
+    "type": "blood_pressure",
+    "offset_ms": 1900,
+    "systolic": 156,
+    "diastolic": 108
+  },
+  {
     "type": "heart_beat",
     "offset_ms": 1941,
     "value": 85,

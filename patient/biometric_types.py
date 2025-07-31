@@ -119,6 +119,8 @@ class DemoScenarioEvent(BaseModel):
     value: Optional[Union[int, float, str]] = Field(default=None, description="Event value")
     interval_ms: Optional[int] = Field(default=None, description="Interval for discrete events")
     pulse_strength: Optional[float] = Field(default=None, description="Pulse strength for heartbeats")
+    systolic: Optional[int] = Field(default=None, description="Systolic blood pressure")
+    diastolic: Optional[int] = Field(default=None, description="Diastolic blood pressure")
 
 class DemoScenarioFile(BaseModel):
     """Structure for demo scenario JSON files."""
@@ -158,6 +160,13 @@ def convert_demo_event_to_biometric_event(demo_event: DemoScenarioEvent, timesta
             event_type="ecg_rhythm",
             timestamp=timestamp,
             ecg_rhythm=demo_event.value or "NSR"
+        )
+    elif event_type == "blood_pressure":
+        return BloodPressureEvent(
+            event_type="blood_pressure",
+            timestamp=timestamp,
+            systolic=demo_event.systolic or 120,
+            diastolic=demo_event.diastolic or 80
         )
     else:
         print(f"Warning: Unknown demo event type: {event_type}")

@@ -225,6 +225,21 @@ class BiometricScenarioServer:
                     "ecg_rhythm": event.get("value")
                 }
                 
+            elif event_type == "blood_pressure":
+                # Blood pressure events
+                event_data = {
+                    "timestamp": int(current_time),
+                    "scenario": scenario,
+                    "event_type": "vital_signs",
+                    "event_number": event_count,
+                    "interval_ms": wait_time,
+                    "elapsed_ms": int(current_time - scenario_start_time),
+                    "blood_pressure": {
+                        "systolic": event.get("systolic"),
+                        "diastolic": event.get("diastolic")
+                    }
+                }
+                
             else:
                 # Unknown event type - skip or log
                 logger.info(f"Unknown event type: {event_type} - skipping")

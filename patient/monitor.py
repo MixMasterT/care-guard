@@ -442,6 +442,13 @@ class HeartbeatClient:
                                             'ecg_rhythm': event.get('ecg_rhythm')
                                         }
                                         record_biometric_event('ecg_rhythm', event_timestamp, medical_data)
+                                        
+                                    elif 'blood_pressure' in event:
+                                        medical_data = {
+                                            'systolic': event.get('blood_pressure', {}).get('systolic'),
+                                            'diastolic': event.get('blood_pressure', {}).get('diastolic')
+                                        }
+                                        record_biometric_event('blood_pressure', event_timestamp, medical_data)
                                 
                             elif event_type == 'scenario_stopped':
                                 # Update Streamlit session state to reflect that simulation has stopped

@@ -41,6 +41,12 @@
     "pulse_strength": 0.82
   },
   {
+    "type": "blood_pressure",
+    "offset_ms": 1900,
+    "systolic": 130,
+    "diastolic": 85
+  },
+  {
     "type": "heart_beat",
     "offset_ms": 2355,
     "value": 78,
