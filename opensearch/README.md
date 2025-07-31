@@ -1,22 +1,10 @@
 I# Medical Record Indexing System
 
-This system indexes patient medical records and pain diary data into OpenSearch for efficient searching and analysis.
-
-## Features
-
-- **FHIR Medical Records Indexing**: Indexes all FHIR resources from patient medical record bundles
-- **Pain Diary Indexing**: Indexes pain diary entries with structured data
-- **Automatic Index Creation**: Creates properly mapped indices for both data types
-- **Error Handling**: Robust error handling for file processing and indexing
-- **Statistics**: Provides indexing statistics and document counts
+This system indexes FHIR records and pain diary data into OpenSearch for efficient searching and analysis.
 
 ## Prerequisites
 
-1. **OpenSearch Server**: Ensure OpenSearch is running on `localhost:9200`
-2. **Dependencies**: Install required Python packages:
-   ```bash
-   pip install opensearch-py
-   ```
+Docker must be installed.
 
 ## Usage
 
@@ -27,6 +15,30 @@ Start up the docker image:
 cd opensearch
 docker-compose up -d
 ```
+
+This Docker image will start up Opensearch and run an indexing process to index pain diaries and FHIR data.
+
+A file named `rag_agent.py` gives an example of how to query the data in Opensearch. To run:
+
+```bash
+cd care-guard
+uv run python -m opensearch.rag_agent
+```
+
+To spin down the Opensearch instance
+```bash
+cd opensearch
+docker-compose down
+```
+
+Note that the indexes will be dropped, and the data will be re-indexed the next time the containers are started.
+
+## Using the Dashboard
+
+Navigate to http://localhost:5601/app/opensearch_index_management_dashboards#/indices and you should see `pain-diaries` and `fhir-medical-records` with some number of documents.
+
+Go to Dashboard Management, then Index patterns.
+Create a pattern for pain-diaries and fhir-, choosing date as the date field.
 
 ## Data Structure
 
@@ -79,153 +91,3 @@ patient/
         └── ...
 ```
 
-## Search Examples
-
-### Search for patients with high pain levels:
-
-```json
-{
-  "query": {
-    "range": {
-      "pain_level": {
-        "gte": 7
-      }
-    }
-  }
-}
-```
-
-### Search for specific patient's medical records:
-
-```json
-{
-  "query": {
-    "term": {
-      "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f"
-    }
-  }
-}
-```
-
-### Search for specific FHIR resource types:
-
-```json
-{
-  "query": {
-    "term": {
-      "resource_type": "Observation"
-    }
-  }
-}
-```
-
-## Error Handling
-
-The system includes comprehensive error handling for:
-
-- Missing directories
-- Invalid JSON files
-- OpenSearch connection issues
-- Index creation failures
-- File processing errors
-
-## Performance Considerations
-
-- Large FHIR bundles are processed entry by entry
-- Each resource is indexed individually for better search granularity
-- Metadata is added to track source files and indexing timestamps
-- Proper index mappings ensure efficient searching
-
-## Monitoring
-
-The system provides detailed logging and statistics:
-
-- Number of files processed
-- Number of records indexed per file
-- Total indexing statistics
-- Index document counts 
-
----
-
-## How to Fix
-
-### 1. Explicitly Map the Field as `float`
-You need to set the mapping for `resource_data.item.adjudication.amount.value` to `float` (which can store both integers and decimals) before any data is indexed.
-
-#### Steps:
-- Delete the existing `fhir-medical-records` index (to clear the old mapping).
-- Update your mapping to explicitly set this field as `float`.
-- Recreate the index with the new mapping.
-- Re-run the indexer.
-
----
-
-### 2. How to Update Your Mapping
-
-Update the FHIR mapping in your Python code like this:
-
-```python
-fhir_mapping = {
-    "mappings": {
-        "properties": {
-            "resource_type": {"type": "keyword"},
-            "patient_id": {"type": "keyword"},
-            "resource_id": {"type": "keyword"},
-            "resource_data": {
-                "type": "object",
-                "dynamic": True,
-                "properties": {
-                    "item": {
-                        "type": "object",
-                        "dynamic": True,
-                        "properties": {
-                            "adjudication": {
-                                "type": "object",
-                                "dynamic": True,
-                                "properties": {
-                                    "amount": {
-                                        "type": "object",
-                                        "dynamic": True,
-                                        "properties": {
-                                            "value": {"type": "float"}
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "source_file": {"type": "keyword"},
-            "indexed_at": {"type": "date"}
-        }
-    }
-}
-```
-
----
-
-### 3. Delete and Recreate the Index
-
-You can do this in your code (as you already do), or manually via OpenSearch Dashboards/Dev Tools:
-
-```json
-DELETE fhir-medical-records
-```
-
-Then let your script recreate it with the new mapping.
-
----
-
-### 4. Re-run the Indexer
-
-After the above changes, re-run your indexer. The error should be resolved, and both integer and decimal values will be accepted for that field.
-
----
-
-**Summary:**  
-- The error is due to OpenSearch type rigidity.
-- Explicitly set the mapping for `resource_data.item.adjudication.amount.value` to `float`.
-- Delete and recreate the index, then re-index.
-
-Would you like me to update your code with the correct mapping? 
