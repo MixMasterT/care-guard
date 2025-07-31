@@ -10,7 +10,7 @@ services:
     ports:
       - 9200:9200
     volumes:
-      - opensearch-data:/usr/share/opensearch/data
+      - /tmp/opensearch-data:/usr/share/opensearch/data
     ulimits:
       memlock:
         soft: -1
@@ -45,5 +45,4 @@ services:
     depends_on:
       - opensearch
 
-volumes:
-  opensearch-data:
+# No persistent volumes - data will be cleared when containers stop
