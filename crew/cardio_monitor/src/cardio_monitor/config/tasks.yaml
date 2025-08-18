@@ -1,0 +1,59 @@
+analyze_patient_status:
+  description: >
+    The patient is in post-surgical at-home cardio recovery monitoring. You need to analyze the medical history,
+    and recovery progress. Review the patient's pain-diaries, weight changes, and find out the most recent biometric
+    monitoring results from the biometric_reviewer.
+
+    IMPORTANT: Use the patient context data provided to you for:
+    - FHIR medical records (summarized, past year of relevant data)
+    - Existing medical logs
+
+    Use FileReadTool to read these files directly:
+    - For pain journal: {pain_journal_path} (patient-reported symptoms)
+    - For weight data: {weight_data_path} (tracking data)
+
+    The biometric_reviewer has already analyzed the biometric data and provided insights.
+    Use those insights along with your analysis of the patient data to make triage decisions.
+    Do not try to delegate additional work - focus on your analysis using the available information.
+
+    The output should contain:
+    - A triage decision with action, priority, summary, rationale, and followups
+    - 3-10 key findings with titles, summaries, support scores, confidence levels, and risk levels
+    - 2-7 actionable recommendations with text, priority, rationale, support scores, and confidence levels
+
+    Keep content concise and actionable. Focus on medical insights that inform care decisions.
+  agent: triage_nurse
+  expected_output: DecisionPayload
+
+create_medical_log:
+  description: >
+    Create the final medical log entry based on the triage nurse's analysis and selected recommendations.
+    This is the ONLY task that should emit the final fenced JSON output consumed by the UI.
+
+    IMPORTANT: Use the patient context data provided to you for:
+    - FHIR medical records (summarized)
+    - Existing medical logs
+
+    Use FileReadTool to read these files directly if needed:
+    - {biometric_buffer_path} (for current biometric status)
+    - {pain_journal_path} (for current symptoms)
+    - {weight_data_path} (for current weight trends)
+
+    Keep output concise. Do not include raw buffer dumps. Limit to under 1500 words.
+    End with exactly one fenced JSON block matching OUTPUT_FORMAT.md schema.
+  expected_output: AgenticFinalOutput
+  agent: log_writer
+
+review_biometrics:
+  description: >
+    When asked by the triage nurse, review the biometric buffer data.
+
+    IMPORTANT: Use FileReadTool to read the current biometric data from {biometric_buffer_path}.
+    This gives you access to the real-time biometric readings for analysis.
+
+    Produce a succinct summary of the time window (e.g., averages, ranges, notable events, immediate risks). 
+    Avoid verbose output and do not reproduce raw data.
+    Keep output concise and bounded. Do not dump data. Limit to under 1000 words.
+    Focus on insights, not raw data reproduction.
+  expected_output: TrendInsightPayload
+  agent: biometric_reviewer

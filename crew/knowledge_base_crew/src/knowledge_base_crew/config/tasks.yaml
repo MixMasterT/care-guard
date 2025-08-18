@@ -1,0 +1,40 @@
+research_task:
+  description: >
+    Conduct thorough research about post operative at-home patient monitoring
+    for cardio-vascular patients. Use web search tools to find accurate, well-respected
+    sources covering the following three topics: live monitoring of patient vitals,
+    cardio post-operative recovery and complications to watch out for, and finally
+    normal and abnormal ranges by age for heartbeats-per-minute, pulse-strength,
+    spo2, temperature, blood pressure and ecg-rhythm.
+
+    For each topic, find 5 high-quality articles from reputable medical sources
+    such as PubMed, clinical guidelines, medical journals, or healthcare organizations.
+    Extract the full content of each article for indexing.
+  expected_output: >
+    A comprehensive list of 15 high-quality medical articles (5 per topic) with:
+    - Article titles and URLs
+    - Full article content extracted
+    - Source credibility assessment
+    - Relevance to the specified topics
+  agent: researcher
+
+indexing_task:
+  description: >
+    Review the medical articles provided by the researcher. Design an efficient,
+    searchable format for storing medical knowledge in OpenSearch that will be
+    suitable for LLM access and semantic search.
+
+    Create the medical-knowledge-base index in OpenSearch with proper mapping.
+    Process each article and extract structured data including title, content,
+    source, publication date, and relevant medical terms.
+
+    Write comprehensive documentation describing the index structure and how
+    to query it effectively for medical knowledge retrieval.
+  expected_output: >
+    - Medical-knowledge-base index created in OpenSearch
+    - All articles indexed with proper structure
+    - knowledge_indexing.md file with schema documentation
+    - knowledge_base_indexing.py with Pydantic models
+    - Verification that articles can be retrieved via search
+  agent: indexer
+  context: [research_task]
