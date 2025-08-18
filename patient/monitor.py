@@ -22,7 +22,6 @@ try:
     from .monitor_components.heartbeat_component import create_heartbeat_component
     from .monitor_components.ekg_component import create_ekg_component
     from .monitor_components.timeline_component import create_timeline_component
-    from .monitor_components.notification_component import create_notification_component
     from .utils import heartbeat_analysis
     from .utils import fhir_observations
 except ImportError:
@@ -30,7 +29,6 @@ except ImportError:
     from monitor_components.heartbeat_component import create_heartbeat_component
     from monitor_components.ekg_component import create_ekg_component
     from monitor_components.timeline_component import create_timeline_component
-    from monitor_components.notification_component import create_notification_component
     # Use explicit relative path to avoid conflict with root utils directory
     import sys
     from pathlib import Path
@@ -45,10 +43,6 @@ st.set_page_config(
     page_icon="🏥",
     layout="wide"
 )
-
-# Add floating notification component
-notification_html = create_notification_component()
-st.components.v1.html(notification_html, height=0)
 
 # Global biometric buffer for batch writing
 biometric_buffer = []
