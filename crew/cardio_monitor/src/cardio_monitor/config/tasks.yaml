@@ -4,24 +4,53 @@ analyze_patient_status:
     and recovery progress. Review the patient's pain-diaries, weight changes, and find out the most recent biometric
     monitoring results from the biometric_reviewer.
 
-    IMPORTANT: Use the patient context data provided to you for:
-    - FHIR medical records (summarized, past year of relevant data)
-    - Existing medical logs
-
-    Use FileReadTool to read these files directly:
-    - For pain journal: {pain_journal_path} (patient-reported symptoms)
+    CRITICAL: You MUST use the FileReadTool to read the actual data files before making any conclusions.
+    - For pain journal: {pain_diary_path} (patient-reported symptoms)
     - For weight data: {weight_data_path} (tracking data)
 
     The biometric_reviewer has already analyzed the biometric data and provided insights.
     Use those insights along with your analysis of the patient data to make triage decisions.
-    Do not try to delegate additional work - focus on your analysis using the available information.
+
+    WORKFLOW:
+    1. First, review the biometric analysis from the biometric_reviewer (provided in context)
+    2. Then, read the pain diary file using FileReadTool to get patient-reported symptoms
+    3. Then, read the weight data file using FileReadTool to get weight trends
+    4. Finally, combine all sources to make your triage decision
+
+    REMEMBER: You have access to the pain diary and weight data files directly. Read each one to get the complete picture. 
+    Use the biometric analysis in context as your source for biometric data, and always verify pain and weight data with the actual files.
+
+    IMPORTANT RULES:
+    1. NEVER report changes or trends that you cannot verify from the actual data files
+    2. If you mention weight changes, you MUST read the weight data file and report exact values and dates
+    3. If you mention pain levels, you MUST read the pain diary file and report exact values and dates
+    4. Only report what you can actually see in the data - do not make assumptions or inferences
+    5. If the data shows no significant changes, report that the patient is stable
+
+    WEIGHT DATA ANALYSIS:
+    - Always read the weight data file before mentioning any weight changes
+    - Report the exact weight values and dates from the file
+    - If weight is stable (variation < 1 kg), report "weight stable" or "no significant weight changes"
+    - Never report weight gain/loss without reading the actual data
+
+    PAIN DATA ANALYSIS:
+    - Always read the pain diary file before mentioning any pain changes
+    - Report the exact pain levels and dates from the file
+    - If pain levels are stable (variation < 2 points), report "pain levels stable" or "no significant pain changes"
+    - Never report pain increases/decreases without reading the actual data
+
+    FINAL CHECK:
+    - Before submitting your analysis, verify that every finding you report is supported by data you actually read
+    - If you cannot find evidence for a change or trend in the pain diary or weight data files, do not report it
+    - When in doubt, report "no significant changes observed" rather than making assumptions
 
     The output should contain:
     - A triage decision with action, priority, summary, rationale, and followups
     - 3-10 key findings with titles, summaries, support scores, confidence levels, and risk levels
     - 2-7 actionable recommendations with text, priority, rationale, support scores, and confidence levels
 
-    Keep content concise and actionable. Focus on medical insights that inform care decisions.
+    Keep content concise and actionable. Focus on medical insights that inform care decisions. Be specific about
+    any observed changes. For example, if mentioning weight gain, clarify the dates and quantitative details.
   agent: triage_nurse
   expected_output: DecisionPayload
 
@@ -30,13 +59,12 @@ create_medical_log:
     Create the final medical log entry based on the triage nurse's analysis and selected recommendations.
     This is the ONLY task that should emit the final fenced JSON output consumed by the UI.
 
-    IMPORTANT: Use the patient context data provided to you for:
+    IMPORTANT: The patient context data is provided in the crew inputs as 'patient_context' and includes:
     - FHIR medical records (summarized)
     - Existing medical logs
 
     Use FileReadTool to read these files directly if needed:
-    - {biometric_buffer_path} (for current biometric status)
-    - {pain_journal_path} (for current symptoms)
+    - {pain_diary_path} (for current symptoms)
     - {weight_data_path} (for current weight trends)
 
     Keep output concise. Do not include raw buffer dumps. Limit to under 1500 words.

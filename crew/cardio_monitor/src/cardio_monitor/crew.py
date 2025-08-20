@@ -36,11 +36,11 @@ class CardioMonitor():
     # If you would like to add tools to your agents, you can learn more about it here:
     # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def triage_nurse(self, pain_journal_path: str = None, weight_data_path: str = None) -> Agent:
+    def triage_nurse(self, pain_diary_path: str = None, weight_data_path: str = None) -> Agent:
         """Creates the triage nurse agent"""
         tools = []
-        if pain_journal_path:
-            tools.append(FileReadTool(file_path=pain_journal_path))
+        if pain_diary_path:
+            tools.append(FileReadTool(file_path=pain_diary_path))
         if weight_data_path:
             tools.append(FileReadTool(file_path=weight_data_path))
         
@@ -52,13 +52,13 @@ class CardioMonitor():
         )
 
     @agent
-    def log_writer(self, biometric_buffer_path: str = None, pain_journal_path: str = None, weight_data_path: str = None) -> Agent:
+    def log_writer(self, biometric_buffer_path: str = None, pain_diary_path: str = None, weight_data_path: str = None) -> Agent:
         """Creates the log writer agent"""
         tools = []
         if biometric_buffer_path:
             tools.append(FileReadTool(file_path=biometric_buffer_path))
-        if pain_journal_path:
-            tools.append(FileReadTool(file_path=pain_journal_path))
+        if pain_diary_path:
+            tools.append(FileReadTool(file_path=pain_diary_path))
         if weight_data_path:
             tools.append(FileReadTool(file_path=weight_data_path))
         
@@ -148,11 +148,11 @@ class CardioMonitor():
         )
 
     @crew
-    def crew(self, biometric_buffer_path: str = None, pain_journal_path: str = None, weight_data_path: str = None) -> Crew:
+    def crew(self, biometric_buffer_path: str = None, pain_diary_path: str = None, weight_data_path: str = None) -> Crew:
         """Creates the CardioMonitor crew"""
         # Store paths for use in tasks
         self.biometric_buffer_path = biometric_buffer_path
-        self.pain_journal_path = pain_journal_path
+        self.pain_diary_path = pain_diary_path
         self.weight_data_path = weight_data_path
         
         ordered_tasks = [
@@ -163,8 +163,8 @@ class CardioMonitor():
 
         ordered_agents = [
             self.biometric_reviewer(biometric_buffer_path=biometric_buffer_path),
-            self.triage_nurse(pain_journal_path=pain_journal_path, weight_data_path=weight_data_path),
-            self.log_writer(biometric_buffer_path=biometric_buffer_path, pain_journal_path=pain_journal_path, weight_data_path=weight_data_path),
+            self.triage_nurse(pain_diary_path=pain_diary_path, weight_data_path=weight_data_path),
+            self.log_writer(biometric_buffer_path=biometric_buffer_path, pain_diary_path=pain_diary_path, weight_data_path=weight_data_path),
         ]
 
         print(f"🤖 Crew created with {len(ordered_agents)} agents and {len(ordered_tasks)} tasks")
@@ -177,5 +177,5 @@ class CardioMonitor():
             tasks=ordered_tasks,
             process=Process.sequential,
             verbose=True,
-            memory=True  # Enable memory to see task dependencies
+            memory=False  # Disable memory to ensure fresh analysis each time
         )

@@ -44,7 +44,7 @@ def run():
             # Use the consolidated data service paths instead of hardcoded ones
             'biometric_buffer_path': str(workspace_root / 'patient' / 'biometric' / 'buffer' / 'simulation_biometrics.json'),
             'patient_summary_path': str(workspace_root / f'patient/{patient_name.lower()}_biometric_summary.json'),
-            'pain_journal_path': str(workspace_root / 'patient' / 'pain_journals' / f'{patient_name.lower()}.json'),
+            'pain_diary_path': str(workspace_root / 'patient' / 'generated_medical_records/pain_diaries' / f'{patient_name.lower()}.json'),
             'weight_data_path': str(workspace_root / 'patient' / 'biometric' / 'weight' / f'{patient_name.lower()}.json'),
             # Include the consolidated patient context for the crew
             'patient_context': patient_context
@@ -57,26 +57,26 @@ def run():
         print(f"\n=== Debug: File Paths Being Passed to Crew ===")
         print(f"biometric_buffer_path: {inputs['biometric_buffer_path']}")
         print(f"patient_summary_path: {inputs['patient_summary_path']}")
-        print(f"pain_journal_path: {inputs['pain_journal_path']}")
+        print(f"pain_diary_path: {inputs['pain_diary_path']}")
         print(f"weight_data_path: {inputs['weight_data_path']}")
         
         # Verify files exist
         print(f"\n=== Debug: File Existence Check ===")
         print(f"biometric_buffer_path exists: {Path(inputs['biometric_buffer_path']).exists()}")
         print(f"patient_summary_path exists: {Path(inputs['patient_summary_path']).exists()}")
-        print(f"pain_journal_path exists: {Path(inputs['pain_journal_path']).exists()}")
+        print(f"pain_diary_path exists: {Path(inputs['pain_diary_path']).exists()}")
         print(f"weight_data_path exists: {Path(inputs['weight_data_path']).exists()}")
         
         # Run the crew and capture the output
         crew = CardioMonitor()
         print(f"\n=== Debug: Creating Crew with File Paths ===")
         print(f"Passing biometric_buffer_path: {inputs['biometric_buffer_path']}")
-        print(f"Passing pain_journal_path: {inputs['pain_journal_path']}")
+        print(f"Passing pain_diary_path: {inputs['pain_diary_path']}")
         print(f"Passing weight_data_path: {inputs['weight_data_path']}")
         
         crew_output = crew.crew(
             biometric_buffer_path=inputs['biometric_buffer_path'],
-            pain_journal_path=inputs['pain_journal_path'],
+            pain_diary_path=inputs['pain_diary_path'],
             weight_data_path=inputs['weight_data_path']
         ).kickoff(inputs=inputs)
         
