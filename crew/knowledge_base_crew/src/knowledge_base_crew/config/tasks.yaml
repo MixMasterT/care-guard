@@ -10,12 +10,14 @@ research_task:
     For each topic, find 5 high-quality articles from reputable medical sources
     such as PubMed, clinical guidelines, medical journals, or healthcare organizations.
     Extract the full content of each article for indexing.
+
   expected_output: >
     A comprehensive list of 15 high-quality medical articles (5 per topic) with:
     - Article titles and URLs
     - Full article content extracted
     - Source credibility assessment
     - Relevance to the specified topics
+
   agent: researcher
 
 indexing_task:
@@ -30,11 +32,13 @@ indexing_task:
 
     Write comprehensive documentation describing the index structure and how
     to query it effectively for medical knowledge retrieval.
+
   expected_output: >
     - Medical-knowledge-base index created in OpenSearch
     - All articles indexed with proper structure
     - knowledge_indexing.md file with schema documentation
     - knowledge_base_indexing.py with Pydantic models
     - Verification that articles can be retrieved via search
+
   agent: indexer
   context: [research_task]

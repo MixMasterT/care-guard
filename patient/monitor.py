@@ -1053,7 +1053,7 @@ def main():
     st.sidebar.subheader("🤖 Agentic Analysis")
     
     # Solution selector dropdown
-    solution_options = ["Crewai"]  # Future solutions can be added here
+    solution_options = ["Crewai"]  # Add other agentic monitoring solutions here as they become available
     selected_solution = st.sidebar.selectbox(
         "Select Agentic Solution:",
         solution_options,
@@ -1079,7 +1079,7 @@ def main():
                 st.info("This may take a few minutes. The analysis will run in the background.")
                 
                 # Launch agentic monitor with patient info
-                agentic_url = f"http://localhost:8502?run_id={run_id}&patient={st.session_state.selected_patient_display}"
+                agentic_url = f"http://localhost:8502?run_id={run_id}&patient={st.session_state.selected_patient_display}&framework={st.session_state.agentic_solution.lower()}"
                 
                 # Use Streamlit's link functionality instead of JavaScript popup
                 st.markdown(f"""
@@ -1098,7 +1098,8 @@ def main():
                 ---
                 """)
                 
-                st.success("✅ Analysis setup complete! Click the link above to open the agentic monitor.")
+                st.success(f"✅ Analysis setup complete! Click the link above to open the agentic monitor.")
+                st.info(f"Framework: {st.session_state.agentic_solution}")
                 
                 # Force a rerun to update the UI state
                 st.rerun()

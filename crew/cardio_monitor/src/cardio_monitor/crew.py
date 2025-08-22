@@ -91,14 +91,26 @@ class CardioMonitor():
         return Task(
             config=self.tasks_config['analyze_patient_status'], # type: ignore[index]
             expected_output="""Analyze patient status and produce structured output with triage decision, findings, and recommendations.
-            Use the biometric analysis from the biometric_reviewer to inform your triage decision.
+            
+            CRITICAL: Use the biometric analysis from the biometric_reviewer to inform your triage decision.
+            Pay special attention to:
+            - risk_assessment: If "high" or "critical", this MUST influence your priority
+            - requires_attention: If true, this indicates urgent care needs
+            - immediate_concerns: Address each concern in your rationale
+            - recommendations: Incorporate biometric recommendations into your follow-ups
+            
             The output should contain:
-            - A priority value of "High", "Medium", or "Low"
+            - A priority value of "High", "Medium", or "Low" (escalate if biometrics show risk)
             - A next action that describes the immediate next step in patient care
             - A summary describing the patient's overall condition at this time
-            - A rationale that describes why the priority value was assigned
+            - A rationale that describes why the priority value was assigned (include biometric factors)
             - A list of follow-ups which would be a list of strings describing actions that should be taken in the future
             for best outcomes. Each item in the list should include the number of days after which to do the follow-up action
+            
+            EMERGENCY ESCALATION:
+            - If biometrics show "critical" risk → priority MUST be "High" or "Immediate"
+            - If biometrics require_attention → next action MUST address the concern
+            - If biometrics show "high" risk → consider escalating priority
             
             Be concise and actionable. Focus on medical insights that inform care decisions.""",
             agent=self.triage_nurse(),
@@ -130,18 +142,38 @@ class CardioMonitor():
     def review_biometrics(self, biometric_buffer_path: str = None) -> Task:
         return Task(
             config=self.tasks_config['review_biometrics'],
-            expected_output="""Provide a structured analysis of biometric data including:
+            expected_output="""Provide a comprehensive, actionable analysis of biometric data that directly informs patient care decisions.
 
-            - Key biometric trends (averages, ranges)
-            - Notable anomalies or concerning patterns
-            - Immediate risks or alerts
-            - Time windows analyzed
+            CRITICAL REQUIREMENTS:
+            1. ALWAYS analyze the actual biometric data file using FileReadTool
+            2. Provide specific, measurable insights (exact values, ranges, trends)
+            3. Identify ANY concerning patterns that require immediate attention
+            4. Generate actionable recommendations based on the data
 
-            Focus on actionable insights that the triage nurse can use for decision-making.
-            Be specific about values, time periods, and risk levels.
-            Use the FileReadTool to read the current biometric data file for real-time analysis.
+            REQUIRED OUTPUT STRUCTURE:
+            - metric: The primary biometric being analyzed (heart_rate, spo2, blood_pressure, etc.)
+            - description: Clear summary of what the data shows
+            - window: Time period analyzed (e.g., "Last 30 minutes", "Last 2 hours")
+            - stats: Detailed statistics including averages, ranges, min/max values, trends
+            - risk_assessment: "low", "moderate", "high", or "critical" based on data
+            - immediate_concerns: List of specific issues found (e.g., ["bradycardia < 50 bpm", "hypoxemia < 90%"])
+            - recommendations: List of specific actions needed (e.g., ["check patient immediately", "contact physician", "increase monitoring frequency"])
+            - requires_attention: true if ANY concerning patterns are detected
+            - next_action: The immediate next step for the care team
 
-            This analysis will be used by the triage nurse to make decisions.""",
+            RISK ASSESSMENT GUIDELINES:
+            - LOW: All values within normal ranges, stable trends
+            - MODERATE: Some values outside normal ranges, minor fluctuations
+            - HIGH: Multiple values outside normal ranges, concerning trends, requires monitoring
+            - CRITICAL: Values in dangerous ranges, rapid changes, requires immediate intervention
+
+            EMERGENCY FLAGS:
+            - Heart rate < 50 or > 120 bpm → requires_attention = true, risk_assessment = "critical"
+            - SpO2 < 90% → requires_attention = true, risk_assessment = "critical"  
+            - Blood pressure < 90/60 or > 180/110 → requires_attention = true, risk_assessment = "high"
+            - Any rapid deterioration → requires_attention = true, risk_assessment = "critical"
+
+            This analysis directly impacts patient safety - be thorough and actionable.""",
             agent=self.biometric_reviewer(biometric_buffer_path=biometric_buffer_path),
             output_pydantic=TrendInsightPayload,
             output_file='patient/agentic_monitor_logs/{timestamp}_{run_id}_{patient_name}_biometric_analysis.json'

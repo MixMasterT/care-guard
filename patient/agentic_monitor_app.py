@@ -52,15 +52,20 @@ def show_results(run_id, patient_name, output_container):
         output_container.info(f"🔍 Available fields in results: {list(results.keys())}")
         
         # Test: show the actual summary and followups if they exist
-        print(f"The medical")
-        if "summary" in results:
+        print(f"The medical log contains: {list(results.keys())}")
+        if "summary" in results and results["summary"]:
             output_container.info(f"🔍 Summary found: {results['summary'][:100]}...")
         if "triage_decision" in results and results["triage_decision"]:
             triage = results["triage_decision"]
-            if "followups" in triage:
-                output_container.info(f"🔍 Followups found: {len(triage['followups'])} items")
-                for i, f in enumerate(triage['followups'][:2]):  # Show first 2
-                    output_container.info(f"   {i+1}. {f[:50]}...")
+            if "followups" in triage and triage["followups"]:
+                followups = triage['followups']
+                if isinstance(followups, list):
+                    output_container.info(f"🔍 Followups found: {len(followups)} items")
+                    for i, f in enumerate(followups[:2]):  # Show first 2
+                        if f:  # Check if followup is not None/empty
+                            output_container.info(f"   {i+1}. {f[:50]}...")
+                else:
+                    output_container.info(f"🔍 Followups found but not in list format: {type(followups)}")
         
         # Display structured results
         output_container.subheader("📋 Analysis Results")
@@ -84,14 +89,19 @@ def show_results(run_id, patient_name, output_container):
             if "followups" in triage and triage["followups"]:
                 output_container.write("**Follow-ups:**")
                 for i, followup in enumerate(triage["followups"], 1):
-                    output_container.write(f"{i}. {followup}")
+                    if followup:  # Check if followup is not None/empty
+                        output_container.write(f"{i}. {followup}")
             else:
                 output_container.write("**Follow-ups:** None specified")
             
             # Show priority if available
             if "priority" in triage and triage["priority"]:
                 output_container.markdown("---")
-                output_container.write(f"**Priority:** {triage['priority'].title()}")
+                priority = triage['priority']
+                if isinstance(priority, str):
+                    output_container.write(f"**Priority:** {priority.title()}")
+                else:
+                    output_container.write(f"**Priority:** {priority}")
             
             # Show rationale if available
             if "rationale" in triage and triage["rationale"]:
@@ -106,13 +116,22 @@ def show_results(run_id, patient_name, output_container):
             output_container.markdown("---")
             output_container.write("**Key Findings:**")
             for i, finding in enumerate(results["findings"], 1):
-                with output_container.expander(f"Finding {i}: {finding.get('title', 'Untitled')}"):
-                    if finding.get('summary'):
-                        output_container.write(f"**Summary:** {finding['summary']}")
-                    if finding.get('risk_level'):
-                        output_container.write(f"**Risk Level:** {finding['risk_level'].title()}")
-                    if finding.get('confidence_level'):
-                        output_container.write(f"**Confidence:** {finding['confidence_level'].title()}")
+                if finding:  # Check if finding is not None
+                    with output_container.expander(f"Finding {i}: {finding.get('title', 'Untitled')}"):
+                        if finding.get('summary'):
+                            output_container.write(f"**Summary:** {finding['summary']}")
+                        if finding.get('risk_level'):
+                            risk_level = finding['risk_level']
+                            if isinstance(risk_level, str):
+                                output_container.write(f"**Risk Level:** {risk_level.title()}")
+                            else:
+                                output_container.write(f"**Risk Level:** {risk_level}")
+                        if finding.get('confidence_level'):
+                            confidence_level = finding['confidence_level']
+                            if isinstance(confidence_level, str):
+                                output_container.write(f"**Confidence:** {confidence_level.title()}")
+                            else:
+                                output_container.write(f"**Confidence:** {confidence_level}")
         else:
             output_container.info("⚠️ No findings field found in results")
         
@@ -121,13 +140,18 @@ def show_results(run_id, patient_name, output_container):
             output_container.markdown("---")
             output_container.write("**Recommendations:**")
             for i, rec in enumerate(results["recommendations"], 1):
-                with output_container.expander(f"Recommendation {i}"):
-                    if rec.get('text'):
-                        output_container.write(f"**Action:** {rec['text']}")
-                    if rec.get('priority'):
-                        output_container.write(f"**Priority:** {rec['priority'].title()}")
-                    if rec.get('rationale'):
-                        output_container.write(f"**Rationale:** {rec['rationale']}")
+                if rec:  # Check if recommendation is not None
+                    with output_container.expander(f"Recommendation {i}"):
+                        if rec.get('text'):
+                            output_container.write(f"**Action:** {rec['text']}")
+                        if rec.get('priority'):
+                            priority = rec['priority']
+                            if isinstance(priority, str):
+                                output_container.write(f"**Priority:** {priority.title()}")
+                            else:
+                                output_container.write(f"**Priority:** {priority}")
+                        if rec.get('rationale'):
+                            output_container.write(f"**Rationale:** {rec['rationale']}")
         
         # Show Full JSON button
         output_container.markdown("---")
@@ -191,8 +215,8 @@ def parse_execution_log(run_id: str) -> bool:
         return False
 
 
-def start_analysis(run_id, patient_name):
-    """Start the CrewAI analysis in a background thread"""
+def start_analysis(run_id, patient_name, framework):
+    """Start the agentic analysis in a background thread"""
     try:
         # Import the integration module
         import sys
@@ -207,7 +231,7 @@ def start_analysis(run_id, patient_name):
         
         # Initialize integration and start analysis
         integration = AgenticMonitorIntegration()
-        print(f"🚀 Starting CrewAI analysis for {patient_name} with run_id: {run_id}")
+        print(f"🚀 Starting {framework} analysis for {patient_name} with run_id: {run_id}")
         
         # Test crew availability first
         availability = integration.test_crew_availability()
@@ -216,12 +240,12 @@ def start_analysis(run_id, patient_name):
             print(f"❌ Crew not available: {availability.get('error', 'Unknown error')}")
             return False
         
-        # Start the analysis
-        results = integration.run_agentic_analysis(patient_name, run_id=run_id)
+        # Start the analysis with framework parameter
+        results = integration.run_agentic_analysis(patient_name, run_id=run_id, framework=framework)
         print(f"📊 Analysis results: {results}")
         
         if results.get("success"):
-            print(f"✅ Analysis started successfully for {patient_name}!")
+            print(f"✅ Analysis started successfully for {patient_name} using {framework}!")
             return True
         else:
             print(f"❌ Analysis failed to start: {results.get('error', 'Unknown error')}")
@@ -247,6 +271,7 @@ def main():
     # Get parameters from query parameters
     run_id = st.query_params.get("run_id", None)
     patient_name = st.query_params.get("patient", None)
+    framework = st.query_params.get("framework", "crewai")  # Default to crewai if not specified
     
     # Initialize session state variables if they don't exist
     if 'percent' not in st.session_state:
@@ -278,6 +303,7 @@ def main():
     
     st.header(f"Patient: {patient_name}")
     st.subheader(f"Run ID: {run_id}")
+    st.subheader(f"Framework: {framework.title()}")
     
     # Create containers for dynamic updates
     progress_container = st.empty()
@@ -300,11 +326,11 @@ def main():
         if 'analysis_queue' not in st.session_state:
             st.session_state.analysis_queue = queue.Queue()
         
-        def run_analysis_background(run_id, patient_name, queue):
+        def run_analysis_background(run_id, patient_name, framework, queue):
             """Run analysis in background thread"""
             try:
-                print(f"🚀 Background thread starting analysis for {patient_name}")
-                success = start_analysis(run_id, patient_name)
+                print(f"🚀 Background thread starting analysis for {patient_name} using {framework}")
+                success = start_analysis(run_id, patient_name, framework)
                 queue.put(("success", success))
                 print(f"✅ Background thread completed with success: {success}")
             except Exception as e:
@@ -314,7 +340,7 @@ def main():
         # Start analysis in background thread
         analysis_thread = threading.Thread(
             target=run_analysis_background,
-            args=(run_id, patient_name, st.session_state.analysis_queue),
+            args=(run_id, patient_name, framework, st.session_state.analysis_queue),
             daemon=True
         )
         analysis_thread.start()

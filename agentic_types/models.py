@@ -54,6 +54,10 @@ class DecisionPayload(BaseModel):
     summary: Optional[str] = None
     rationale: Optional[str] = None
     followups: List[str] = Field(default_factory=list)
+    
+    # Enhanced fields for emergency situations
+    emergency_flags: List[str] = Field(default_factory=list)  # e.g., ["critical_bradycardia", "severe_hypoxemia"]
+    requires_immediate_action: bool = False  # Flag for urgent intervention
 
 
 class TrendInsightPayload(BaseModel):
@@ -64,6 +68,13 @@ class TrendInsightPayload(BaseModel):
     support_score: Optional[float] = None
     confidence_level: Optional[ConfidenceLevel] = None
     confidence_level_evidence: Optional[ConfidenceLevelEvidence] = None
+    
+    # Enhanced fields for actionable biometric insights
+    risk_assessment: Optional[Literal["low", "moderate", "high", "critical"]] = None
+    immediate_concerns: List[str] = Field(default_factory=list)  # e.g., ["bradycardia", "hypoxemia"]
+    recommendations: List[str] = Field(default_factory=list)  # e.g., ["check patient immediately", "contact physician"]
+    requires_attention: bool = False  # Flag for urgent review
+    next_action: Optional[str] = None  # Immediate next step
 
 
 # ---------- Supporting types ----------
