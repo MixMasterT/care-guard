@@ -989,7 +989,7 @@ def main():
         
         if patient_name:
             # Launch agentic monitor app in new window
-            agentic_url = f"http://localhost:8502/?run_id={st.session_state.current_run_id}&patient={patient_name}"
+            agentic_url = f"http://localhost:8502/?run_id={st.session_state.current_run_id}&patient={patient_name}&framework={st.session_state.agentic_solution.lower()}"
             
             # Use a more Safari-friendly approach
             js_code = f"""
