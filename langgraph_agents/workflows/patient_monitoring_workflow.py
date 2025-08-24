@@ -59,17 +59,126 @@ class LangGraphState(TypedDict):
     current_step: int
     tool_calls: int
 
-# Patient name to UUID mapping
-PATIENT_UUID_MAPPING = {
-    "allen": "f420e6d4-55db-974f-05cb-52d06375b65f",
-    "mark": "29244161-9d02-b8b6-20cc-350f53ffe7a1", 
-    "zachery": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9"
-}
+# Dynamic patient UUID discovery
+def discover_patient_uuid(patient_name: str) -> str:
+    """
+    Dynamically discover a patient's UUID from available data files.
+    Searches pain diary files first, then FHIR files as fallback.
+    """
+    workspace_root = Path(__file__).parent.parent.parent
+    
+    # Method 1: Search pain diary files
+    pain_diaries_dir = workspace_root / "patient" / "generated_medical_records" / "pain_diaries"
+    if pain_diaries_dir.exists():
+        for pain_file in pain_diaries_dir.glob("*.json"):
+            if patient_name.lower() in pain_file.name.lower():
+                try:
+                    with open(pain_file, 'r') as f:
+                        pain_data = json.load(f)
+                        if pain_data and isinstance(pain_data, list) and len(pain_data) > 0:
+                            # Extract UUID from first entry
+                            first_entry = pain_data[0]
+                            if 'patient_id' in first_entry:
+                                uuid = first_entry['patient_id']
+                                print(f"🔍 Discovered UUID for {patient_name}: {uuid} (from pain diary)")
+                                return uuid
+                except Exception as e:
+                    print(f"⚠️ Error reading pain diary file {pain_file}: {e}")
+                    continue
+    
+    # Method 2: Search FHIR files
+    fhir_dir = workspace_root / "patient" / "generated_medical_records" / "fhir"
+    if fhir_dir.exists():
+        for fhir_file in fhir_dir.glob("*.json"):
+            if patient_name.lower() in fhir_file.name.lower():
+                try:
+                    with open(fhir_file, 'r') as f:
+                        fhir_data = json.load(f)
+                        if fhir_data and 'entry' in fhir_data:
+                            for entry in fhir_data['entry']:
+                                if 'resource' in entry and entry['resource'].get('resourceType') == 'Patient':
+                                    uuid = entry['resource'].get('id')
+                                    if uuid:
+                                        print(f"🔍 Discovered UUID for {patient_name}: {uuid} (from FHIR)")
+                                        return uuid
+                except Exception as e:
+                    print(f"⚠️ Error reading FHIR file {fhir_file}: {e}")
+                    continue
+    
+    print(f"⚠️ Could not discover UUID for patient '{patient_name}'")
+    return None
 
 # OpenSearch RAG functions
 def get_patient_uuid(patient_name: str) -> str:
-    """Get the UUID for a patient name."""
-    return PATIENT_UUID_MAPPING.get(patient_name.lower())
+    """Get the UUID for a patient name using dynamic discovery."""
+    return discover_patient_uuid(patient_name)
+
+def discover_all_patients() -> Dict[str, str]:
+    """
+    Discover all available patients and their UUIDs from data files.
+    Returns a dictionary mapping patient names to UUIDs.
+    """
+    workspace_root = Path(__file__).parent.parent.parent
+    patients = {}
+    
+    # Method 1: Search pain diary files
+    pain_diaries_dir = workspace_root / "patient" / "generated_medical_records" / "pain_diaries"
+    if pain_diaries_dir.exists():
+        for pain_file in pain_diaries_dir.glob("*.json"):
+            try:
+                with open(pain_file, 'r') as f:
+                    pain_data = json.load(f)
+                    if pain_data and isinstance(pain_data, list) and len(pain_data) > 0:
+                        first_entry = pain_data[0]
+                        if 'patient_id' in first_entry:
+                            uuid = first_entry['patient_id']
+                            # Extract patient name from filename
+                            filename = pain_file.stem
+                            # Try to extract a readable name (remove UUID and other parts)
+                            if '_' in filename:
+                                name_parts = filename.split('_')
+                                # Look for parts that look like names (not UUIDs)
+                                for part in name_parts:
+                                    if len(part) > 2 and not part.startswith('f') and not part.isdigit():
+                                        # Clean up the name (remove numbers, keep only letters)
+                                        clean_name = ''.join(c for c in part if c.isalpha()).lower()
+                                        if clean_name and len(clean_name) > 2:
+                                            patients[clean_name] = uuid
+                                            break
+            except Exception as e:
+                print(f"⚠️ Error reading pain diary file {pain_file}: {e}")
+                continue
+    
+    # Method 2: Search FHIR files (as backup)
+    fhir_dir = workspace_root / "patient" / "generated_medical_records" / "fhir"
+    if fhir_dir.exists():
+        for fhir_file in fhir_dir.glob("*.json"):
+            try:
+                with open(fhir_file, 'r') as f:
+                    fhir_data = json.load(f)
+                    if fhir_data and 'entry' in fhir_data:
+                        for entry in fhir_data['entry']:
+                            if 'resource' in entry and entry['resource'].get('resourceType') == 'Patient':
+                                uuid = entry['resource'].get('id')
+                                if uuid:
+                                    # Extract patient name from filename
+                                    filename = fhir_file.stem
+                                    if '_' in filename:
+                                        name_parts = filename.split('_')
+                                        for part in name_parts:
+                                            if len(part) > 2 and not part.startswith('f') and not part.isdigit():
+                                                # Clean up the name (remove numbers, keep only letters)
+                                                clean_name = ''.join(c for c in part if c.isalpha()).lower()
+                                                if clean_name and len(clean_name) > 2:
+                                                    if clean_name not in patients:  # Don't overwrite existing
+                                                        patients[clean_name] = uuid
+                                                    break
+            except Exception as e:
+                print(f"⚠️ Error reading FHIR file {fhir_file}: {e}")
+                continue
+    
+    print(f"🔍 Discovered {len(patients)} patients: {list(patients.keys())}")
+    return patients
 
 def get_pain_diary_entries_from_opensearch(patient_name: str, size: int = 50) -> List[Dict]:
     """Retrieve pain diary entries from OpenSearch for a patient."""
