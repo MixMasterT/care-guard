@@ -48,6 +48,7 @@ class LangGraphState(TypedDict):
     events: list
     tokens_used: int
     current_step: int
+    tool_calls: int
 
 def load_biometric_data_step(state: LangGraphState) -> LangGraphState:
     """Load biometric data from buffer file."""
@@ -62,6 +63,7 @@ def load_biometric_data_step(state: LangGraphState) -> LangGraphState:
             **state,
             "biometric_data": biometric_data,
             "current_step": state.get("current_step", 0) + 1,
+            "tool_calls": state.get("tool_calls", 0) + 0,  # No LLM calls in this step
             "error": None,
             "progress": 20,
             "status": "biometric_data_loaded",
@@ -235,6 +237,7 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
             "biometric_analysis": biometric_analysis,
             "tokens_used": tokens_used,
             "current_step": state.get("current_step", 0) + 1,
+            "tool_calls": state.get("tool_calls", 0) + 1,  # 1 LLM call for biometric analysis
             "error": None,
             "progress": 40,
             "status": "biometrics_analyzed",
@@ -299,6 +302,7 @@ def load_patient_data_step(state: LangGraphState) -> LangGraphState:
             "fhir_records": fhir_records,
             "patient_context": patient_context,
             "current_step": state.get("current_step", 0) + 1,
+            "tool_calls": state.get("tool_calls", 0) + 0,  # No LLM calls in this step
             "error": None,
             "progress": 60,
             "status": "patient_data_loaded",
@@ -400,6 +404,7 @@ def triage_nurse_step(state: LangGraphState) -> LangGraphState:
             "triage_decision": triage_decision,
             "tokens_used": tokens_used,
             "current_step": state.get("current_step", 0) + 1,
+            "tool_calls": state.get("tool_calls", 0) + 1,  # 1 LLM call for triage decision
             "error": None,
             "progress": 80,
             "status": "triage_decision_made",
@@ -467,6 +472,7 @@ def log_writer_step(state: LangGraphState) -> LangGraphState:
             metrics=ExecutionMetrics(
                 duration_ms=int((datetime.now() - datetime.fromisoformat(state["events"][0]["timestamp"])).total_seconds() * 1000) if state["events"] else 0,
                 tokens_used=state.get("tokens_used", 0),
+                tool_calls=state.get("tool_calls", 0),
                 steps_completed=len(state["events"])
             ),
             artifacts=Artifacts(
@@ -478,6 +484,7 @@ def log_writer_step(state: LangGraphState) -> LangGraphState:
             **state,
             "medical_log": medical_log,
             "current_step": state.get("current_step", 0) + 1,
+            "tool_calls": state.get("tool_calls", 0) + 0,  # No LLM calls in this step
             "error": None,
             "progress": 100,
             "status": "completed",
@@ -536,7 +543,8 @@ def run_patient_monitoring(patient_name: str, run_id: str) -> Dict[str, Any]:
             "status": "starting",
             "events": [],
             "tokens_used": 0,
-            "current_step": 0
+            "current_step": 0,
+            "tool_calls": 0
         }
         
         result = app.invoke(initial_state)
