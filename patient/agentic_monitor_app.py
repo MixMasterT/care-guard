@@ -233,22 +233,42 @@ def start_analysis(run_id, patient_name, framework):
         integration = AgenticMonitorIntegration()
         print(f"🚀 Starting {framework} analysis for {patient_name} with run_id: {run_id}")
         
-        # Test crew availability first
-        availability = integration.test_crew_availability()
-        
-        if not availability.get("available"):
-            print(f"❌ Crew not available: {availability.get('error', 'Unknown error')}")
-            return False
-        
-        # Start the analysis with framework parameter
-        results = integration.run_agentic_analysis(patient_name, run_id=run_id, framework=framework)
-        print(f"📊 Analysis results: {results}")
-        
-        if results.get("success"):
-            print(f"✅ Analysis started successfully for {patient_name} using {framework}!")
-            return True
+        # Framework-specific handling
+        if framework.lower() == "crewai":
+            # Execute existing code as-is for CrewAI
+            availability = integration.test_crew_availability()
+            
+            if not availability.get("available"):
+                print(f"❌ Crew not available: {availability.get('error', 'Unknown error')}")
+                return False
+            
+            # Start the analysis with framework parameter
+            results = integration.run_agentic_analysis(patient_name, run_id=run_id, framework=framework)
+            print(f"📊 Analysis results: {results}")
+            
+            if results.get("success"):
+                print(f"✅ Analysis started successfully for {patient_name} using {framework}!")
+                return True
+            else:
+                print(f"❌ Analysis failed to start: {results.get('error', 'Unknown error')}")
+                return False
+                
+        elif framework.lower() == "langgraph":
+            # LangGraph framework - use the integration system
+            print(f"🔧 LangGraph framework selected - implementing LangGraph analysis...")
+            try:
+                # Use the AgenticMonitorIntegration to run LangGraph analysis
+                integration = AgenticMonitorIntegration()
+                result = integration.run_agentic_analysis(patient_name, run_id, framework="langgraph")
+                return result.get("success", False)
+            except Exception as e:
+                print(f"❌ Error running LangGraph analysis: {e}")
+                return False
+            
         else:
-            print(f"❌ Analysis failed to start: {results.get('error', 'Unknown error')}")
+            # Error block for unsupported frameworks
+            print(f"❌ Unsupported framework: {framework}")
+            print(f"Supported frameworks: crewai, langgraph")
             return False
         
     except Exception as e:

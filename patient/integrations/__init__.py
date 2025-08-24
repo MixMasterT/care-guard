@@ -4,17 +4,22 @@ Integrations package for agentic monitoring frameworks.
 
 from .base_integration import BaseIntegration
 from .crewai_integration import CrewaiIntegration
+from .langgraph_integration import LangGraphIntegration
 
 # Export all available integrations
 __all__ = [
     "BaseIntegration",
     "CrewaiIntegration",
+    "LangGraphIntegration",
 ]
 
 # Framework registry - maps framework names to integration classes
 FRAMEWORK_REGISTRY = {
     "crewai": CrewaiIntegration,
     "Crewai": CrewaiIntegration,  # Handle both lowercase and title case
+    "langgraph": LangGraphIntegration,
+    "Langgraph": LangGraphIntegration,
+    "LangGraph": LangGraphIntegration,
 }
 
 def get_integration(framework: str) -> BaseIntegration:
