@@ -80,10 +80,10 @@ def discover_patient_uuid(patient_name: str) -> str:
                             first_entry = pain_data[0]
                             if 'patient_id' in first_entry:
                                 uuid = first_entry['patient_id']
-                                print(f"🔍 Discovered UUID for {patient_name}: {uuid} (from pain diary)")
+                                print(f"Discovered UUID for {patient_name}: {uuid} (from pain diary)")
                                 return uuid
                 except Exception as e:
-                    print(f"⚠️ Error reading pain diary file {pain_file}: {e}")
+                    print(f"WARNING: Error reading pain diary file {pain_file}: {e}")
                     continue
     
     # Method 2: Search FHIR files
@@ -99,13 +99,13 @@ def discover_patient_uuid(patient_name: str) -> str:
                                 if 'resource' in entry and entry['resource'].get('resourceType') == 'Patient':
                                     uuid = entry['resource'].get('id')
                                     if uuid:
-                                        print(f"🔍 Discovered UUID for {patient_name}: {uuid} (from FHIR)")
+                                        print(f"Discovered UUID for {patient_name}: {uuid} (from FHIR)")
                                         return uuid
                 except Exception as e:
-                    print(f"⚠️ Error reading FHIR file {fhir_file}: {e}")
+                    print(f"WARNING: Error reading FHIR file {fhir_file}: {e}")
                     continue
     
-    print(f"⚠️ Could not discover UUID for patient '{patient_name}'")
+    print(f"WARNING: Could not discover UUID for patient '{patient_name}'")
     return None
 
 # OpenSearch RAG functions
@@ -146,7 +146,7 @@ def discover_all_patients() -> Dict[str, str]:
                                             patients[clean_name] = uuid
                                             break
             except Exception as e:
-                print(f"⚠️ Error reading pain diary file {pain_file}: {e}")
+                print(f"WARNING: Error reading pain diary file {pain_file}: {e}")
                 continue
     
     # Method 2: Search FHIR files (as backup)
@@ -174,10 +174,10 @@ def discover_all_patients() -> Dict[str, str]:
                                                         patients[clean_name] = uuid
                                                     break
             except Exception as e:
-                print(f"⚠️ Error reading FHIR file {fhir_file}: {e}")
+                print(f"WARNING: Error reading FHIR file {fhir_file}: {e}")
                 continue
     
-    print(f"🔍 Discovered {len(patients)} patients: {list(patients.keys())}")
+    print(f"Discovered {len(patients)} patients: {list(patients.keys())}")
     return patients
 
 def get_pain_diary_entries_from_opensearch(patient_name: str, size: int = 50) -> List[Dict]:
@@ -191,7 +191,7 @@ def get_pain_diary_entries_from_opensearch(patient_name: str, size: int = 50) ->
         # Get the patient's UUID
         patient_uuid = get_patient_uuid(patient_name)
         if not patient_uuid:
-            print(f"⚠️ No UUID mapping found for patient '{patient_name}'")
+            print(f"WARNING: No UUID mapping found for patient '{patient_name}'")
             return []
         
         # Search by the patient's UUID
@@ -208,11 +208,11 @@ def get_pain_diary_entries_from_opensearch(patient_name: str, size: int = 50) ->
             "size": size
         }
         
-        print(f"🔍 Pain diary search query: {json.dumps(query_body, indent=2)}")
+        print(f"Pain diary search query: {json.dumps(query_body, indent=2)}")
         response = client.search(index="pain-diaries", body=query_body)
         
         entries = [hit["_source"] for hit in response["hits"]["hits"]]
-        print(f"🔍 Found {len(entries)} pain diary entries for patient '{patient_name}'")
+        print(f"Found {len(entries)} pain diary entries for patient '{patient_name}'")
         return entries
     except Exception as e:
         print(f"Warning: Failed to retrieve pain diary entries from OpenSearch: {e}")
@@ -229,7 +229,7 @@ def get_fhir_entries_from_opensearch(patient_name: str, size: int = 100) -> List
         # Get the patient's UUID
         patient_uuid = get_patient_uuid(patient_name)
         if not patient_uuid:
-            print(f"⚠️ No UUID mapping found for patient '{patient_name}'")
+            print(f"WARNING: No UUID mapping found for patient '{patient_name}'")
             return []
         
         # Search for FHIR records by the patient's UUID
@@ -245,11 +245,11 @@ def get_fhir_entries_from_opensearch(patient_name: str, size: int = 100) -> List
             "size": size
         }
         
-        print(f"🔍 FHIR search query: {json.dumps(query_body, indent=2)}")
+        print(f"FHIR search query: {json.dumps(query_body, indent=2)}")
         response = client.search(index="fhir-medical-records", body=query_body)
         
         entries = [hit["_source"] for hit in response["hits"]["hits"]]
-        print(f"🔍 Found {len(entries)} FHIR records for patient '{patient_name}'")
+        print(f"Found {len(entries)} FHIR records for patient '{patient_name}'")
         return entries
     except Exception as e:
         print(f"Warning: Failed to retrieve FHIR entries from OpenSearch: {e}")
@@ -553,14 +553,14 @@ def load_patient_data_step(state: LangGraphState) -> LangGraphState:
         workspace_root = Path(__file__).parent.parent.parent
         patient_name = state["patient_name"]
         
-        print(f"🔍 Loading patient data for {patient_name} using OpenSearch RAG...")
+        print(f"Loading patient data for {patient_name} using OpenSearch RAG...")
         
         # Check OpenSearch connectivity and indices
         if OPENSEARCH_AVAILABLE:
             try:
                 client = OpenSearch(hosts=[{'host': 'localhost', 'port': 9200}])
                 indices = client.cat.indices(format='json')
-                print(f"📊 Available OpenSearch indices: {[idx['index'] for idx in indices]}")
+                print(f"Available OpenSearch indices: {[idx['index'] for idx in indices]}")
                 
                 # Check document counts in each index
                 for index_info in indices:
@@ -583,7 +583,7 @@ def load_patient_data_step(state: LangGraphState) -> LangGraphState:
                                 if 'source_file' in sample_doc:
                                     print(f"   source_file example: {sample_doc['source_file']}")
             except Exception as e:
-                print(f"⚠️ OpenSearch connectivity issue: {e}")
+                print(f"WARNING: OpenSearch connectivity issue: {e}")
         
         # Load pain diary entries from OpenSearch
         pain_diary_entries = get_pain_diary_entries_from_opensearch(patient_name, size=50)
@@ -617,7 +617,7 @@ PAIN DIARY HISTORY (from OpenSearch):
 WEIGHT DATA: {len(weight_data)} measurements available
 """
         
-        print(f"✅ Loaded {len(pain_diary_entries)} pain diary entries and {len(fhir_entries)} FHIR records from OpenSearch")
+        print(f"SUCCESS: Loaded {len(pain_diary_entries)} pain diary entries and {len(fhir_entries)} FHIR records from OpenSearch")
         
         return {
             **state,
