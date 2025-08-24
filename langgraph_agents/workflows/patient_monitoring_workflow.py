@@ -47,6 +47,7 @@ class LangGraphState(TypedDict):
     status: str
     events: list
     tokens_used: int
+    current_step: int
 
 def load_biometric_data_step(state: LangGraphState) -> LangGraphState:
     """Load biometric data from buffer file."""
@@ -60,13 +61,14 @@ def load_biometric_data_step(state: LangGraphState) -> LangGraphState:
         return {
             **state,
             "biometric_data": biometric_data,
+            "current_step": state.get("current_step", 0) + 1,
             "error": None,
             "progress": 20,
             "status": "biometric_data_loaded",
             "events": state.get("events", []) + [{
                 "timestamp": datetime.now().isoformat(),
                 "type": "biometric_data_loaded",
-                "message": f"Loaded {len(biometric_data)} biometric records"
+                "message": f"Step {state.get('current_step', 0) + 1}: Loaded {len(biometric_data)} biometric records"
             }]
         }
     except Exception as e:
@@ -232,13 +234,14 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
             **state,
             "biometric_analysis": biometric_analysis,
             "tokens_used": tokens_used,
+            "current_step": state.get("current_step", 0) + 1,
             "error": None,
             "progress": 40,
             "status": "biometrics_analyzed",
             "events": state.get("events", []) + [{
                 "timestamp": datetime.now().isoformat(),
                 "type": "biometrics_analyzed",
-                "message": f"Biometric analysis completed - {biometric_analysis.risk_assessment} risk level"
+                "message": f"Step {state.get('current_step', 0) + 1}: Biometric analysis completed - {biometric_analysis.risk_assessment} risk level"
             }]
         }
     except Exception as e:
@@ -295,13 +298,14 @@ def load_patient_data_step(state: LangGraphState) -> LangGraphState:
             "weight_data": weight_data,
             "fhir_records": fhir_records,
             "patient_context": patient_context,
+            "current_step": state.get("current_step", 0) + 1,
             "error": None,
             "progress": 60,
             "status": "patient_data_loaded",
             "events": state.get("events", []) + [{
                 "timestamp": datetime.now().isoformat(),
                 "type": "patient_data_loaded",
-                "message": f"Loaded patient data for {patient_name}"
+                "message": f"Step {state.get('current_step', 0) + 1}: Loaded patient data for {patient_name}"
             }]
         }
     except Exception as e:
@@ -395,13 +399,14 @@ def triage_nurse_step(state: LangGraphState) -> LangGraphState:
             **state,
             "triage_decision": triage_decision,
             "tokens_used": tokens_used,
+            "current_step": state.get("current_step", 0) + 1,
             "error": None,
             "progress": 80,
             "status": "triage_decision_made",
             "events": state.get("events", []) + [{
                 "timestamp": datetime.now().isoformat(),
                 "type": "triage_decision_made",
-                "message": f"Triage decision: {triage_decision.action}"
+                "message": f"Step {state.get('current_step', 0) + 1}: Triage decision: {triage_decision.action}"
             }]
         }
     except Exception as e:
@@ -472,13 +477,14 @@ def log_writer_step(state: LangGraphState) -> LangGraphState:
         return {
             **state,
             "medical_log": medical_log,
+            "current_step": state.get("current_step", 0) + 1,
             "error": None,
             "progress": 100,
             "status": "completed",
             "events": state.get("events", []) + [{
                 "timestamp": datetime.now().isoformat(),
                 "type": "medical_log_created",
-                "message": "Medical log created successfully"
+                "message": f"Step {state.get('current_step', 0) + 1}: Medical log created successfully"
             }]
         }
     except Exception as e:
@@ -529,7 +535,8 @@ def run_patient_monitoring(patient_name: str, run_id: str) -> Dict[str, Any]:
             "progress": 0,
             "status": "starting",
             "events": [],
-            "tokens_used": 0
+            "tokens_used": 0,
+            "current_step": 0
         }
         
         result = app.invoke(initial_state)
