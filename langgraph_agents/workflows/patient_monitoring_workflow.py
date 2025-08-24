@@ -98,18 +98,45 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
         temperatures = []
         
         for record in biometric_data:
-            if 'heart_rate' in record:
-                heart_rates.append(record['heart_rate'])
-            if 'spo2' in record:
-                spo2_values.append(record['spo2'])
-            if 'blood_pressure' in record:
-                bp = record['blood_pressure']
-                if isinstance(bp, dict):
+            event_type = record.get('event_type', '')
+            
+            # Handle heartbeat events - convert interval_ms to heart rate
+            if event_type == 'heartbeat':
+                interval_ms = record.get('interval_ms', 1000)
+                if interval_ms > 0:
+                    heart_rate = 60000 / interval_ms  # Convert to BPM
+                    heart_rates.append(heart_rate)
+                # Also check if there's a direct 'value' field (heart rate in BPM)
+                elif 'value' in record and record['value'] is not None:
+                    heart_rates.append(float(record['value']))
+            
+            # Handle SpO2 events
+            elif event_type == 'spo2':
+                spo2_value = record.get('spo2') or record.get('value')
+                if spo2_value is not None:
+                    spo2_values.append(float(spo2_value))
+            
+            # Handle blood pressure events
+            elif event_type == 'blood_pressure':
+                bp = {
+                    'systolic': record.get('systolic', 0),
+                    'diastolic': record.get('diastolic', 0)
+                }
+                if bp['systolic'] > 0 and bp['diastolic'] > 0:
                     blood_pressures.append(bp)
-            if 'respiration_rate' in record:
-                respiration_rates.append(record['respiration_rate'])
-            if 'temperature' in record:
-                temperatures.append(record['temperature'])
+            
+            # Handle respiration events
+            elif event_type == 'respiration':
+                interval_ms = record.get('interval_ms', 0)
+                if interval_ms > 0:
+                    respiration_rate = 60000 / interval_ms  # Convert to breaths per minute
+                    respiration_rates.append(respiration_rate)
+            
+            # Handle temperature events
+            elif event_type == 'temperature':
+                temp_value = record.get('temperature') or record.get('value')
+                if temp_value is not None:
+                    temperatures.append(float(temp_value))
         
         # Calculate basic statistics
         stats = {}
