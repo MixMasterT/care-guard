@@ -87,15 +87,17 @@ def create_timeline_component(patient_data):
             body {{
                 font-family: Arial, sans-serif;
                 margin: 0;
-                padding: 10px;
+                padding: 0;
                 background-color: #f5f5f5;
                 color: #333;
+                height: 100vh;
+                overflow: hidden;
             }}
             
             .timeline-container {{
                 position: relative;
                 width: 100%;
-                height: 700px;
+                height: 100%;
                 background-color: white;
                 border-radius: 8px;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -164,7 +166,7 @@ def create_timeline_component(patient_data):
             .timeline-chart {{
                 position: relative;
                 width: 100%;
-                height: 400px;
+                height: calc(100% - 80px);
                 padding: 20px;
             }}
             
@@ -249,7 +251,7 @@ def create_timeline_component(patient_data):
             
             // Configuration
             const config = {{
-                margin: {{ top: 20, right: 30, bottom: 60, left: 120 }},
+                margin: {{ top: 20, right: 30, bottom: 80, left: 150 }},
                 barHeight: 25,
                 barSpacing: 5
             }};
@@ -340,10 +342,7 @@ def create_timeline_component(patient_data):
             
             // Update the chart with filtered data
             function updateChart() {{
-                const container = document.querySelector('.timeline-chart');
-                containerWidth = container.clientWidth;
-                containerHeight = container.clientHeight;
-                
+                // Use the existing container dimensions from initChart
                 const chartWidth = containerWidth - config.margin.left - config.margin.right;
                 const chartHeight = containerHeight - config.margin.top - config.margin.bottom;
                 
@@ -488,7 +487,15 @@ def create_timeline_component(patient_data):
                 // Handle window resize
                 window.addEventListener('resize', function() {{
                     setTimeout(() => {{
-                        initChart();
+                        // Recalculate container dimensions
+                        const container = document.querySelector('.timeline-chart');
+                        containerWidth = container.clientWidth;
+                        containerHeight = container.clientHeight;
+                        
+                        // Update SVG size
+                        svg.attr('width', containerWidth)
+                           .attr('height', containerHeight);
+                        
                         updateChart();
                     }}, 100);
                 }});

@@ -1,5 +1,6 @@
 patient/generated_medical_records/*
 patient/biometric/buffer/*
+patient/agentic_monitor_logs/*
 
 # Python cache directories
 __pycache__/
