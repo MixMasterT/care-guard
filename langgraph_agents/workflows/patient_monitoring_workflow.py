@@ -1,6 +1,7 @@
 """
 Patient Monitoring Workflow for LangGraph
 Replicates CrewAI functionality with three agents: biometric_reviewer, triage_nurse, and log_writer.
+Enhanced with OpenSearch RAG for better context-aware analysis.
 """
 
 import json
@@ -13,6 +14,14 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
 from dotenv import load_dotenv
 import os
+
+# OpenSearch imports for RAG
+try:
+    from opensearchpy import OpenSearch
+    OPENSEARCH_AVAILABLE = True
+except ImportError:
+    OPENSEARCH_AVAILABLE = False
+    print("Warning: opensearch-py not available. RAG features will be disabled.")
 
 # Load environment variables from .env file
 load_dotenv()
@@ -49,6 +58,151 @@ class LangGraphState(TypedDict):
     tokens_used: int
     current_step: int
     tool_calls: int
+
+# Patient name to UUID mapping
+PATIENT_UUID_MAPPING = {
+    "allen": "f420e6d4-55db-974f-05cb-52d06375b65f",
+    "mark": "29244161-9d02-b8b6-20cc-350f53ffe7a1", 
+    "zachery": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9"
+}
+
+# OpenSearch RAG functions
+def get_patient_uuid(patient_name: str) -> str:
+    """Get the UUID for a patient name."""
+    return PATIENT_UUID_MAPPING.get(patient_name.lower())
+
+def get_pain_diary_entries_from_opensearch(patient_name: str, size: int = 50) -> List[Dict]:
+    """Retrieve pain diary entries from OpenSearch for a patient."""
+    if not OPENSEARCH_AVAILABLE:
+        return []
+    
+    try:
+        client = OpenSearch(hosts=[{'host': 'localhost', 'port': 9200}])
+        
+        # Get the patient's UUID
+        patient_uuid = get_patient_uuid(patient_name)
+        if not patient_uuid:
+            print(f"⚠️ No UUID mapping found for patient '{patient_name}'")
+            return []
+        
+        # Search by the patient's UUID
+        query_body = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {"term": {"patient_id": patient_uuid}},
+                        {"exists": {"field": "pain_level"}}
+                    ]
+                }
+            },
+            "sort": [{"date": {"order": "desc"}}],
+            "size": size
+        }
+        
+        print(f"🔍 Pain diary search query: {json.dumps(query_body, indent=2)}")
+        response = client.search(index="pain-diaries", body=query_body)
+        
+        entries = [hit["_source"] for hit in response["hits"]["hits"]]
+        print(f"🔍 Found {len(entries)} pain diary entries for patient '{patient_name}'")
+        return entries
+    except Exception as e:
+        print(f"Warning: Failed to retrieve pain diary entries from OpenSearch: {e}")
+        return []
+
+def get_fhir_entries_from_opensearch(patient_name: str, size: int = 100) -> List[Dict]:
+    """Retrieve FHIR medical records from OpenSearch for a patient."""
+    if not OPENSEARCH_AVAILABLE:
+        return []
+    
+    try:
+        client = OpenSearch(hosts=[{'host': 'localhost', 'port': 9200}])
+        
+        # Get the patient's UUID
+        patient_uuid = get_patient_uuid(patient_name)
+        if not patient_uuid:
+            print(f"⚠️ No UUID mapping found for patient '{patient_name}'")
+            return []
+        
+        # Search for FHIR records by the patient's UUID
+        query_body = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {"term": {"patient_id": patient_uuid}}
+                    ]
+                }
+            },
+            "sort": [{"indexed_at": {"order": "desc"}}],
+            "size": size
+        }
+        
+        print(f"🔍 FHIR search query: {json.dumps(query_body, indent=2)}")
+        response = client.search(index="fhir-medical-records", body=query_body)
+        
+        entries = [hit["_source"] for hit in response["hits"]["hits"]]
+        print(f"🔍 Found {len(entries)} FHIR records for patient '{patient_name}'")
+        return entries
+    except Exception as e:
+        print(f"Warning: Failed to retrieve FHIR entries from OpenSearch: {e}")
+        return []
+
+def format_pain_diary_for_prompt(entries: List[Dict]) -> str:
+    """Format pain diary entries for inclusion in prompts."""
+    if not entries:
+        return "No pain diary entries found."
+    
+    lines = []
+    for entry in entries[:10]:  # Limit to most recent 10 entries
+        date = entry.get('date', 'Unknown date')
+        pain_level = entry.get('pain_level', 'N/A')
+        mood = entry.get('mood', 'N/A')
+        notes = entry.get('notes', '')
+        lines.append(f"Date: {date}, Pain Level: {pain_level}/10, Mood: {mood}, Notes: {notes}")
+    
+    return f"Recent Pain Diary Entries ({len(entries)} total):\n" + "\n".join(lines)
+
+def format_fhir_entries_for_prompt(entries: List[Dict]) -> str:
+    """Format FHIR entries for inclusion in prompts."""
+    if not entries:
+        return "No FHIR medical records found."
+    
+    # Group by resource type for better organization
+    resource_groups = {}
+    for entry in entries:
+        resource_type = entry.get('resource_type', 'Unknown')
+        if resource_type not in resource_groups:
+            resource_groups[resource_type] = []
+        resource_groups[resource_type].append(entry)
+    
+    lines = []
+    for resource_type, resources in resource_groups.items():
+        lines.append(f"\n{resource_type} Records ({len(resources)}):")
+        for resource in resources[:5]:  # Limit to 5 per type
+            resource_data = resource.get('resource_data', {})
+            summary = extract_fhir_summary(resource_type, resource_data)
+            lines.append(f"  - {summary}")
+    
+    return f"Medical Records Summary ({len(entries)} total resources):" + "".join(lines)
+
+def extract_fhir_summary(resource_type: str, resource_data: Dict) -> str:
+    """Extract a meaningful summary from FHIR resource data."""
+    try:
+        if resource_type == 'Observation':
+            value = resource_data.get('valueQuantity', {})
+            return f"{resource_data.get('code', {}).get('text', 'Observation')}: {value.get('value', 'N/A')} {value.get('unit', '')}"
+        elif resource_type == 'Condition':
+            return f"{resource_data.get('code', {}).get('text', 'Condition')} - {resource_data.get('clinicalStatus', {}).get('text', 'Unknown status')}"
+        elif resource_type == 'MedicationRequest':
+            return f"{resource_data.get('medicationCodeableConcept', {}).get('text', 'Medication')} - {resource_data.get('status', 'Unknown status')}"
+        elif resource_type == 'Patient':
+            name = resource_data.get('name', [{}])[0] if resource_data.get('name') else {}
+            return f"Patient: {name.get('text', 'Unknown name')}"
+        elif resource_type == 'Procedure':
+            return f"{resource_data.get('code', {}).get('text', 'Procedure')} - {resource_data.get('status', 'Unknown status')}"
+        else:
+            return f"{resource_type}: {resource_data.get('id', 'Unknown ID')}"
+    except Exception:
+        return f"{resource_type}: Data available"
 
 def load_biometric_data_step(state: LangGraphState) -> LangGraphState:
     """Load biometric data from buffer file."""
@@ -282,7 +436,7 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
         }
 
 def load_patient_data_step(state: LangGraphState) -> LangGraphState:
-    """Load patient data files."""
+    """Load patient data using OpenSearch RAG for enhanced context."""
     if state.get("error"):
         return state
     
@@ -290,37 +444,89 @@ def load_patient_data_step(state: LangGraphState) -> LangGraphState:
         workspace_root = Path(__file__).parent.parent.parent
         patient_name = state["patient_name"]
         
-        # Load pain diary
-        pain_file = workspace_root / "patient" / "generated_medical_records" / "pain_diaries" / f"{patient_name.lower()}.json"
-        pain_diary_data = []
-        if pain_file.exists():
-            with open(pain_file, 'r') as f:
-                pain_diary_data = json.load(f)
+        print(f"🔍 Loading patient data for {patient_name} using OpenSearch RAG...")
         
-        # Load weight data
+        # Check OpenSearch connectivity and indices
+        if OPENSEARCH_AVAILABLE:
+            try:
+                client = OpenSearch(hosts=[{'host': 'localhost', 'port': 9200}])
+                indices = client.cat.indices(format='json')
+                print(f"📊 Available OpenSearch indices: {[idx['index'] for idx in indices]}")
+                
+                # Check document counts in each index
+                for index_info in indices:
+                    if index_info['index'] in ['pain-diaries', 'fhir-medical-records']:
+                        index_name = index_info['index']
+                        doc_count = index_info['docs.count']
+                        print(f"📈 {index_name}: {doc_count} documents")
+                        
+                        # Show a sample document to understand the structure
+                        if int(doc_count) > 0:
+                            sample_response = client.search(
+                                index=index_name,
+                                body={"query": {"match_all": {}}, "size": 1}
+                            )
+                            if sample_response['hits']['hits']:
+                                sample_doc = sample_response['hits']['hits'][0]['_source']
+                                print(f"📄 Sample {index_name} document keys: {list(sample_doc.keys())}")
+                                if 'patient_id' in sample_doc:
+                                    print(f"   patient_id example: {sample_doc['patient_id']}")
+                                if 'source_file' in sample_doc:
+                                    print(f"   source_file example: {sample_doc['source_file']}")
+            except Exception as e:
+                print(f"⚠️ OpenSearch connectivity issue: {e}")
+        
+        # Load pain diary entries from OpenSearch
+        pain_diary_entries = get_pain_diary_entries_from_opensearch(patient_name, size=50)
+        pain_diary_data = pain_diary_entries  # Keep original format for compatibility
+        
+        # Load weight data (still from file for now)
         weight_file = workspace_root / "patient" / "biometric" / "weight" / f"{patient_name.lower()}.json"
         weight_data = []
         if weight_file.exists():
             with open(weight_file, 'r') as f:
                 weight_data = json.load(f)
         
-        # Load FHIR records
-        fhir_records = {}
-        fhir_dir = workspace_root / "patient" / "generated_medical_records" / "fhir"
-        if fhir_dir.exists():
-            for fhir_file in fhir_dir.glob("*.json"):
-                if patient_name.lower() in fhir_file.name.lower():
-                    with open(fhir_file, 'r') as f:
-                        fhir_records = json.load(f)
-                    break
+        # Load FHIR records from OpenSearch
+        fhir_entries = get_fhir_entries_from_opensearch(patient_name, size=100)
+        fhir_records = {"entries": fhir_entries}  # Keep original format for compatibility
         
-        # Load patient context using AgenticPatientDataLoader if available
-        try:
-            from patient.agentic_data_loader import AgenticPatientDataLoader
-            data_loader = AgenticPatientDataLoader(patient_name, workspace_root / 'patient')
-            patient_context = data_loader.get_agent_specific_context("care_coordination", max_tokens=15000)
-        except ImportError:
-            patient_context = f"Patient {patient_name} - basic context"
+        # Create enhanced patient context using RAG data
+        pain_context = format_pain_diary_for_prompt(pain_diary_entries)
+        fhir_context = format_fhir_entries_for_prompt(fhir_entries)
+        
+        # Enhanced patient context combining RAG data
+        patient_context = f"""
+Patient: {patient_name}
+
+MEDICAL HISTORY (from OpenSearch):
+{fhir_context}
+
+PAIN DIARY HISTORY (from OpenSearch):
+{pain_context}
+
+WEIGHT DATA: {len(weight_data)} measurements available
+"""
+        
+        print(f"✅ Loaded {len(pain_diary_entries)} pain diary entries and {len(fhir_entries)} FHIR records from OpenSearch")
+        
+        return {
+            **state,
+            "pain_diary_data": pain_diary_data,
+            "weight_data": weight_data,
+            "fhir_records": fhir_records,
+            "patient_context": patient_context,
+            "current_step": state.get("current_step", 0) + 1,
+            "tool_calls": state.get("tool_calls", 0) + 0,  # No LLM calls in this step
+            "error": None,
+            "progress": 60,
+            "status": "patient_data_loaded",
+            "events": state.get("events", []) + [{
+                "timestamp": datetime.now().isoformat(),
+                "type": "patient_data_loaded",
+                "message": f"Step {state.get('current_step', 0) + 1}: Loaded patient data for {patient_name} using OpenSearch RAG ({len(pain_diary_entries)} pain entries, {len(fhir_entries)} FHIR records)"
+            }]
+        }
         
         return {
             **state,
@@ -361,8 +567,8 @@ def triage_nurse_step(state: LangGraphState) -> LangGraphState:
         patient_context = state["patient_context"]
         
         system_prompt = """You are a senior cardiac care triage nurse with 15+ years of experience in post-operative monitoring.
-        Analyze patient biometric data and medical history to determine appropriate care actions.
-        Only report findings that you can verify from the actual data files.
+        Analyze patient biometric data and comprehensive medical history to determine appropriate care actions.
+        Use the provided medical history and pain diary data to inform your decision-making.
         
         Provide response in this exact JSON format:
         {
@@ -375,9 +581,17 @@ def triage_nurse_step(state: LangGraphState) -> LangGraphState:
             "requires_immediate_action": true/false
         }
         
-        CRITICAL: Use the biometric analysis to inform your triage decision.
+        DECISION FACTORS:
+        1. Biometric Analysis: Use current vital signs and trends
+        2. Medical History: Consider past conditions, procedures, and medications
+        3. Pain Diary: Evaluate pain patterns and patient-reported symptoms
+        4. Risk Assessment: Combine all factors for comprehensive evaluation
+        
+        CRITICAL GUIDELINES:
         - If biometrics show "critical" risk → priority MUST be "immediate" or "high"
         - If biometrics require_attention → next action MUST address the concern
+        - If pain diary shows worsening trends → consider escalating priority
+        - If medical history shows relevant conditions → factor into decision
         - If biometrics show "high" risk → consider escalating priority"""
         
         analysis_summary = f"""
