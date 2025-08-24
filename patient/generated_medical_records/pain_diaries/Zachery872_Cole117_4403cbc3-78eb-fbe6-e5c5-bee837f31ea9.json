@@ -5,7 +5,10 @@
     "pain_level": 2,
     "sleep_quality": 8,
     "mood": "good",
-    "notes": "Felt fine overall. Minor aches in the afternoon."
+    "notes": "Felt fine overall. Minor aches in the afternoon.",
+    "offset_ms": 864000000,
+    "timestamp": "2025-08-08T22:02:45.238320",
+    "days_ago": 10
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -13,7 +16,10 @@
     "pain_level": 3,
     "sleep_quality": 7,
     "mood": "okay",
-    "notes": "Slight increase in pain. Woke up once during the night."
+    "notes": "Slight increase in pain. Woke up once during the night.",
+    "offset_ms": 777600000,
+    "timestamp": "2025-08-09T22:02:45.238317",
+    "days_ago": 9
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -21,7 +27,10 @@
     "pain_level": 4,
     "sleep_quality": 6,
     "mood": "neutral",
-    "notes": "Pain is persistent in lower back. Harder to fall asleep."
+    "notes": "Pain is persistent in lower back. Harder to fall asleep.",
+    "offset_ms": 691200000,
+    "timestamp": "2025-08-10T22:02:45.238315",
+    "days_ago": 8
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -29,7 +38,10 @@
     "pain_level": 5,
     "sleep_quality": 6,
     "mood": "meh",
-    "notes": "Pain spreading to legs. Sleep was disturbed again."
+    "notes": "Pain spreading to legs. Sleep was disturbed again.",
+    "offset_ms": 604800000,
+    "timestamp": "2025-08-11T22:02:45.238313",
+    "days_ago": 7
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -37,7 +49,10 @@
     "pain_level": 6,
     "sleep_quality": 5,
     "mood": "low",
-    "notes": "More fatigue and dull pain. Had to rest during the day."
+    "notes": "More fatigue and dull pain. Had to rest during the day.",
+    "offset_ms": 518400000,
+    "timestamp": "2025-08-12T22:02:45.238311",
+    "days_ago": 6
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -45,7 +60,10 @@
     "pain_level": 7,
     "sleep_quality": 4,
     "mood": "frustrated",
-    "notes": "Harder to manage tasks. Irritable due to discomfort."
+    "notes": "Harder to manage tasks. Irritable due to discomfort.",
+    "offset_ms": 432000000,
+    "timestamp": "2025-08-13T22:02:45.238308",
+    "days_ago": 5
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -53,7 +71,10 @@
     "pain_level": 8,
     "sleep_quality": 3,
     "mood": "down",
-    "notes": "Pain more intense. Woke up multiple times at night."
+    "notes": "Pain more intense. Woke up multiple times at night.",
+    "offset_ms": 345600000,
+    "timestamp": "2025-08-14T22:02:45.238306",
+    "days_ago": 4
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -61,7 +82,10 @@
     "pain_level": 9,
     "sleep_quality": 2,
     "mood": "depressed",
-    "notes": "Almost no energy. Stayed in bed most of the day."
+    "notes": "Almost no energy. Stayed in bed most of the day.",
+    "offset_ms": 259200000,
+    "timestamp": "2025-08-15T22:02:45.238303",
+    "days_ago": 3
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -69,7 +93,10 @@
     "pain_level": 9,
     "sleep_quality": 2,
     "mood": "very low",
-    "notes": "Pain constant. Tried stretching, no relief. Cried today."
+    "notes": "Pain constant. Tried stretching, no relief. Cried today.",
+    "offset_ms": 172800000,
+    "timestamp": "2025-08-16T22:02:45.238299",
+    "days_ago": 2
   },
   {
     "patient_id": "4403cbc3-78eb-fbe6-e5c5-bee837f31ea9",
@@ -77,7 +104,9 @@
     "pain_level": 10,
     "sleep_quality": 1,
     "mood": "hopeless",
-    "notes": "Worst day so far. Considering calling the doctor."
+    "notes": "Worst day so far. Considering calling the doctor.",
+    "offset_ms": 86400000,
+    "timestamp": "2025-08-17T22:02:45.238294",
+    "days_ago": 1
   }
 ]
-

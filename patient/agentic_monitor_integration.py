@@ -38,7 +38,18 @@ from agentic_types.models import (
 )
 
 # Import the new integration system
-from integrations import get_integration, BaseIntegration
+try:
+    # Try relative import first (when used as part of the patient package)
+    from .integrations import get_integration, BaseIntegration
+except ImportError:
+    try:
+        # Try absolute import from patient package
+        from patient.integrations import get_integration, BaseIntegration
+    except ImportError:
+        # Final fallback - try direct import
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent))
+        from integrations import get_integration, BaseIntegration
 
 
 class AgenticMonitorIntegration:

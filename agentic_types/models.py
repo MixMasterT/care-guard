@@ -96,6 +96,8 @@ class ExecutionMetrics(BaseModel):
     tokens_used: Optional[int] = None
     tool_calls: Optional[int] = None
     steps_completed: Optional[int] = None
+    success: bool = True
+    error_message: Optional[str] = None
 
 
 class Artifacts(BaseModel):

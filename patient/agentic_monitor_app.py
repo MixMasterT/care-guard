@@ -11,26 +11,20 @@ import threading
 from pathlib import Path
 from datetime import datetime
 
-def show_results(run_id, patient_name, output_container):
+def show_results(run_id, patient_name, timestamp, output_container):
     """Display the analysis results in a structured format"""
     try:
         # Look for the medical log file (contains the final output)
         logs_dir = Path(__file__).parent / "agentic_monitor_logs"
         
-        # Try multiple patterns to handle case variations and different naming conventions
-        search_patterns = [
-            f"*_{run_id}_*_medical_log.json",  # Most flexible pattern - should work with new format
-            f"*_{run_id}_{patient_name.lower()}_medical_log.json",  # lowercase
-            f"*_{run_id}_{patient_name.title()}_medical_log.json",  # title case
-            f"*_{run_id}_{patient_name}_medical_log.json",          # original case
-        ]
+        # Use the exact filename with our single naming convention
+        medical_log_file = logs_dir / f"{timestamp}_{patient_name}_medical_log.json"
         
-        medical_log_files = []
-        for pattern in search_patterns:
-            files = list(logs_dir.glob(pattern))
-            if files:
-                medical_log_files.extend(files)
-                break
+        if not medical_log_file.exists():
+            output_container.error(f"❌ Medical log file not found: {medical_log_file.name}")
+            return
+        
+        medical_log_files = [medical_log_file]
         
         if not medical_log_files:
             # Debug: show what files exist
@@ -163,29 +157,38 @@ def show_results(run_id, patient_name, output_container):
         import traceback
         output_container.error(f"Traceback: {traceback.format_exc()}")
 
-def update_progress_from_execution_log(run_id: str):
+def update_progress_from_execution_log(run_id: str, timestamp: str, patient_name: str):
     """
     Update progress information from execution log and refresh UI.
     This function should be called regularly to keep the UI updated.
     """
-    if parse_execution_log(run_id):
+    if parse_execution_log(run_id, timestamp, patient_name):
         # Force a rerun to update the UI with new session state values
         st.rerun()
 
 
-def parse_execution_log(run_id: str) -> bool:
+def parse_execution_log(run_id: str, timestamp: str, patient_name: str) -> bool:
     """
     Parse the execution log JSON file and update session state with progress information.
     
     Args:
         run_id: The run ID to look for in execution log files
+        timestamp: The formatted timestamp (YYYY_MM_DD_HH_MM)
+        patient_name: The patient name
         
     Returns:
         True if execution log was found and parsed, False otherwise
     """
     try:
         logs_dir = Path(__file__).parent / "agentic_monitor_logs"
-        execution_log_files = list(logs_dir.glob(f"*_{run_id}_*_execution_log.json"))
+        
+        # Construct the exact filename using our single naming convention
+        execution_log_file = logs_dir / f"{timestamp}_{patient_name}_execution_log.json"
+        
+        if not execution_log_file.exists():
+            return False
+        
+        execution_log_files = [execution_log_file]
         
         if not execution_log_files:
             return False
@@ -224,10 +227,15 @@ def start_analysis(run_id, patient_name, framework):
         sys.path.insert(0, str(Path(__file__).parent))
         
         try:
-            from agentic_monitor_integration import AgenticMonitorIntegration
-        except ImportError as e:
-            print(f"❌ Failed to import AgenticMonitorIntegration: {e}")
-            return False
+            # Try package import first
+            from patient.agentic_monitor_integration import AgenticMonitorIntegration
+        except ImportError:
+            try:
+                # Fallback to direct import
+                from agentic_monitor_integration import AgenticMonitorIntegration
+            except ImportError as e:
+                print(f"❌ Failed to import AgenticMonitorIntegration: {e}")
+                return False
         
         # Initialize integration and start analysis
         integration = AgenticMonitorIntegration()
@@ -286,7 +294,7 @@ def main():
         st.error("❌ No run ID specified. Please launch from the main monitor using 'Run Analysis' button.")
         return
     
-    # Extract patient name from run_id if not provided
+    # Extract patient name and timestamp from run_id if not provided
     if not patient_name:
         try:
             parts = run_id.split('_')
@@ -301,8 +309,21 @@ def main():
         st.error("❌ Could not determine patient name.")
         return
     
+    # Extract timestamp from run_id (format: YYYY_MM_DD_HH_MM_timestamp)
+    timestamp = None
+    try:
+        parts = run_id.split('_')
+        if len(parts) >= 5:  # YYYY_MM_DD_HH_MM_timestamp
+            timestamp = f"{parts[0]}_{parts[1]}_{parts[2]}_{parts[3]}_{parts[4]}"
+        else:
+            st.warning("⚠️ Could not extract timestamp from run_id, using fallback search method")
+    except:
+        st.warning("⚠️ Could not extract timestamp from run_id, using fallback search method")
+    
     st.header(f"Patient: {patient_name}")
     st.subheader(f"Run ID: {run_id}")
+    if timestamp:
+        st.subheader(f"Timestamp: {timestamp}")
     st.subheader(f"Framework: {framework.title()}")
     
     # Create containers for dynamic updates
@@ -382,7 +403,7 @@ def main():
             st.session_state.analysis_running = False
     
     # Always parse execution log to get latest status
-    parse_execution_log(run_id)
+    parse_execution_log(run_id, timestamp, patient_name)
     
     # Display current status from session state using containers
     progress_container.progress(st.session_state.percent / 100, text=f"Analysis Progress: {st.session_state.percent}%")
@@ -405,7 +426,7 @@ def main():
     # Show results when analysis is complete
     if st.session_state.percent >= 100:
         output_container.info("🎯 Loading analysis results...")
-        show_results(run_id, patient_name, output_container)
+        show_results(run_id, patient_name, timestamp, output_container)
     
     # Add a refresh button for manual updates during analysis
     if st.session_state.get('analysis_running', False) and st.session_state.percent < 100:
