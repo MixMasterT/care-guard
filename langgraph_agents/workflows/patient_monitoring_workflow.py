@@ -46,6 +46,7 @@ class LangGraphState(TypedDict):
     progress: int
     status: str
     events: list
+    tokens_used: int
 
 def load_biometric_data_step(state: LangGraphState) -> LangGraphState:
     """Load biometric data from buffer file."""
@@ -171,6 +172,15 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
         response = llm.invoke(messages)
         response_content = response.content if hasattr(response, 'content') else str(response)
         
+        # Track tokens used
+        tokens_used = state.get("tokens_used", 0)
+        if hasattr(response, 'usage') and response.usage:
+            tokens_used += response.usage.total_tokens
+        else:
+            # Estimate tokens if usage not available
+            estimated_tokens = len(response_content.split()) * 1.3  # Rough estimate
+            tokens_used += int(estimated_tokens)
+        
         # Parse JSON response
         import re
         json_match = re.search(r'\{.*\}', response_content, re.DOTALL)
@@ -221,6 +231,7 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
         return {
             **state,
             "biometric_analysis": biometric_analysis,
+            "tokens_used": tokens_used,
             "error": None,
             "progress": 40,
             "status": "biometrics_analyzed",
@@ -353,6 +364,15 @@ def triage_nurse_step(state: LangGraphState) -> LangGraphState:
         response = llm.invoke(messages)
         response_content = response.content if hasattr(response, 'content') else str(response)
         
+        # Track tokens used
+        tokens_used = state.get("tokens_used", 0)
+        if hasattr(response, 'usage') and response.usage:
+            tokens_used += response.usage.total_tokens
+        else:
+            # Estimate tokens if usage not available
+            estimated_tokens = len(response_content.split()) * 1.3  # Rough estimate
+            tokens_used += int(estimated_tokens)
+        
         # Parse JSON response
         import re
         json_match = re.search(r'\{.*\}', response_content, re.DOTALL)
@@ -374,6 +394,7 @@ def triage_nurse_step(state: LangGraphState) -> LangGraphState:
         return {
             **state,
             "triage_decision": triage_decision,
+            "tokens_used": tokens_used,
             "error": None,
             "progress": 80,
             "status": "triage_decision_made",
@@ -440,6 +461,7 @@ def log_writer_step(state: LangGraphState) -> LangGraphState:
             recommendations=recommendations,
             metrics=ExecutionMetrics(
                 duration_ms=int((datetime.now() - datetime.fromisoformat(state["events"][0]["timestamp"])).total_seconds() * 1000) if state["events"] else 0,
+                tokens_used=state.get("tokens_used", 0),
                 steps_completed=len(state["events"])
             ),
             artifacts=Artifacts(
@@ -506,7 +528,8 @@ def run_patient_monitoring(patient_name: str, run_id: str) -> Dict[str, Any]:
             "error": None,
             "progress": 0,
             "status": "starting",
-            "events": []
+            "events": [],
+            "tokens_used": 0
         }
         
         result = app.invoke(initial_state)
