@@ -254,11 +254,16 @@ def start_analysis(run_id, patient_name, framework):
                 return False
                 
         elif framework.lower() == "langgraph":
-            # New block for LangGraph framework
+            # LangGraph framework - use the integration system
             print(f"🔧 LangGraph framework selected - implementing LangGraph analysis...")
-            # TODO: Implement LangGraph-specific analysis logic here
-            print(f"⚠️ LangGraph analysis not yet implemented")
-            return False
+            try:
+                # Use the AgenticMonitorIntegration to run LangGraph analysis
+                integration = AgenticMonitorIntegration()
+                result = integration.run_agentic_analysis(patient_name, run_id, framework="langgraph")
+                return result.get("success", False)
+            except Exception as e:
+                print(f"❌ Error running LangGraph analysis: {e}")
+                return False
             
         else:
             # Error block for unsupported frameworks
