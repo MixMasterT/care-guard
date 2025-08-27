@@ -4,11 +4,22 @@ A real-time patient monitoring system with synthetic heartbeat data streaming, m
 
 ## Quick Start
 
-**Prerequisites**: Python 3.12+ and UV package manager
+**Prerequisites**: Python 3.12+, UV package manager, and Docker
 
-### Setup and Run
+### Setup
+1. Install Python 3.12+
 
-1. **Open three terminal windows, each starting in the project root directory**
+2. Install UV package manager
+
+3. Install Docker
+
+4. Clone this repo
+
+5. Copy the example `.env.example` file to a file named `.env`, and set a value for `OPENAI_API_KEY`
+
+### Run
+
+1. **Open four terminal windows, each starting in the project root directory**
 
 2. **Terminal 1: Install dependencies and start biometric server**
 
@@ -26,7 +37,21 @@ A real-time patient monitoring system with synthetic heartbeat data streaming, m
 
    This server simulates IoT medical devices and streams biometric events to the monitoring system.
 
-3. **Terminal 2: Start the main patient monitor**
+3. **Terminal 2: Start Opensearch in Docker**
+
+```bash
+# Navigate to the OpenSearch directory
+cd opensearch/
+
+# Start OpenSearch using Docker Compose
+docker-compose up -d
+
+# Verify OpenSearch is running (should show "green" status)
+curl http://localhost:9200/_cluster/health
+```
+
+
+4. **Terminal 3: Start the main patient monitor**
 
    ```bash
    # Activate the virtual environment
@@ -56,22 +81,7 @@ A real-time patient monitoring system with synthetic heartbeat data streaming, m
 
 **Note**: The biometric scenario server (Terminal 1) must be running for the patient monitor to receive heartbeat data and run scenarios.
 
-### Optional: OpenSearch Setup for RAG Knowledge Enhancement
-
-If you want to use Retrieval-Augmented Generation (RAG) for enhanced medical knowledge:
-
-```bash
-# Navigate to the OpenSearch directory
-cd opensearch/
-
-# Start OpenSearch using Docker Compose
-docker-compose up -d
-
-# Verify OpenSearch is running (should show "green" status)
-curl http://localhost:9200/_cluster/health
-```
-
-OpenSearch provides a knowledge base that AI research teams can populate with medical reference materials, enabling LLMs to access up-to-date medical information during patient analysis.
+### Optional: 
 
 ## System Architecture
 
