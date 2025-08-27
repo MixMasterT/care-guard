@@ -6,6 +6,7 @@ import socket
 import threading
 import time
 from pathlib import Path
+import re
 from typing import Dict, List, Optional
 import plotly.express as px
 import plotly.graph_objects as go
@@ -15,11 +16,26 @@ import numpy as np
 import asyncio
 import websockets
 from pydantic import BaseModel
-from monitor_components.heartbeat_component import create_heartbeat_component
-from monitor_components.ekg_component import create_ekg_component
-from monitor_components.timeline_component import create_timeline_component
-import utils.heartbeat_analysis
-import utils.fhir_observations
+
+try:
+    # When imported as part of a package
+    from .monitor_components.heartbeat_component import create_heartbeat_component
+    from .monitor_components.ekg_component import create_ekg_component
+    from .monitor_components.timeline_component import create_timeline_component
+    from .utils import heartbeat_analysis
+    from .utils import fhir_observations
+except ImportError:
+    # When run directly
+    from monitor_components.heartbeat_component import create_heartbeat_component
+    from monitor_components.ekg_component import create_ekg_component
+    from monitor_components.timeline_component import create_timeline_component
+    # Use explicit relative path to avoid conflict with root utils directory
+    import sys
+    from pathlib import Path
+    utils_path = Path(__file__).parent / "utils"
+    sys.path.insert(0, str(utils_path))
+    import heartbeat_analysis
+    import fhir_observations
 
 # Set page config
 st.set_page_config(
@@ -42,7 +58,7 @@ def flush_biometric_buffer():
         
         try:
             # Ensure buffer directory exists
-            buffer_dir = utils.heartbeat_analysis.ensure_biometric_buffer_dir()
+            buffer_dir = heartbeat_analysis.ensure_biometric_buffer_dir()
             biometric_file = buffer_dir / "simulation_biometrics.json"
             
             # Load existing records
@@ -138,7 +154,7 @@ def clear_biometric_buffer():
             biometric_buffer = []
         
         # Clear file buffer
-        buffer_dir = utils.heartbeat_analysis.ensure_biometric_buffer_dir()
+        buffer_dir = heartbeat_analysis.ensure_biometric_buffer_dir()
         biometric_file = buffer_dir / "simulation_biometrics.json"
         if biometric_file.exists():
             biometric_file.unlink()
@@ -442,11 +458,19 @@ class HeartbeatClient:
                                             'ecg_rhythm': event.get('ecg_rhythm')
                                         }
                                         record_biometric_event('ecg_rhythm', event_timestamp, medical_data)
+                                        
+                                    elif 'blood_pressure' in event:
+                                        medical_data = {
+                                            'systolic': event.get('blood_pressure', {}).get('systolic'),
+                                            'diastolic': event.get('blood_pressure', {}).get('diastolic')
+                                        }
+                                        record_biometric_event('blood_pressure', event_timestamp, medical_data)
                                 
                             elif event_type == 'scenario_stopped':
                                 # Update Streamlit session state to reflect that simulation has stopped
                                 st.session_state.simulation_running = False
                                 st.session_state.current_scenario = None
+                                print(f"📊 Scenario stopped event received via TCP - session state updated")
 
                         except json.JSONDecodeError:
                             print('Unable to decode JSON in _listen_for_biometrics handler')
@@ -750,6 +774,50 @@ async def websocket_handler(websocket, path):
 
 def main():
     print("🚀 Main function called")
+    
+    # Add custom CSS to ensure full width for components
+    st.markdown("""
+    <style>
+    .stApp {
+        max-width: 100%;
+    }
+    .main .block-container {
+        max-width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    /* Force all iframes to full width */
+    iframe {
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 100% !important;
+    }
+    /* Target Streamlit's specific iframe containers */
+    [data-testid="stHorizontalBlock"] iframe,
+    [data-testid="stVerticalBlock"] iframe,
+    [data-testid="stBlock"] iframe {
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 100% !important;
+    }
+    /* Override any width constraints */
+    .stHorizontalBlock iframe,
+    .stVerticalBlock iframe,
+    .stBlock iframe,
+    .stMarkdown iframe {
+        width: 100% !important;
+        max-width: none !important;
+        min-width: 100% !important;
+    }
+    /* Target the specific div that contains iframes */
+    div[data-testid="stHorizontalBlock"] > div,
+    div[data-testid="stVerticalBlock"] > div {
+        width: 100% !important;
+        max-width: none !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
     st.title("🏥 Patient Monitor")
     
     # Initialize session state for simulation tracking
@@ -759,6 +827,16 @@ def main():
         st.session_state.current_scenario = None
     if 'chart_refresh_counter' not in st.session_state:
         st.session_state.chart_refresh_counter = 0
+    
+    # Initialize session state for agentic solutions
+    if 'agentic_solution' not in st.session_state:
+        st.session_state.agentic_solution = "Crewai"
+    if 'agentic_analysis_running' not in st.session_state:
+        st.session_state.agentic_analysis_running = False
+    if 'agentic_results' not in st.session_state:
+        st.session_state.agentic_results = None
+    if 'agent_monitor_data' not in st.session_state:
+        st.session_state.agent_monitor_data = []
     
     # Heartbeat monitoring section
     st.subheader("💓 Heartbeat Monitoring")
@@ -784,7 +862,7 @@ def main():
                 st.info(f"🔄 Current simulation: {st.session_state.current_scenario}")
                 
                 # Show biometric recording status
-                buffer_dir = utils.heartbeat_analysis.ensure_biometric_buffer_dir()
+                buffer_dir = heartbeat_analysis.ensure_biometric_buffer_dir()
                 biometric_file = buffer_dir / "simulation_biometrics.json"
                 
                 # Count file records
@@ -838,8 +916,20 @@ def main():
                 if (event.data.type === 'scenario_started') {
                     // The scenario state will be updated by the trigger function
                 } else if (event.data.type === 'scenario_stopped') {
-                    // Force a page reload to update the Streamlit state
-                    window.location.reload();
+                    // Update the UI to reflect that simulation has stopped
+                    // Don't reload the page - just update the display
+                    console.log('Scenario stopped event received');
+                    
+                    // Find and update the simulation status display
+                    const statusElements = document.querySelectorAll('[data-testid="stText"]');
+                    statusElements.forEach(element => {
+                        if (element.textContent.includes('Current simulation:')) {
+                            element.textContent = '⏸️ No simulation currently running';
+                        }
+                    });
+                    
+                    // Update any other UI elements that show simulation status
+                    // This prevents the need for a full page reload
                 }
             });
             
@@ -859,9 +949,93 @@ def main():
     if st.session_state.heartbeat_client.connected:
         # EKG visualization with D3.js
         ekg_html = create_ekg_component()
-        st.components.v1.html(ekg_html, height=350)
+        # Create a full-width container for the EKG
+        with st.container():
+            st.components.v1.html(ekg_html, height=350, scrolling=True)
     else:
         st.info("🔌 Connect to heartbeat server to view EKG chart")
+    
+    st.markdown("---")
+
+    # Handle agentic analysis execution in main area
+    if st.session_state.agentic_analysis_running:
+        # Get current patient name from session state
+        patient_name = None
+        fhir_file = None
+        
+        if 'selected_patient' in st.session_state:
+            # Extract patient name from file path
+            file_path = st.session_state.selected_patient
+            filename = file_path.name  # Use full filename including extension
+            fhir_file = filename
+            
+            if '_' in filename:
+                parts = filename.split('_')
+                if len(parts) >= 3:
+                    # Map the extracted name to the expected patient names
+                    first_name = parts[0]
+                    last_name = parts[1]
+                    
+                    # Map to expected patient names
+                    if first_name.lower().startswith('allen'):
+                        patient_name = "Allen"
+                    elif first_name.lower().startswith('mark'):
+                        patient_name = "Mark"
+                    elif first_name.lower().startswith('zach'):
+                        patient_name = "Zach"
+                    else:
+                        # Fallback to original logic
+                        patient_name = f"{first_name} {last_name}"
+        
+        if patient_name:
+            # Launch agentic monitor app in new window
+            agentic_url = f"http://localhost:8502/?run_id={st.session_state.current_run_id}&patient={patient_name}&framework={st.session_state.agentic_solution.lower()}"
+            
+            # Use a more Safari-friendly approach
+            js_code = f"""
+            <script>
+            // Try to open the window
+            const newWindow = window.open('{agentic_url}', '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+            
+            // Check if it was blocked
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {{
+                // Popup was blocked - show a more prominent message
+                const popupBlockedDiv = document.createElement('div');
+                popupBlockedDiv.innerHTML = `
+                    <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 8px; margin: 15px 0; color: #721c24;">
+                        <h4 style="margin: 0 0 10px 0;">⚠️ Popup Blocked</h4>
+                        <p style="margin: 0 0 10px 0;">Your browser blocked the popup window. To view the agentic monitor:</p>
+                        <ol style="margin: 0 0 10px 0; padding-left: 20px;">
+                            <li>Click the link below to open manually</li>
+                            <li>Or allow popups for this site in your browser settings</li>
+                        </ol>
+                        <a href="{agentic_url}" target="_blank" style="background-color: #007bff; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; display: inline-block;">Open Agentic Monitor</a>
+                    </div>
+                `;
+                document.body.appendChild(popupBlockedDiv);
+            }} else {{
+                // Successfully opened
+                console.log('Agentic monitor window opened successfully');
+            }}
+            </script>
+            """
+            st.components.v1.html(js_code, height=0)
+            
+            st.success(f"🤖 Agentic Monitor launched for {patient_name}")
+            st.info("The agentic analysis will run in a separate window. You can continue monitoring patients here.")
+            
+            # Always show manual link as backup
+            st.markdown(f"""
+            **Manual link:** [Open Agentic Monitor]({agentic_url})
+            
+            If the popup was blocked, click the manual link above to open the agentic monitor.
+            """)
+            
+            # Reset the running state
+            st.session_state.agentic_analysis_running = False
+        else:
+            st.error("❌ Could not determine patient name from selected file")
+            st.session_state.agentic_analysis_running = False
     
     st.markdown("---")
     
@@ -875,29 +1049,149 @@ def main():
     # Sidebar for controls
     st.sidebar.header("Controls")
     
-    # Random patient selection
-    if st.sidebar.button("🎲 Select Random Patient"):
-        selected_file = random.choice(patient_files)
-        st.session_state.selected_patient = selected_file
+    # Agentic Analysis Controls
+    st.sidebar.subheader("🤖 Agentic Analysis")
     
-    # Manual patient selection
-    st.sidebar.subheader("Or select a specific patient:")
-    patient_names = []
+    # Solution selector dropdown
+    solution_options = ["Crewai", "LangGraph"]  # Add other agentic monitoring solutions here as they become available
+    selected_solution = st.sidebar.selectbox(
+        "Select Agentic Solution:",
+        solution_options,
+        index=solution_options.index(st.session_state.agentic_solution)
+    )
+    st.session_state.agentic_solution = selected_solution
+    
+    # Run analysis button
+    if st.sidebar.button("🚀 Run Analysis", key="run_analysis_button"):
+        if 'selected_patient' in st.session_state:
+            try:
+                # Generate a run ID
+                run_id = f"{datetime.now().strftime('%Y_%m_%d_%H_%M')}_{int(time.time())}"
+                
+                # Store run ID in session state
+                st.session_state.current_run_id = run_id
+                
+                # Set session state to prevent multiple launches
+                st.session_state.agentic_analysis_running = True
+                
+                # Show immediate feedback
+                st.success(f"🚀 Starting agentic analysis for {st.session_state.selected_patient_display}...")
+                st.info("This may take a few minutes. The analysis will run in the background.")
+                
+                # Launch agentic monitor with patient info
+                agentic_url = f"http://localhost:8502?run_id={run_id}&patient={st.session_state.selected_patient_display}&framework={st.session_state.agentic_solution.lower()}"
+                
+                # Use Streamlit's link functionality instead of JavaScript popup
+                st.markdown(f"""
+                ## 🚀 Agentic Analysis Started!
+                
+                **Patient:** {st.session_state.selected_patient_display}  
+                **Run ID:** {run_id}
+                
+                ### 📋 Next Steps:
+                1. **Click the link below** to open the agentic monitor in a new tab
+                2. The analysis will start automatically when the monitor opens
+                3. You can continue monitoring patients here while the analysis runs
+                
+                **🔗 [Open Agentic Monitor]({agentic_url})**
+                
+                ---
+                """)
+                
+                st.success(f"✅ Analysis setup complete! Click the link above to open the agentic monitor.")
+                st.info(f"Framework: {st.session_state.agentic_solution}")
+                
+                # Force a rerun to update the UI state
+                st.rerun()
+                
+            except Exception as e:
+                st.error(f"❌ Error setting up analysis: {e}")
+                # Reset session state on error
+                st.session_state.agentic_analysis_running = False
+                if 'current_run_id' in st.session_state:
+                    del st.session_state.current_run_id
+                return
+        else:
+            st.error("❌ Please select a patient first!")
+            return
+    
+
+    
+    # Patient selection
+    st.sidebar.subheader("Select a patient:")
+    patient_map = {}
     for file_path in patient_files:
-        # Try to extract a readable name from the filename
+        # Extract display name from filename, removing trailing digits
         filename = file_path.stem
         if '_' in filename:
             parts = filename.split('_')
             if len(parts) >= 3:
-                patient_names.append((f"{parts[0]} {parts[1]}", file_path))
-    
-    if patient_names:
-        selected_name, selected_file = st.sidebar.selectbox(
+                first = re.sub(r"\d+$", "", parts[0])
+                last = re.sub(r"\d+$", "", parts[1])
+                display_name = f"{first} {last}".strip()
+                patient_map[display_name] = file_path
+
+    if patient_map:
+        display_names = sorted(list(patient_map.keys()))
+
+        # Determine current selection index from session state (stable across reruns)
+        current_index = 0
+        if 'selected_patient' in st.session_state:
+            try:
+                current_path = st.session_state.selected_patient
+                # Find matching display name by path
+                for name, path in patient_map.items():
+                    if path == current_path:
+                        current_index = display_names.index(name)
+                        break
+            except Exception:
+                current_index = 0
+
+        selected_display = st.sidebar.selectbox(
             "Choose a patient:",
-            patient_names,
-            format_func=lambda x: x[0]
+            display_names,
+            index=current_index,
+            key="patient_select_name",
         )
-        st.session_state.selected_patient = selected_file
+        # Update session state immediately with current selection
+        st.session_state.selected_patient = patient_map[selected_display]
+        st.session_state.selected_patient_display = selected_display
+
+    # Debug info in sidebar (placed after selection so it reflects current state)
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("🔧 Debug Info")
+    st.sidebar.write(f"Analysis Running: {st.session_state.agentic_analysis_running}")
+    st.sidebar.write(f"Selected Patient: {'selected_patient' in st.session_state}")
+    if 'selected_patient' in st.session_state:
+        st.sidebar.write(f"Display Name: {st.session_state.get('selected_patient_display', 'N/A')}")
+        st.sidebar.write(f"Patient File: {st.session_state.selected_patient.name}")
+
+    # Agentic monitor status in sidebar
+    st.sidebar.subheader("🤖 Agentic Monitor")
+
+    # Check if agentic monitor is running
+    try:
+        import requests
+        response = requests.get("http://localhost:8502", timeout=1)
+        if response.status_code == 200:
+            st.sidebar.success("✅ Agentic monitor ready")
+            st.sidebar.info("Click 'Run Analysis' to launch the agentic monitor in a new window.")
+        else:
+            st.sidebar.warning("⚠️ Agentic monitor not responding")
+    except:
+        st.sidebar.error("❌ Agentic monitor not running")
+        st.sidebar.markdown(
+            """
+        **To start the agentic monitor:**
+        1. Open a new terminal
+        2. Run: `cd patient && streamlit run agentic_monitor_app.py --server.port 8502`
+        3. Or run: `python check_agentic_monitor.py --start`
+        """
+        )
+
+    st.sidebar.markdown("The agentic analysis will run separately, allowing you to continue monitoring patients here.")
+
+    st.sidebar.markdown("---")
     
     # Main content area
     if 'selected_patient' in st.session_state:
@@ -939,7 +1233,9 @@ def main():
             if patient_data['diagnoses']:
                 # Create D3-based timeline component
                 timeline_html = create_timeline_component(patient_data)
-                st.components.v1.html(timeline_html, height=500)
+                # Create a full-width container for the timeline
+                with st.container():
+                    st.components.v1.html(timeline_html, height=400, scrolling=True)
                 
                 st.markdown("---")
                 
