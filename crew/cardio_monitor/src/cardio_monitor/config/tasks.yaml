@@ -1,21 +1,97 @@
+review_biometrics:
+  description: >
+    Provide a comprehensive, actionable analysis of biometric data that directly informs patient care decisions.
+
+    CONTEXT AND TOOLS:
+    Use the FileReadTool to read the whole entire contents of the biometrics file base your analysis (described below)
+    on the data presented in that file.
+    You should be able to use it directly to read the biometric data file.
+
+    CRITICAL REQUIREMENTS:
+    1. **MANDATORY**: You MUST use the FileReadTool to read the biometric data file. 
+       - The tool is already configured with the file path: {biometric_buffer_path}
+       - If the tool fails or returns no data, respond with "ERROR: Could not read biometric data file"
+       - If the tool succeeds, you MUST proceed with the analysis below
+    2. analyze ALL biometric metrics found in the data:
+       - heart_rate/heartbeat data (including pulse_strength)
+       - spo2 (oxygen saturation)
+       - temperature
+       - blood_pressure (systolic/diastolic)
+       - respiration/breathing data
+       - ecg_rhythm data
+       Provide specific stats (including ranges, trends, and averages) for EACH metric type found.
+    3. Identify ANY concerning patterns that require immediate attention.
+    4. Generate actionable recommendations based on the data
+    5. Respond with a single TrendInsightPayload object with fields matching the description provided below (REQUIRED OUTPUT
+    STRUCTURE)
+
+    REQUIRED OUTPUT STRUCTURE:
+    - description: Clear summary of overall patient biometric status across ALL metrics
+    - window: Time period analyzed (calculated by subracting the final timestamp in the data from the very first)
+    - stats: List of BiometricMetricStats objects, one for EACH metric type found:
+      * Each stats object should include: metric_name, average, min_value, max_value, range_str, trend, unit, count
+      * You MUST include stats for ALL metrics found: heart_rate, spo2, blood_pressure, respiration, ecg, temperature
+    - risk_assessment: "low", "moderate", "high", or "critical" based on overall data from ALL metrics
+    - immediate_concerns: List of specific issues found across ALL metrics (e.g., ["bradycardia < 50 bpm", "hypoxemia < 90%", "elevated temperature > 38°C"])
+    - recommendations: List of specific actions needed based on ALL findings
+    - requires_attention: true if ANY concerning patterns are detected in ANY metric
+    - next_action: The immediate next step for the care team
+
+    IMPORTANT: Combine insights from all biometric metrics into one comprehensive analysis.
+
+    RISK ASSESSMENT GUIDELINES:
+    - LOW: All values within normal ranges, stable trends
+    - MODERATE: Some values outside normal ranges, minor fluctuations
+    - HIGH: Multiple values outside normal ranges, concerning trends, requires monitoring
+    - CRITICAL: Values in dangerous ranges, rapid changes, requires immediate intervention
+
+    EMERGENCY FLAGS:
+    - Heart rate < 50 or > 120 bpm → requires_attention = true, risk_assessment = "critical"
+    - SpO2 < 90% → requires_attention = true, risk_assessment = "critical"  
+    - Blood pressure < 90/60 or > 180/110 → requires_attention = true, risk_assessment = "high"
+    - Temperature > 38°C (100.4°F) → requires_attention = true, risk_assessment = "moderate"
+    - Any rapid deterioration → requires_attention = true, risk_assessment = "critical"
+
+    This analysis directly impacts patient safety - be thorough and actionable across ALL biometric metrics.
+  expected_output: TrendInsightPayload
+  agent: biometric_reviewer
+
 analyze_patient_status:
   description: >
     The patient is in post-surgical at-home cardio recovery monitoring. You need to analyze the medical history,
     and recovery progress. Review the patient's pain-diaries, weight changes, and find out the most recent biometric
     monitoring results from the biometric_reviewer.
 
-    CRITICAL: You MUST use the FileReadTool to read the actual data files before making any conclusions.
+    IMPORTANT: The patient context data is provided in the crew inputs as 'patient_context' and includes:
+    - FHIR medical records (summarized, past year of relevant data)
+    - Existing medical logs
+
+    Use FileReadTool to read these files directly:
     - For pain journal: {pain_diary_path} (patient-reported symptoms)
     - For weight data: {weight_data_path} (tracking data)
 
     The biometric_reviewer has already analyzed the biometric data and provided insights.
     Use those insights along with your analysis of the patient data to make triage decisions.
 
+    DEBUGGING: At the start of your analysis, log what context you received:
+    - What biometric analysis data was provided to you?
+    - What are the key findings from the biometric_reviewer?
+    - What risk assessment and immediate concerns were identified?
+
+    IMPORTANT: The biometric_reviewer task runs before this task. You should have access to its output.
+    If you don't see the biometric analysis results, check the crew execution logs.
+
+    CRITICAL: You MUST review and incorporate the biometric analysis results from the biometric_reviewer.
+    The biometric analysis shows critical findings that require immediate attention.
+
     WORKFLOW:
     1. First, review the biometric analysis from the biometric_reviewer (provided in context)
     2. Then, read the pain diary file using FileReadTool to get patient-reported symptoms
     3. Then, read the weight data file using FileReadTool to get weight trends
-    4. Finally, combine all sources to make your triage decision
+    4. Finally, combine all sources to make your triage decision. Be sure to mention details
+    about the biometric_reviewer's provided context, the weight and pain data and any other
+    relevant context or details to give a clear and precise description of the patient's
+    current circumstance
 
     REMEMBER: You have access to the pain diary and weight data files directly. Read each one to get the complete picture. 
     Use the biometric analysis in context as your source for biometric data, and always verify pain and weight data with the actual files.
@@ -53,6 +129,8 @@ analyze_patient_status:
     any observed changes. For example, if mentioning weight gain, clarify the dates and quantitative details.
   agent: triage_nurse
   expected_output: DecisionPayload
+  context:
+    - review_biometrics
 
 create_medical_log:
   description: >
@@ -63,25 +141,23 @@ create_medical_log:
     - FHIR medical records (summarized)
     - Existing medical logs
 
+    IMPORTANT: The framework value is provided in the crew inputs as 'framework' and should be used
+    in the AgenticFinalOutput.framework field. This should be "crewai" for this system.
+
     Use FileReadTool to read these files directly if needed:
     - {pain_diary_path} (for current symptoms)
     - {weight_data_path} (for current weight trends)
 
     Keep output concise. Do not include raw buffer dumps. Limit to under 1500 words.
-    End with exactly one fenced JSON block matching OUTPUT_FORMAT.md schema.
+
+    CRITICAL OUTPUT REQUIREMENTS:
+    - The framework field MUST be set to "crewai" (available in crew inputs as 'framework')
+    - You MUST incorporate the critical findings from the biometric_reviewer (elevated temperature, hypoxemia, ST elevation)
+    - You MUST incorporate the triage decision and recommendations from the triage_nurse
+    - End with exactly one fenced JSON block matching OUTPUT_FORMAT.md schema
+    - Ensure all required fields in AgenticFinalOutput are properly populated
   expected_output: AgenticFinalOutput
   agent: log_writer
-
-review_biometrics:
-  description: >
-    When asked by the triage nurse, review the biometric buffer data.
-
-    IMPORTANT: Use FileReadTool to read the current biometric data from {biometric_buffer_path}.
-    This gives you access to the real-time biometric readings for analysis.
-
-    Produce a succinct summary of the time window (e.g., averages, ranges, notable events, immediate risks). 
-    Avoid verbose output and do not reproduce raw data.
-    Keep output concise and bounded. Do not dump data. Limit to under 1000 words.
-    Focus on insights, not raw data reproduction.
-  expected_output: TrendInsightPayload
-  agent: biometric_reviewer
+  context:
+    - review_biometrics
+    - analyze_patient_status

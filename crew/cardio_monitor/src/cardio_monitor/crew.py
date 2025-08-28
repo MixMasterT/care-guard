@@ -1,11 +1,21 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
-from crewai_tools import FileReadTool
+from crewai_tools import FileReadTool, RagTool
+from opensearchpy import OpenSearch
 from typing import List
+from crewai.tools import BaseTool
+from pydantic import BaseModel, Field
+import sys
+from pathlib import Path
+
+# Add the agentic_types directory to the path
+workspace_root = Path.cwd()  # Use current working directory
+agentic_types_dir = workspace_root / "agentic_types"
+sys.path.insert(0, str(agentic_types_dir))
 
 # Import our Pydantic models for structured output
-from agentic_types.models import (
+from models import (
     Finding,
     Recommendation,
     DecisionPayload,
@@ -18,9 +28,86 @@ from agentic_types.models import (
     TrendInsightPayload
 )
 
-# If you want to run a snippet of code before or after the crew starts,
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+# Define the input schema for the medical knowledge tool
+class MedicalKnowledgeInput(BaseModel):
+    query: str = Field(description="The medical question or topic to search for in the knowledge base")
+
+# Create a proper CrewAI tool wrapper for the RAG tool
+class MedicalKnowledgeTool(BaseTool):
+    name: str = "Medical Knowledge Base"
+    description: str = "Access to medical research articles and clinical guidelines. Use this tool to search for medical information by asking a question."
+    args_schema: type[BaseModel] = MedicalKnowledgeInput
+    
+    def __init__(self, rag_tool: RagTool):
+        super().__init__()
+        # Store rag_tool after calling super().__init__()
+        self._rag_tool = rag_tool
+    
+    def _run(self, query: str) -> str:
+        """Execute the tool with the given query"""
+        try:
+            # Use the stored RAG tool to get the answer
+            if hasattr(self, '_rag_tool') and self._rag_tool:
+                result = self._rag_tool.run(query)
+                return result
+            else:
+                return "Error: Medical knowledge base not properly initialized"
+        except Exception as e:
+            return f"Error accessing medical knowledge base: {str(e)}"
+
+# Initialize RAG tool with medical knowledge base articles
+def initialize_medical_rag_tool():
+    """Initialize RAG tool with all medical articles from OpenSearch"""
+    try:
+        # Check if OPENAI_API_KEY is available
+        import os
+        if not os.environ.get('OPENAI_API_KEY'):
+            print("Warning: OPENAI_API_KEY not set, skipping RAG tool initialization")
+            return None
+        
+        # Connect to OpenSearch
+        client = OpenSearch(hosts=[{'host': 'localhost', 'port': 9200}])
+        
+        # Search for all medical articles
+        response = client.search(
+            index="medical-knowledge-base",
+            body={
+                "query": {"match_all": {}},
+                "size": 1000  # Get all articles
+            }
+        )
+        
+        # Create RAG tool instance
+        rag_tool = RagTool(
+            name="Medical Knowledge Base",
+            description="Access to medical research articles and clinical guidelines. Use this tool to search for medical information by asking a question."
+        )
+        
+        # Add each article URL to the RAG tool
+        added_count = 0
+        for hit in response['hits']['hits']:
+            source = hit['_source']
+            url = source.get('url')
+            if url:
+                try:
+                    rag_tool.add(url, data_type="web_page")
+                    added_count += 1
+                except Exception as add_error:
+                    print(f"Warning: Could not add URL {url}: {add_error}")
+                    continue
+        
+        print(f"✅ RAG tool initialized with {added_count} medical articles")
+        
+        # Wrap the RAG tool in our CrewAI-compatible wrapper
+        medical_tool = MedicalKnowledgeTool(rag_tool)
+        return medical_tool
+        
+    except Exception as e:
+        print(f"Warning: Could not initialize RAG tool: {e}")
+        return None
+
+# Initialize the RAG tool
+medical_rag_tool = initialize_medical_rag_tool()
 
 @CrewBase
 class CardioMonitor():
@@ -29,38 +116,96 @@ class CardioMonitor():
     agents: List[BaseAgent]
     tasks: List[Task]
 
-    # Learn more about YAML configuration files here:
-    # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-    # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-
-    # If you would like to add tools to your agents, you can learn more about it here:
-    # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def triage_nurse(self, pain_diary_path: str = None, weight_data_path: str = None) -> Agent:
-        """Creates the triage nurse agent"""
+    def biometric_reviewer(self, biometric_buffer_path: str = None) -> Agent:
+        """Creates the biometric reviewer agent"""
         tools = []
-        if pain_diary_path:
-            tools.append(FileReadTool(file_path=pain_diary_path))
-        if weight_data_path:
-            tools.append(FileReadTool(file_path=weight_data_path))
+        
+        # Add medical knowledge RAG tool if available
+        if medical_rag_tool:
+            tools.append(medical_rag_tool)
+        
+        # Add FileReadTool for biometric data if path is provided
+        if biometric_buffer_path:
+            from crewai_tools import FileReadTool
+            file_tool = FileReadTool(
+                file_path=biometric_buffer_path,
+                description="Read the entire biometric data file to analyze all available biometric metrics including heart rate, SpO2, temperature, blood pressure, respiration, and ECG rhythm data. IMPORTANT: Read the COMPLETE file, not just the first few lines. Use start_line=1 and line_count=1000 or higher to ensure you get all the data.",
+                start_line=1,
+                line_count=10000  # Ensure we read the entire file
+            )
+            tools.append(file_tool)
         
         return Agent(
-            config=self.agents_config['triage_nurse'], # type: ignore[index]
+            config=self.agents_config['biometric_reviewer'], # type: ignore[index]
             tools=tools,
-            allow_delegation=False,  # Temporarily disable delegation due to tool validation issues
             verbose=True
         )
 
     @agent
-    def log_writer(self, biometric_buffer_path: str = None, pain_diary_path: str = None, weight_data_path: str = None) -> Agent:
+    def triage_nurse(self, pain_diary_path: str = None, weight_data_path: str = None) -> Agent:
+        """Creates the triage nurse agent"""
+        tools = []
+        
+        # Add medical knowledge RAG tool if available
+        if medical_rag_tool:
+            tools.append(medical_rag_tool)
+        
+        # Add FileReadTool for pain diary if path is provided
+        if pain_diary_path:
+            from crewai_tools import FileReadTool
+            pain_tool = FileReadTool(
+                file_path=pain_diary_path,
+                description="Read the entire pain diary file to analyze patient-reported symptoms and pain levels over time. IMPORTANT: Read the COMPLETE file, not just the first few lines.",
+                start_line=1,
+                line_count=10000  # Ensure we read the entire file
+            )
+            tools.append(pain_tool)
+        
+        # Add FileReadTool for weight data if path is provided
+        if weight_data_path:
+            from crewai_tools import FileReadTool
+            weight_tool = FileReadTool(
+                file_path=weight_data_path,
+                description="Read the entire weight data file to analyze weight trends and changes over time. IMPORTANT: Read the COMPLETE file, not just the first few lines.",
+                start_line=1,
+                line_count=10000  # Ensure we read the entire file
+            )
+            tools.append(weight_tool)
+        
+        return Agent(
+            config=self.agents_config['triage_nurse'], # type: ignore[index]
+            tools=tools,
+            allow_delegation=False,
+            verbose=True
+        )
+
+    @agent
+    def log_writer(self, pain_diary_path: str = None, weight_data_path: str = None) -> Agent:
         """Creates the log writer agent"""
         tools = []
-        if biometric_buffer_path:
-            tools.append(FileReadTool(file_path=biometric_buffer_path))
+        
+        # Add FileReadTool for pain diary if path is provided
         if pain_diary_path:
-            tools.append(FileReadTool(file_path=pain_diary_path))
+            from crewai_tools import FileReadTool
+            pain_tool = FileReadTool(
+                file_path=pain_diary_path,
+                description="Read the entire pain diary file to analyze patient-reported symptoms and pain levels over time. IMPORTANT: Read the COMPLETE file, not just the first few lines.",
+                start_line=1,
+                line_count=10000  # Ensure we read the entire file
+            )
+            tools.append(pain_tool)
+        
+        # Add FileReadTool for weight data if path is provided
         if weight_data_path:
-            tools.append(FileReadTool(file_path=weight_data_path))
+            from crewai_tools import FileReadTool
+            weight_tool = FileReadTool(
+                file_path=weight_data_path,
+                description="Read the entire weight data file to analyze weight trends and changes over time. IMPORTANT: Read the COMPLETE file, not just the first few lines.",
+                start_line=1,
+                line_count=10000  # Ensure we read the entire file
+            )
+            tools.append(weight_tool)
         
         return Agent(
             config=self.agents_config['log_writer'], # type: ignore[index]
@@ -68,146 +213,58 @@ class CardioMonitor():
             verbose=True
         )
 
-    @agent
-    def biometric_reviewer(self, biometric_buffer_path: str = None) -> Agent:
-        """Creates the biometric reviewer agent"""
-        tools = []
-        if biometric_buffer_path:
-            print(f"The biometric_buffer_path was passed in as: {biometric_buffer_path}")
-            tools.append(FileReadTool(file_path=biometric_buffer_path))
-        else:
-            print("-----------NO biometric_buffer_path WAS PASSED IN ----------------")
-        return Agent(
-            config=self.agents_config['biometric_reviewer'], # type: ignore[index]
-            tools=tools,
-            verbose=True
-        )
-
-    # To learn more about structured task outputs,
-    # task dependencies, and task callbacks, check out the documentation:
-    # https://docs.crewai.com/concepts/tasks#overview-of-a-task
-    @task
-    def analyze_patient_status(self) -> Task:
-        return Task(
-            config=self.tasks_config['analyze_patient_status'], # type: ignore[index]
-            expected_output="""Analyze patient status and produce structured output with triage decision, findings, and recommendations.
-            
-            CRITICAL: Use the biometric analysis from the biometric_reviewer to inform your triage decision.
-            Pay special attention to:
-            - risk_assessment: If "high" or "critical", this MUST influence your priority
-            - requires_attention: If true, this indicates urgent care needs
-            - immediate_concerns: Address each concern in your rationale
-            - recommendations: Incorporate biometric recommendations into your follow-ups
-            
-            The output should contain:
-            - A priority value of "High", "Medium", or "Low" (escalate if biometrics show risk)
-            - A next action that describes the immediate next step in patient care
-            - A summary describing the patient's overall condition at this time
-            - A rationale that describes why the priority value was assigned (include biometric factors)
-            - A list of follow-ups which would be a list of strings describing actions that should be taken in the future
-            for best outcomes. Each item in the list should include the number of days after which to do the follow-up action
-            
-            EMERGENCY ESCALATION:
-            - If biometrics show "critical" risk → priority MUST be "High" or "Immediate"
-            - If biometrics require_attention → next action MUST address the concern
-            - If biometrics show "high" risk → consider escalating priority
-            
-            Be concise and actionable. Focus on medical insights that inform care decisions.""",
-            agent=self.triage_nurse(),
-            output_pydantic=DecisionPayload,
-            context=[self.review_biometrics()],  # Gets biometric analysis as context
-            output_file='patient/agentic_monitor_logs/{timestamp}_{run_id}_{patient_name}_triage_decision.json'
-        )
-
-    @task
-    def create_medical_log(self) -> Task:
-        return Task(
-            config=self.tasks_config['create_medical_log'], # type: ignore[index]
-            expected_output="""Create the final medical log entry based on the triage nurse's analysis and recommendations.
-
-            The JSON must contain triage_decision, findings, and recommendations that match the OUTPUT_FORMAT.md specification.
-            
-            IMPORTANT: Set the framework field to "crewai" (not "unknown").
-
-            Keep content concise and actionable. Do not dump raw data or long transcripts.
-
-            Use the triage decision from the triage_nurse to create the final medical log.""",
-            agent=self.log_writer(),
-            output_pydantic=AgenticFinalOutput,
-            context=[self.analyze_patient_status()],  # Gets triage analysis as context
-            output_file='patient/agentic_monitor_logs/{timestamp}_{run_id}_{patient_name}_medical_log.json'
-        )
-
     @task
     def review_biometrics(self, biometric_buffer_path: str = None) -> Task:
         return Task(
             config=self.tasks_config['review_biometrics'],
-            expected_output="""Provide a comprehensive, actionable analysis of biometric data that directly informs patient care decisions.
-
-            CRITICAL REQUIREMENTS:
-            1. ALWAYS analyze the actual biometric data file using FileReadTool
-            2. Provide specific, measurable insights (exact values, ranges, trends)
-            3. Identify ANY concerning patterns that require immediate attention
-            4. Generate actionable recommendations based on the data
-
-            REQUIRED OUTPUT STRUCTURE:
-            - metric: The primary biometric being analyzed (heart_rate, spo2, blood_pressure, etc.)
-            - description: Clear summary of what the data shows
-            - window: Time period analyzed (e.g., "Last 30 minutes", "Last 2 hours")
-            - stats: Detailed statistics including averages, ranges, min/max values, trends
-            - risk_assessment: "low", "moderate", "high", or "critical" based on data
-            - immediate_concerns: List of specific issues found (e.g., ["bradycardia < 50 bpm", "hypoxemia < 90%"])
-            - recommendations: List of specific actions needed (e.g., ["check patient immediately", "contact physician", "increase monitoring frequency"])
-            - requires_attention: true if ANY concerning patterns are detected
-            - next_action: The immediate next step for the care team
-
-            RISK ASSESSMENT GUIDELINES:
-            - LOW: All values within normal ranges, stable trends
-            - MODERATE: Some values outside normal ranges, minor fluctuations
-            - HIGH: Multiple values outside normal ranges, concerning trends, requires monitoring
-            - CRITICAL: Values in dangerous ranges, rapid changes, requires immediate intervention
-
-            EMERGENCY FLAGS:
-            - Heart rate < 50 or > 120 bpm → requires_attention = true, risk_assessment = "critical"
-            - SpO2 < 90% → requires_attention = true, risk_assessment = "critical"  
-            - Blood pressure < 90/60 or > 180/110 → requires_attention = true, risk_assessment = "high"
-            - Any rapid deterioration → requires_attention = true, risk_assessment = "critical"
-
-            This analysis directly impacts patient safety - be thorough and actionable.""",
             agent=self.biometric_reviewer(biometric_buffer_path=biometric_buffer_path),
             output_pydantic=TrendInsightPayload,
-            output_file='patient/agentic_monitor_logs/{timestamp}_{run_id}_{patient_name}_biometric_analysis.json'
+            output_file='patient/agentic_monitor_logs/{timestamp}_{patient_name}_biometric_analysis.json'
+        )
+
+    @task
+    def analyze_patient_status(self, pain_diary_path: str = None, weight_data_path: str = None) -> Task:
+        return Task(
+            config=self.tasks_config['analyze_patient_status'],
+            agent=self.triage_nurse(pain_diary_path=pain_diary_path, weight_data_path=weight_data_path),
+            output_pydantic=DecisionPayload,
+            output_file='patient/agentic_monitor_logs/{timestamp}_{patient_name}_triage_decision.json'
+        )
+
+    @task
+    def create_medical_log(self, pain_diary_path: str = None, weight_data_path: str = None) -> Task:
+        return Task(
+            config=self.tasks_config['create_medical_log'],
+            agent=self.log_writer(pain_diary_path=pain_diary_path, weight_data_path=weight_data_path),
+            output_pydantic=AgenticFinalOutput,
+            output_file='patient/agentic_monitor_logs/{timestamp}_{patient_name}_medical_log.json'
         )
 
     @crew
     def crew(self, biometric_buffer_path: str = None, pain_diary_path: str = None, weight_data_path: str = None) -> Crew:
         """Creates the CardioMonitor crew"""
-        # Store paths for use in tasks
-        self.biometric_buffer_path = biometric_buffer_path
-        self.pain_diary_path = pain_diary_path
-        self.weight_data_path = weight_data_path
-        
+        # Create tasks in the correct order for sequential execution
         ordered_tasks = [
-            self.review_biometrics(biometric_buffer_path=biometric_buffer_path),  # First: analyze biometrics
-            self.analyze_patient_status(),  # Second: use biometric insights for triage decision
-            self.create_medical_log(),  # Third: create final medical log with all data
+            self.review_biometrics(biometric_buffer_path=biometric_buffer_path),
+            self.analyze_patient_status(pain_diary_path=pain_diary_path, weight_data_path=weight_data_path),
+            self.create_medical_log(pain_diary_path=pain_diary_path, weight_data_path=weight_data_path),
         ]
 
-        ordered_agents = [
-            self.biometric_reviewer(biometric_buffer_path=biometric_buffer_path),
-            self.triage_nurse(pain_diary_path=pain_diary_path, weight_data_path=weight_data_path),
-            self.log_writer(biometric_buffer_path=biometric_buffer_path, pain_diary_path=pain_diary_path, weight_data_path=weight_data_path),
-        ]
-
-        print(f"🤖 Crew created with {len(ordered_agents)} agents and {len(ordered_tasks)} tasks")
-        print(f"📋 Task order:")
-        for i, task in enumerate(ordered_tasks, 1):
-            print(f"   {i}. {task.agent.role} → {task.description[:50]}...")
+        # Create agents with FileReadTools using the provided file paths
+        biometric_agent = self.biometric_reviewer(biometric_buffer_path=biometric_buffer_path)
+        triage_agent = self.triage_nurse(pain_diary_path=pain_diary_path, weight_data_path=weight_data_path)
+        log_agent = self.log_writer(pain_diary_path=pain_diary_path, weight_data_path=weight_data_path)
         
-        return Crew(
+        ordered_agents = [biometric_agent, triage_agent, log_agent]
+        
+        print(f"🤖 Crew created with {len(ordered_agents)} agents and {len(ordered_tasks)} tasks")
+        
+        crew_instance = Crew(
             agents=ordered_agents,
             tasks=ordered_tasks,
             process=Process.sequential,
             verbose=True,
-            memory=False  # Disable memory to ensure fresh analysis each time
+            memory=False
         )
+        
+        return crew_instance
