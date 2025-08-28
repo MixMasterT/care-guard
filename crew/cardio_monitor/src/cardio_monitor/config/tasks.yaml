@@ -70,16 +70,16 @@ analyze_patient_status:
     - For pain journal: {pain_diary_path} (patient-reported symptoms)
     - For weight data: {weight_data_path} (tracking data)
 
-    The biometric_reviewer has already analyzed the biometric data and provided insights.
+    The biometric_reviewer has already analyzed the biometric data and provided insights. The biometric review output
+    should be available in your context. If you can not see any input from the biometric review, be sure to mention
+    that in your output's "summary" field. If you do see the biometric_review context, be sure to reference the immediate
+    concerns and risk_assessment in your output "summary".
     Use those insights along with your analysis of the patient data to make triage decisions.
 
-    DEBUGGING: At the start of your analysis, log what context you received:
+    At the start of your analysis, review all of the  context you received:
     - What biometric analysis data was provided to you?
     - What are the key findings from the biometric_reviewer?
     - What risk assessment and immediate concerns were identified?
-
-    IMPORTANT: The biometric_reviewer task runs before this task. You should have access to its output.
-    If you don't see the biometric analysis results, check the crew execution logs.
 
     CRITICAL: You MUST review and incorporate the biometric analysis results from the biometric_reviewer.
     The biometric analysis shows critical findings that require immediate attention.
@@ -97,11 +97,10 @@ analyze_patient_status:
     Use the biometric analysis in context as your source for biometric data, and always verify pain and weight data with the actual files.
 
     IMPORTANT RULES:
-    1. NEVER report changes or trends that you cannot verify from the actual data files
+    1. NEVER report changes or trends that you cannot verify from the actual data files or receive directly from the biometric_review task
     2. If you mention weight changes, you MUST read the weight data file and report exact values and dates
     3. If you mention pain levels, you MUST read the pain diary file and report exact values and dates
-    4. Only report what you can actually see in the data - do not make assumptions or inferences
-    5. If the data shows no significant changes, report that the patient is stable
+    4. If the data shows no significant changes, report that the patient is stable
 
     WEIGHT DATA ANALYSIS:
     - Always read the weight data file before mentioning any weight changes

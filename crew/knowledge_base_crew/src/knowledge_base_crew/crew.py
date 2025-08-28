@@ -51,6 +51,7 @@ class KnowledgeBaseCrew():
     def indexing_task(self) -> Task:
         return Task(
             config=self.tasks_config['indexing_task'], # type: ignore[index]
+            context=[self.research_task()],  # Gets research results as context
         )
 
     @crew

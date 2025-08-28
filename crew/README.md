@@ -1,14 +1,14 @@
-# Agentic AI Frameworks
+# Care Guard Crews - Consolidated Agentic AI Framework
 
-This directory contains the agentic AI frameworks that power the patient monitoring system's intelligent analysis capabilities.
+This directory contains consolidated CrewAI implementations for patient monitoring, all managed under a single UV environment for consistent dependency management.
 
 ## Overview
 
-The agentic framework system provides a modular approach to AI-powered patient analysis, allowing different AI solutions to be integrated while maintaining a consistent interface and user experience.
+The consolidated crew system provides multiple AI-powered patient analysis solutions while maintaining a single, consistent dependency environment. This approach ensures version compatibility and simplifies maintenance.
 
-## Current Frameworks
+## Current Crews
 
-### CrewAI (`cardio_monitor/`)
+### 1. Cardio Monitor (`cardio_monitor/`)
 
 **Status**: ✅ Production Ready
 
@@ -27,42 +27,63 @@ A multi-agent system for comprehensive patient analysis:
 
 **Implementation**: `crew/cardio_monitor/src/cardio_monitor/crew.py`
 
-## Framework Architecture
+### 2. Knowledge Base Crew (`knowledge_base_crew/`)
 
-### Standard Framework Structure
+**Status**: ✅ Production Ready
+
+A specialized crew for medical knowledge management and research:
+
+- **Researcher**: Gathers medical information from various sources
+- **Indexer**: Processes and indexes medical documents
+- **Knowledge Base Tools**: OpenSearch integration and document management
+
+**Key Features**:
+
+- Medical document indexing
+- Research automation
+- Knowledge base management
+- OpenSearch integration
+
+**Implementation**: `crew/knowledge_base_crew/src/knowledge_base_crew/crew.py`
+
+## Crew Architecture
+
+### Standard Crew Structure
 
 ```
 crew/
-├── your_framework_name/
+├── your_crew_name/
 │   ├── src/
-│   │   └── your_framework_name/
+│   │   └── your_crew_name/
 │   │       ├── __init__.py
-│   │       ├── crew.py          # Main framework implementation
+│   │       ├── crew.py          # Main crew implementation
 │   │       ├── config/          # Configuration files
 │   │       │   ├── agents.yaml
 │   │       │   └── tasks.yaml
-│   │       └── tools/           # Framework-specific tools
-│   ├── pyproject.toml          # Dependencies
-│   └── README.md               # Framework documentation
+│   │       └── tools/           # Crew-specific tools
+│   └── README.md                # Crew documentation
+├── pyproject.toml               # Consolidated dependencies
+├── uv.lock                      # Dependency lock file
+└── .venv/                       # Shared virtual environment
 ```
 
 ### Required Interface
 
-Your framework must implement:
+Your crew must implement:
 
 ```python
-class YourFramework:
+class YourCrew:
     def crew(self, **kwargs):
         """
-        Main framework method that returns a crew/agent object.
+        Main crew method that returns a crew/agent object.
 
         Args:
-            **kwargs: Framework-specific parameters
+            **kwargs: Crew-specific parameters
 
         Returns:
             A crew/agent object with a .kickoff() method
         """
-        # Your framework implementation
+        # Your crew implementation
         pass
 ```
 
@@ -74,61 +95,74 @@ class YourFramework:
 4. **Error handling** and logging
 5. **Configurable parameters** for different use cases
 
-## Adding a New Framework
+## Adding a New Crew
 
-### Step 1: Create Framework Structure
+### Step 1: Create Crew Structure
 
 ```bash
-mkdir -p crew/your_framework_name/src/your_framework_name
-cd crew/your_framework_name
+mkdir -p crew/your_crew_name/src/your_crew_name
+cd crew/your_crew_name
 ```
 
-### Step 2: Implement Core Framework
+### Step 2: Implement Core Crew
 
-Create `crew.py` with your framework implementation:
+Create `crew.py` with your crew implementation:
 
 ```python
-class YourFramework:
+class YourCrew:
     def __init__(self):
-        # Initialize your framework
+        # Initialize your crew
         pass
 
     def crew(self, **kwargs):
         # Return your crew/agent object
-        return YourCrew(**kwargs)
+        return YourCrewInstance(**kwargs)
 ```
 
-### Step 3: Update Integration Layer
+### Step 3: Add Dependencies (if needed)
+
+If your crew needs additional dependencies, add them to the root `crew/pyproject.toml`:
+
+```toml
+dependencies = [
+    # ... existing dependencies ...
+    "your_new_dependency>=1.0.0",
+]
+```
+
+Then run `uv sync` to update the environment.
+
+### Step 4: Update Integration Layer
 
 Modify `patient/agentic_monitor_integration.py`:
 
 ```python
-# Add framework detection
-if framework_name == "your_framework":
-    from crew.your_framework.src.your_framework.crew import YourFramework
-    crew = YourFramework()
+# Add crew detection
+if framework_name == "your_crew":
+    from crew.your_crew_name.src.your_crew_name.crew import YourCrew
+    crew = YourCrew()
 ```
 
-### Step 4: Update UI
+### Step 5: Update UI
 
-Add framework option in `patient/monitor.py`:
+Add crew option in `patient/monitor.py`:
 
 ```python
-solution_options = ["Crewai", "YourFramework"]
+solution_options = ["Crewai", "YourCrew"]
 ```
 
-### Step 5: Test Integration
+### Step 6: Test Integration
 
 1. Run the patient monitor
-2. Select your framework from dropdown
+2. Select your crew from dropdown
 3. Test analysis execution
 4. Verify output and progress tracking
 
-## Framework Development Guidelines
+## Crew Development Guidelines
 
 ### Best Practices
 
-1. **Modular Design**: Keep framework logic separate from integration
+1. **Modular Design**: Keep crew logic separate from integration
 2. **Error Handling**: Implement robust error handling and logging
 3. **Configuration**: Use YAML configs for easy customization
 4. **Documentation**: Provide clear usage examples and API docs
@@ -144,21 +178,21 @@ solution_options = ["Crewai", "YourFramework"]
 
 ### Example Implementation
 
-See `crew/cardio_monitor/` for a complete, production-ready framework implementation that demonstrates all these patterns.
+See `crew/cardio_monitor/` for a complete, production-ready crew implementation that demonstrates all these patterns.
 
-## Testing Your Framework
+## Testing Your Crew
 
 ### Local Testing
 
 ```bash
-cd crew/your_framework_name
+cd crew/your_crew_name
 python -m pytest tests/
 ```
 
 ### Integration Testing
 
 1. Start the patient monitor
-2. Select your framework
+2. Select your crew
 3. Run analysis on test patient
 4. Verify output and progress
 
@@ -170,17 +204,17 @@ python -m pytest tests/
 
 ## Contributing
 
-When adding a new framework:
+When adding a new crew:
 
 1. **Follow the established structure** and patterns
 2. **Include comprehensive documentation**
 3. **Add appropriate tests**
-4. **Update this README** with framework details
+4. **Update this README** with crew details
 5. **Test integration** with the main system
 
 ## Support
 
-For questions about framework development or integration:
+For questions about crew development or integration:
 
 1. Check the existing CrewAI implementation as reference
 2. Review `patient/agentic_monitor_integration.py` for integration patterns

@@ -9,7 +9,6 @@
 | Field              | Type    | Description                                             | Notes                                        |
 | ------------------ | ------- | ------------------------------------------------------- | -------------------------------------------- |
 | `title`            | text    | Article title, full-text searchable                     | Includes keyword subfield for exact matching |
-| `content`          | text    | Full article content, indexed for search                | Analyzed with standard analyzer              |
 | `source`           | keyword | Publication source or journal name                      | Exact match for filtering/search             |
 | `publication_date` | date    | Publication date in `yyyy-MM-dd` format                 | Useful for date range filtering/sorting      |
 | `url`              | keyword | URL link to the article                                 | Stored but not searchable                    |
@@ -26,7 +25,7 @@
 {
   "query": {
     "match": {
-      "content": "remote patient monitoring"
+      "title": "remote patient monitoring"
     }
   }
 }
@@ -88,7 +87,7 @@
     "bool": {
       "should": [
         { "match": { "title": "cardiac monitoring" } },
-        { "match": { "content": "cardiac monitoring" } }
+        { "match": { "medical_terms": "cardiac monitoring" } }
       ],
       "minimum_should_match": 1,
       "filter": {
@@ -112,19 +111,17 @@ from pydantic import BaseModel, HttpUrl, Field
 
 class MedicalArticle(BaseModel):
     title: str = Field(..., description="Title of the medical article")
-    content: str = Field(..., description="Full text content of the article")
     source: str = Field(..., description="Publication source or journal name")
     publication_date: Optional[date] = Field(None, description="Publication date in ISO format")
     url: Optional[HttpUrl] = Field(None, description="URL link to the article")
     medical_terms: List[str] = Field(default_factory=list, description="List of relevant medical terms")
-topic_category: str = Field(..., description="Topic category assigned to the article")
-indexed_at: Optional[datetime] = Field(default_factory=datetime.now, description="Indexing timestamp")
-relevance_score: float = Field(1.0, ge=0.0, le=1.0, description="Relevance score (0.0-1.0)")
+    topic_category: str = Field(..., description="Topic category assigned to the article")
+    indexed_at: Optional[datetime] = Field(default_factory=datetime.now, description="Indexing timestamp")
+    relevance_score: float = Field(1.0, ge=0.0, le=1.0, description="Relevance score (0.0-1.0)")
 
 # Example usage:
 # article = MedicalArticle(
 #     title="Sample title",
-#     content="Full article text here...",
 #     source="Journal Name",
 #     publication_date=date(2021, 1, 1),
 #     url="https://example.com/article",
@@ -143,7 +140,7 @@ Sample query to check articles containing 'cardiac surgery':
 {
   "query": {
     "match": {
-      "content": "cardiac surgery"
+      "title": "cardiac surgery"
     }
   }
 }
