@@ -128,12 +128,7 @@ class CardioMonitor():
         # Add FileReadTool for biometric data if path is provided
         if biometric_buffer_path:
             from crewai_tools import FileReadTool
-            file_tool = FileReadTool(
-                file_path=biometric_buffer_path,
-                description="Read the entire biometric data file to analyze all available biometric metrics including heart rate, SpO2, temperature, blood pressure, respiration, and ECG rhythm data. IMPORTANT: Read the COMPLETE file, not just the first few lines. Use start_line=1 and line_count=1000 or higher to ensure you get all the data.",
-                start_line=1,
-                line_count=10000  # Ensure we read the entire file
-            )
+            file_tool = FileReadTool(file_path=biometric_buffer_path)
             tools.append(file_tool)
         
         return Agent(
@@ -154,23 +149,13 @@ class CardioMonitor():
         # Add FileReadTool for pain diary if path is provided
         if pain_diary_path:
             from crewai_tools import FileReadTool
-            pain_tool = FileReadTool(
-                file_path=pain_diary_path,
-                description="Read the entire pain diary file to analyze patient-reported symptoms and pain levels over time. IMPORTANT: Read the COMPLETE file, not just the first few lines.",
-                start_line=1,
-                line_count=10000  # Ensure we read the entire file
-            )
+            pain_tool = FileReadTool(file_path=pain_diary_path)
             tools.append(pain_tool)
         
         # Add FileReadTool for weight data if path is provided
         if weight_data_path:
             from crewai_tools import FileReadTool
-            weight_tool = FileReadTool(
-                file_path=weight_data_path,
-                description="Read the entire weight data file to analyze weight trends and changes over time. IMPORTANT: Read the COMPLETE file, not just the first few lines.",
-                start_line=1,
-                line_count=10000  # Ensure we read the entire file
-            )
+            weight_tool = FileReadTool(file_path=weight_data_path)
             tools.append(weight_tool)
         
         return Agent(
@@ -188,23 +173,13 @@ class CardioMonitor():
         # Add FileReadTool for pain diary if path is provided
         if pain_diary_path:
             from crewai_tools import FileReadTool
-            pain_tool = FileReadTool(
-                file_path=pain_diary_path,
-                description="Read the entire pain diary file to analyze patient-reported symptoms and pain levels over time. IMPORTANT: Read the COMPLETE file, not just the first few lines.",
-                start_line=1,
-                line_count=10000  # Ensure we read the entire file
-            )
+            pain_tool = FileReadTool(file_path=pain_diary_path)
             tools.append(pain_tool)
         
         # Add FileReadTool for weight data if path is provided
         if weight_data_path:
             from crewai_tools import FileReadTool
-            weight_tool = FileReadTool(
-                file_path=weight_data_path,
-                description="Read the entire weight data file to analyze weight trends and changes over time. IMPORTANT: Read the COMPLETE file, not just the first few lines.",
-                start_line=1,
-                line_count=10000  # Ensure we read the entire file
-            )
+            weight_tool = FileReadTool(file_path=weight_data_path)
             tools.append(weight_tool)
         
         return Agent(
