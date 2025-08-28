@@ -8,10 +8,6 @@ from __future__ import annotations
 from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field
 
-# Reuse existing biometric event types (avoid duplication)
-from patient.biometric_types import BiometricEvent
-
-
 # ---------- Confidence & evidence ----------
 
 ConfidenceLevel = Literal["low", "medium", "high", "very_high"]
@@ -60,11 +56,22 @@ class DecisionPayload(BaseModel):
     requires_immediate_action: bool = False  # Flag for urgent intervention
 
 
+class BiometricMetricStats(BaseModel):
+    """Structured statistics for individual biometric metrics"""
+    metric_name: str  # e.g., "heart_rate", "spo2", "blood_pressure", "respiration", "ecg"
+    average: Optional[float] = None
+    min_value: Optional[float] = None
+    max_value: Optional[float] = None
+    range_str: Optional[str] = None  # e.g., "65-105"
+    trend: Optional[str] = None  # e.g., "Stable", "Increasing", "Fluctuating"
+    unit: Optional[str] = None  # e.g., "bpm", "%", "mmHg"
+    count: Optional[int] = None  # Number of measurements analyzed
+
 class TrendInsightPayload(BaseModel):
-    metric: Literal["heart_rate", "spo2", "blood_pressure", "respiration", "ecg"] | str
+    metric: Literal["comprehensive_biometric_analysis", "heart_rate", "spo2", "blood_pressure", "respiration", "ecg"] | str
     description: str
     window: Optional[str] = None
-    stats: Dict[str, Any] = Field(default_factory=dict)
+    stats: List[BiometricMetricStats] = Field(default_factory=list)  # Changed from Dict to List
     support_score: Optional[float] = None
     confidence_level: Optional[ConfidenceLevel] = None
     confidence_level_evidence: Optional[ConfidenceLevelEvidence] = None
