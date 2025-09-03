@@ -948,11 +948,11 @@ def run_patient_monitoring(patient_name: str, run_id: str, timestamp: Optional[s
         result = app.invoke(initial_state)
         
         # Debug: Print the result to understand what was generated
-        print(f"🔍 LangGraph workflow result keys: {list(result.keys())}")
-        print(f"🔍 Biometric analysis present: {result.get('biometric_analysis') is not None}")
-        print(f"🔍 Triage decision present: {result.get('triage_decision') is not None}")
-        print(f"🔍 Medical log present: {result.get('medical_log') is not None}")
-        print(f"🔍 Error present: {result.get('error') is not None}")
+        # print(f"🔍 LangGraph workflow result keys: {list(result.keys())}")
+        # print(f"🔍 Biometric analysis present: {result.get('biometric_analysis') is not None}")
+        # print(f"🔍 Triage decision present: {result.get('triage_decision') is not None}")
+        # print(f"🔍 Medical log present: {result.get('medical_log') is not None}")
+        # print(f"🔍 Error present: {result.get('error') is not None}")
         if result.get('error'):
             print(f"❌ Workflow error: {result.get('error')}")
         
@@ -972,8 +972,9 @@ def run_patient_monitoring(patient_name: str, run_id: str, timestamp: Optional[s
         # Format patient name to match expected naming convention (title case)
         formatted_patient_name = patient_name.title() if patient_name else "Unknown"
         
-        print(f"📁 Creating output files in: {logs_dir}")
-        print(f"📝 Using formatted patient name: {formatted_patient_name}")
+        # Debug: file creation
+        # print(f"📁 Creating output files in: {logs_dir}")
+        # print(f"📝 Using formatted patient name: {formatted_patient_name}")
         
         # Biometric analysis file
         if result.get("biometric_analysis"):
@@ -981,7 +982,7 @@ def run_patient_monitoring(patient_name: str, run_id: str, timestamp: Optional[s
             try:
                 with open(biometric_file, 'w') as f:
                     json.dump(result["biometric_analysis"].dict(), f, indent=2, default=str)
-                print(f"✅ Created biometric analysis file: {biometric_file.name}")
+                # print(f"✅ Created biometric analysis file: {biometric_file.name}")
             except Exception as e:
                 print(f"❌ Error creating biometric analysis file: {e}")
         
@@ -991,7 +992,7 @@ def run_patient_monitoring(patient_name: str, run_id: str, timestamp: Optional[s
             try:
                 with open(triage_file, 'w') as f:
                     json.dump(result["triage_decision"].dict(), f, indent=2, default=str)
-                print(f"✅ Created triage decision file: {triage_file.name}")
+                # print(f"✅ Created triage decision file: {triage_file.name}")
             except Exception as e:
                 print(f"❌ Error creating triage decision file: {e}")
         
@@ -1001,7 +1002,7 @@ def run_patient_monitoring(patient_name: str, run_id: str, timestamp: Optional[s
             try:
                 with open(medical_file, 'w') as f:
                     json.dump(result["medical_log"].dict(), f, indent=2, default=str)
-                print(f"✅ Created medical log file: {medical_file.name}")
+                # print(f"✅ Created medical log file: {medical_file.name}")
             except Exception as e:
                 print(f"❌ Error creating medical log file: {e}")
         
