@@ -1053,7 +1053,7 @@ def main():
     st.sidebar.subheader("🤖 Agentic Analysis")
     
     # Solution selector dropdown
-    solution_options = ["Crewai"]  # Add other agentic monitoring solutions here as they become available
+    solution_options = ["Crewai", "LangGraph"]  # Add other agentic monitoring solutions here as they become available
     selected_solution = st.sidebar.selectbox(
         "Select Agentic Solution:",
         solution_options,

@@ -63,8 +63,8 @@ def run_heartbeat_classification():
     """Run the heartbeat classification workflow."""
     load_dotenv()
     if not os.getenv("OPENAI_API_KEY"):
-        print("⚠️  OPENAI_API_KEY not set. Using rule-based classification only.")
-        print("   💡 Create a .env file with: OPENAI_API_KEY=your-api-key-here")
+        print("WARNING: OPENAI_API_KEY not set. Using rule-based classification only.")
+        print("   Create a .env file with: OPENAI_API_KEY=your-api-key-here")
     app = create_heartbeat_classification_graph()
     initial_state: AgentState = {
         "heartbeat_data": [],

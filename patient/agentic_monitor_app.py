@@ -146,17 +146,17 @@ def show_results(run_id, patient_name, timestamp, output_container):
         import traceback
         output_container.error(f"Traceback: {traceback.format_exc()}")
 
-def update_progress_from_execution_log(run_id: str, timestamp: str, patient_name: str):
+def update_progress_from_execution_log(run_id: str, timestamp: str, patient_name: str, framework: str = "crewai"):
     """
     Update progress information from execution log and refresh UI.
     This function should be called regularly to keep the UI updated.
     """
-    if parse_execution_log(run_id, timestamp, patient_name):
+    if parse_execution_log(run_id, timestamp, patient_name, framework):
         # Force a rerun to update the UI with new session state values
         st.rerun()
 
 
-def parse_execution_log(run_id: str, timestamp: str, patient_name: str) -> bool:
+def parse_execution_log(run_id: str, timestamp: str, patient_name: str, framework: str = "crewai") -> bool:
     """
     Parse the execution log JSON file and update session state with progress information.
     
@@ -195,41 +195,42 @@ def parse_execution_log(run_id: str, timestamp: str, patient_name: str) -> bool:
                 
                 return True
         
-        # If no execution log found, try to determine progress from CrewAI output files
-        print(f"🔍 No execution log found, checking CrewAI output files for progress...")
+        # If no execution log found, try to determine progress from framework output files
+        framework_name = framework.title() if framework else "Framework"
+        print(f"🔍 No execution log found, checking {framework_name} output files for progress...")
         
-        # Look for CrewAI output files using standard naming pattern
-        crewai_files = []
+        # Look for framework output files using standard naming pattern
+        output_files = []
         
         # Check for each output file type - use title case for patient name
         file_types = ["biometric_analysis", "triage_decision", "medical_log"]
         for file_type in file_types:
             file_path = logs_dir / f"{timestamp}_{formatted_patient_name}_{file_type}.json"
             if file_path.exists():
-                crewai_files.append((file_type, file_path))
+                output_files.append((file_type, file_path))
         
-        # If we found CrewAI files, estimate progress based on which files exist
-        if crewai_files:
-            print(f"🔍 Found {len(crewai_files)} CrewAI output files")
+        # If we found output files, estimate progress based on which files exist
+        if output_files:
+            print(f"🔍 Found {len(output_files)} {framework_name} output files")
             
             # Estimate progress based on which files exist
-            if len(crewai_files) == 1:
+            if len(output_files) == 1:
                 st.session_state.percent = 33
                 st.session_state.status = "in_progress"
                 st.session_state.status_message = "Biometric analysis completed"
-            elif len(crewai_files) == 2:
+            elif len(output_files) == 2:
                 st.session_state.percent = 66
                 st.session_state.status = "in_progress"
                 st.session_state.status_message = "Triage decision completed"
-            elif len(crewai_files) == 3:
+            elif len(output_files) == 3:
                 st.session_state.percent = 100
                 st.session_state.status = "completed"
-                st.session_state.status_message = "All CrewAI tasks completed"
+                st.session_state.status_message = f"All {framework_name} tasks completed"
             
             return True
         
         # If no files found at all, assume analysis hasn't started
-        print(f"🔍 No CrewAI output files found, analysis may not have started yet")
+        print(f"🔍 No {framework_name} output files found, analysis may not have started yet")
         st.session_state.percent = 0
         st.session_state.status = "not_started"
         st.session_state.status_message = "Waiting for analysis to start..."
@@ -278,7 +279,9 @@ def start_analysis(run_id, patient_name, framework, timestamp):
             print(f"✅ Analysis started successfully for {patient_name} using {framework}!")
             return True
         else:
-            print(f"❌ Analysis failed to start: {results.get('error', 'Unknown error')}")
+            # Error block for unsupported frameworks
+            print(f"❌ Unsupported framework: {framework}")
+            print(f"Supported frameworks: crewai, langgraph")
             return False
         
     except Exception as e:
@@ -389,7 +392,7 @@ def main():
         analysis_thread.start()
         
         # Show that analysis is starting
-        status_container.info("🚀 Starting CrewAI analysis in background thread...")
+        status_container.info(f"🚀 Starting {framework.title()} analysis in background thread...")
         st.session_state.analysis_running = True
         st.session_state.analysis_thread = analysis_thread
     
@@ -425,7 +428,7 @@ def main():
             st.session_state.analysis_running = False
     
     # Always parse execution log to get latest status
-    parse_execution_log(run_id, timestamp, patient_name)
+    parse_execution_log(run_id, timestamp, patient_name, framework)
     
     # Display current status from session state using containers
     progress_container.progress(st.session_state.percent / 100, text=f"Analysis Progress: {st.session_state.percent}%")
