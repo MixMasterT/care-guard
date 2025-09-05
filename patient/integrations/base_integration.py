@@ -8,10 +8,60 @@ from typing import Dict, Any, Optional
 from pathlib import Path
 from datetime import datetime, timedelta
 import json
+import time
 
 
 class BaseIntegration(ABC):
     """Abstract base class for agentic monitoring integrations."""
+    
+    def __init__(self):
+        """Initialize the integration with performance tracking."""
+        self._performance_start_time = None
+        self._performance_metrics = {
+            'duration_ms': None,
+            'tokens_used': None,
+            'tool_calls': None,
+            'steps_completed': None,
+            'success': True,
+            'error_message': None
+        }
+    
+    def _start_performance_tracking(self):
+        """Start tracking performance metrics. Override if custom tracking is needed."""
+        self._performance_start_time = time.time()
+        self._performance_metrics = {
+            'duration_ms': None,
+            'tokens_used': None,
+            'tool_calls': None,
+            'steps_completed': None,
+            'success': True,
+            'error_message': None
+        }
+    
+    def _end_performance_tracking(self, success: bool = True, error_message: Optional[str] = None):
+        """End performance tracking and calculate duration. Override if custom tracking is needed."""
+        if self._performance_start_time:
+            duration_ms = int((time.time() - self._performance_start_time) * 1000)
+            self._performance_metrics.update({
+                'duration_ms': duration_ms,
+                'success': success,
+                'error_message': error_message
+            })
+    
+    def _add_performance_metrics(self, tokens_used: Optional[int] = None, 
+                                tool_calls: Optional[int] = None, 
+                                steps_completed: Optional[int] = None):
+        """Add additional performance metrics. Override if custom tracking is needed."""
+        if tokens_used is not None:
+            self._performance_metrics['tokens_used'] = tokens_used
+        if tool_calls is not None:
+            self._performance_metrics['tool_calls'] = tool_calls
+        if steps_completed is not None:
+            self._performance_metrics['steps_completed'] = steps_completed
+    
+    def _get_performance_metrics(self) -> Dict[str, Any]:
+        """Get the current performance metrics. Override if custom tracking is needed."""
+        return self._performance_metrics.copy()
     
     @abstractmethod
     def run_agentic_analysis(self, patient_name: str, run_id: Optional[str] = None) -> Dict[str, Any]:

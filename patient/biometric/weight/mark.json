@@ -1,5 +1,23 @@
 [
-  { "offset_ms": 86400000, "weight_kg": 88.8, "note_type": "daily_weight" },
-  { "offset_ms": 172800000, "weight_kg": 88.6, "note_type": "daily_weight" },
-  { "offset_ms": 259200000, "weight_kg": 88.6, "note_type": "daily_weight" }
+  {
+    "offset_ms": 259200000,
+    "weight_kg": 88.8,
+    "note_type": "daily_weight",
+    "timestamp": "2025-08-15T22:02:45.238041",
+    "days_ago": 3
+  },
+  {
+    "offset_ms": 172800000,
+    "weight_kg": 88.6,
+    "note_type": "daily_weight",
+    "timestamp": "2025-08-16T22:02:45.238047",
+    "days_ago": 2
+  },
+  {
+    "offset_ms": 86400000,
+    "weight_kg": 88.6,
+    "note_type": "daily_weight",
+    "timestamp": "2025-08-17T22:02:45.238049",
+    "days_ago": 1
+  }
 ]

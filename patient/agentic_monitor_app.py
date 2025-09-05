@@ -11,41 +11,24 @@ import threading
 from pathlib import Path
 from datetime import datetime
 
-def show_results(run_id, patient_name, output_container):
+def show_results(run_id, patient_name, timestamp, output_container):
     """Display the analysis results in a structured format"""
     try:
-        # Look for the medical log file (contains the final output)
+        # Look for the medical log file using the standard naming pattern
         logs_dir = Path(__file__).parent / "agentic_monitor_logs"
         
-        # Try multiple patterns to handle case variations and different naming conventions
-        search_patterns = [
-            f"*_{run_id}_*_medical_log.json",  # Most flexible pattern - should work with new format
-            f"*_{run_id}_{patient_name.lower()}_medical_log.json",  # lowercase
-            f"*_{run_id}_{patient_name.title()}_medical_log.json",  # title case
-            f"*_{run_id}_{patient_name}_medical_log.json",          # original case
-        ]
+        # Standard naming pattern: {timestamp}_{patient_name}_medical_log.json
+        # Use title case for patient name to match what the integration generates
+        formatted_patient_name = patient_name.title() if patient_name else "Unknown"
+        medical_log_file = logs_dir / f"{timestamp}_{formatted_patient_name}_medical_log.json"
         
-        medical_log_files = []
-        for pattern in search_patterns:
-            files = list(logs_dir.glob(pattern))
-            if files:
-                medical_log_files.extend(files)
-                break
-        
-        if not medical_log_files:
-            # Debug: show what files exist
-            all_files = list(logs_dir.glob(f"*_{run_id}_*"))
-            output_container.error(f"❌ No results found. Please check the analysis logs.")
-            output_container.info(f"🔍 Debug: Found {len(all_files)} files matching run_id {run_id}:")
-            for f in all_files:
-                output_container.info(f"   - {f.name}")
+        if not medical_log_file.exists():
+            output_container.error(f"❌ Medical log file not found: {medical_log_file.name}")
             return
         
-        # Read the most recent medical log
-        latest_log = max(medical_log_files, key=lambda x: x.stat().st_mtime)
-        output_container.info(f"🔍 Reading results from: {latest_log.name}")
+        output_container.info(f"🔍 Reading results from: {medical_log_file.name}")
         
-        with open(latest_log, 'r') as f:
+        with open(medical_log_file, 'r') as f:
             results = json.load(f)
         
         # Debug: show what fields are available
@@ -163,59 +146,102 @@ def show_results(run_id, patient_name, output_container):
         import traceback
         output_container.error(f"Traceback: {traceback.format_exc()}")
 
-def update_progress_from_execution_log(run_id: str):
+def update_progress_from_execution_log(run_id: str, timestamp: str, patient_name: str, framework: str = "crewai"):
     """
     Update progress information from execution log and refresh UI.
     This function should be called regularly to keep the UI updated.
     """
-    if parse_execution_log(run_id):
+    if parse_execution_log(run_id, timestamp, patient_name, framework):
         # Force a rerun to update the UI with new session state values
         st.rerun()
 
 
-def parse_execution_log(run_id: str) -> bool:
+def parse_execution_log(run_id: str, timestamp: str, patient_name: str, framework: str = "crewai") -> bool:
     """
     Parse the execution log JSON file and update session state with progress information.
     
     Args:
         run_id: The run ID to look for in execution log files
+        timestamp: The formatted timestamp (YYYY_MM_DD_HH_MM)
+        patient_name: The patient name
         
     Returns:
         True if execution log was found and parsed, False otherwise
     """
     try:
         logs_dir = Path(__file__).parent / "agentic_monitor_logs"
-        execution_log_files = list(logs_dir.glob(f"*_{run_id}_*_execution_log.json"))
         
-        if not execution_log_files:
-            return False
+        # Standard naming pattern: {timestamp}_{patient_name}_execution_log.json
+        # Use title case for patient name to match what the integration generates
+        formatted_patient_name = patient_name.title() if patient_name else "Unknown"
+        execution_log_file = logs_dir / f"{timestamp}_{formatted_patient_name}_execution_log.json"
+        print(f"!!! execution_log_file path: {execution_log_file}")
         
-        # Get the most recent execution log file
-        latest_log = max(execution_log_files, key=lambda x: x.stat().st_mtime)
-        
-        with open(latest_log, 'r') as f:
-            log_data = json.load(f)
-        
-        # Extract progress information from the last item in the progress array
-        if "progress" in log_data and log_data["progress"]:
-            progress_array = log_data["progress"]
-            latest_progress = progress_array[-1]  # Last element in array
+        if execution_log_file.exists():
+            print(f"📋 Found execution log: {execution_log_file.name}")
             
-            # Update session state with the parsed values
-            st.session_state.percent = latest_progress.get("percent", 0)
-            st.session_state.status = latest_progress.get("status", "unknown")
-            st.session_state.status_message = latest_progress.get("message", "no status message found")
+            with open(execution_log_file, 'r') as f:
+                log_data = json.load(f)
+            
+            # Extract progress information from the last item in the progress array
+            if "progress" in log_data and log_data["progress"]:
+                progress_array = log_data["progress"]
+                latest_progress = progress_array[-1]  # Last element in array
+                
+                # Update session state with the parsed values
+                st.session_state.percent = latest_progress.get("percent", 0)
+                st.session_state.status = latest_progress.get("status", "unknown")
+                st.session_state.status_message = latest_progress.get("message", "no status message found")
+                
+                return True
+        
+        # If no execution log found, try to determine progress from framework output files
+        framework_name = framework.title() if framework else "Framework"
+        print(f"🔍 No execution log found, checking {framework_name} output files for progress...")
+        
+        # Look for framework output files using standard naming pattern
+        output_files = []
+        
+        # Check for each output file type - use title case for patient name
+        file_types = ["biometric_analysis", "triage_decision", "medical_log"]
+        for file_type in file_types:
+            file_path = logs_dir / f"{timestamp}_{formatted_patient_name}_{file_type}.json"
+            if file_path.exists():
+                output_files.append((file_type, file_path))
+        
+        # If we found output files, estimate progress based on which files exist
+        if output_files:
+            print(f"🔍 Found {len(output_files)} {framework_name} output files")
+            
+            # Estimate progress based on which files exist
+            if len(output_files) == 1:
+                st.session_state.percent = 33
+                st.session_state.status = "in_progress"
+                st.session_state.status_message = "Biometric analysis completed"
+            elif len(output_files) == 2:
+                st.session_state.percent = 66
+                st.session_state.status = "in_progress"
+                st.session_state.status_message = "Triage decision completed"
+            elif len(output_files) == 3:
+                st.session_state.percent = 100
+                st.session_state.status = "completed"
+                st.session_state.status_message = f"All {framework_name} tasks completed"
             
             return True
-        else:
-            return False
+        
+        # If no files found at all, assume analysis hasn't started
+        print(f"🔍 No {framework_name} output files found, analysis may not have started yet")
+        st.session_state.percent = 0
+        st.session_state.status = "not_started"
+        st.session_state.status_message = "Waiting for analysis to start..."
+        
+        return False
             
     except Exception as e:
         print(f"❌ Error parsing execution log: {e}")
         return False
-
-
-def start_analysis(run_id, patient_name, framework):
+            
+def start_analysis(run_id, patient_name, framework, timestamp):
     """Start the agentic analysis in a background thread"""
     try:
         # Import the integration module
@@ -224,47 +250,34 @@ def start_analysis(run_id, patient_name, framework):
         sys.path.insert(0, str(Path(__file__).parent))
         
         try:
-            from agentic_monitor_integration import AgenticMonitorIntegration
-        except ImportError as e:
-            print(f"❌ Failed to import AgenticMonitorIntegration: {e}")
-            return False
+            # Try package import first
+            from patient.agentic_monitor_integration import AgenticMonitorIntegration
+        except ImportError:
+            try:
+                # Fallback to direct import
+                from agentic_monitor_integration import AgenticMonitorIntegration
+            except ImportError as e:
+                print(f"❌ Failed to import AgenticMonitorIntegration: {e}")
+                return False
         
         # Initialize integration and start analysis
         integration = AgenticMonitorIntegration()
         print(f"🚀 Starting {framework} analysis for {patient_name} with run_id: {run_id}")
         
-        # Framework-specific handling
-        if framework.lower() == "crewai":
-            # Execute existing code as-is for CrewAI
-            availability = integration.test_crew_availability()
-            
-            if not availability.get("available"):
-                print(f"❌ Crew not available: {availability.get('error', 'Unknown error')}")
-                return False
-            
-            # Start the analysis with framework parameter
-            results = integration.run_agentic_analysis(patient_name, run_id=run_id, framework=framework)
-            print(f"📊 Analysis results: {results}")
-            
-            if results.get("success"):
-                print(f"✅ Analysis started successfully for {patient_name} using {framework}!")
-                return True
-            else:
-                print(f"❌ Analysis failed to start: {results.get('error', 'Unknown error')}")
-                return False
-                
-        elif framework.lower() == "langgraph":
-            # LangGraph framework - use the integration system
-            print(f"🔧 LangGraph framework selected - implementing LangGraph analysis...")
-            try:
-                # Use the AgenticMonitorIntegration to run LangGraph analysis
-                integration = AgenticMonitorIntegration()
-                result = integration.run_agentic_analysis(patient_name, run_id, framework="langgraph")
-                return result.get("success", False)
-            except Exception as e:
-                print(f"❌ Error running LangGraph analysis: {e}")
-                return False
-            
+        # Test crew availability first
+        availability = integration.test_crew_availability()
+        
+        if not availability.get("available"):
+            print(f"❌ Crew not available: {availability.get('error', 'Unknown error')}")
+            return False
+        
+        # Start the analysis with framework parameter
+        results = integration.run_agentic_analysis(patient_name, run_id=run_id, framework=framework, timestamp=timestamp)
+        print(f"📊 Analysis results: {results}")
+        
+        if results.get("success"):
+            print(f"✅ Analysis started successfully for {patient_name} using {framework}!")
+            return True
         else:
             # Error block for unsupported frameworks
             print(f"❌ Unsupported framework: {framework}")
@@ -306,7 +319,7 @@ def main():
         st.error("❌ No run ID specified. Please launch from the main monitor using 'Run Analysis' button.")
         return
     
-    # Extract patient name from run_id if not provided
+    # Extract patient name and timestamp from run_id if not provided
     if not patient_name:
         try:
             parts = run_id.split('_')
@@ -321,8 +334,21 @@ def main():
         st.error("❌ Could not determine patient name.")
         return
     
+    # Extract timestamp from run_id (format: YYYY_MM_DD_HH_MM_timestamp)
+    timestamp = None
+    try:
+        parts = run_id.split('_')
+        if len(parts) >= 5:  # YYYY_MM_DD_HH_MM_timestamp
+            timestamp = f"{parts[0]}_{parts[1]}_{parts[2]}_{parts[3]}_{parts[4]}"
+        else:
+            st.warning("⚠️ Could not extract timestamp from run_id, using fallback search method")
+    except:
+        st.warning("⚠️ Could not extract timestamp from run_id, using fallback search method")
+    
     st.header(f"Patient: {patient_name}")
     st.subheader(f"Run ID: {run_id}")
+    if timestamp:
+        st.subheader(f"Timestamp: {timestamp}")
     st.subheader(f"Framework: {framework.title()}")
     
     # Create containers for dynamic updates
@@ -346,11 +372,11 @@ def main():
         if 'analysis_queue' not in st.session_state:
             st.session_state.analysis_queue = queue.Queue()
         
-        def run_analysis_background(run_id, patient_name, framework, queue):
+        def run_analysis_background(run_id, patient_name, framework, timestamp, queue):
             """Run analysis in background thread"""
             try:
                 print(f"🚀 Background thread starting analysis for {patient_name} using {framework}")
-                success = start_analysis(run_id, patient_name, framework)
+                success = start_analysis(run_id, patient_name, framework, timestamp)
                 queue.put(("success", success))
                 print(f"✅ Background thread completed with success: {success}")
             except Exception as e:
@@ -360,13 +386,13 @@ def main():
         # Start analysis in background thread
         analysis_thread = threading.Thread(
             target=run_analysis_background,
-            args=(run_id, patient_name, framework, st.session_state.analysis_queue),
+            args=(run_id, patient_name, framework, timestamp, st.session_state.analysis_queue),
             daemon=True
         )
         analysis_thread.start()
         
         # Show that analysis is starting
-        status_container.info("🚀 Starting CrewAI analysis in background thread...")
+        status_container.info(f"🚀 Starting {framework.title()} analysis in background thread...")
         st.session_state.analysis_running = True
         st.session_state.analysis_thread = analysis_thread
     
@@ -402,7 +428,7 @@ def main():
             st.session_state.analysis_running = False
     
     # Always parse execution log to get latest status
-    parse_execution_log(run_id)
+    parse_execution_log(run_id, timestamp, patient_name, framework)
     
     # Display current status from session state using containers
     progress_container.progress(st.session_state.percent / 100, text=f"Analysis Progress: {st.session_state.percent}%")
@@ -425,7 +451,7 @@ def main():
     # Show results when analysis is complete
     if st.session_state.percent >= 100:
         output_container.info("🎯 Loading analysis results...")
-        show_results(run_id, patient_name, output_container)
+        show_results(run_id, patient_name, timestamp, output_container)
     
     # Add a refresh button for manual updates during analysis
     if st.session_state.get('analysis_running', False) and st.session_state.percent < 100:

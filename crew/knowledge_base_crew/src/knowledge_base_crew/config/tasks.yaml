@@ -11,34 +11,55 @@ research_task:
     such as PubMed, clinical guidelines, medical journals, or healthcare organizations.
     Extract the full content of each article for indexing.
 
+    CRITICAL: Structure your output to match the MedicalKnowledgeDocument schema:
+    - title: Article title
+    - content: Full article content
+    - source: Source name (e.g., "PubMed", "American Heart Association")
+    - url: Article URL
+    - topic_category: One of "patient_monitoring", "post_op_recovery", "vital_signs", "complications", "intervention_protocols"
+    - keywords: List of relevant keywords
+    - medical_terms: List of specific medical terms mentioned
+    - relevance_score: Score from 0.0 to 1.0
+
   expected_output: >
-    A comprehensive list of 15 high-quality medical articles (5 per topic) with:
-    - Article titles and URLs
-    - Full article content extracted
-    - Source credibility assessment
-    - Relevance to the specified topics
+    A comprehensive list of 15 high-quality medical articles (5 per topic) with the following structure for each article:
+    - title: Article title
+    - content: Full article content
+    - source: Source name (e.g., "PubMed", "American Heart Association")
+    - url: Article URL
+    - topic_category: One of "patient_monitoring", "post_op_recovery", "vital_signs", "complications", "intervention_protocols"
+    - keywords: List of relevant keywords
+    - medical_terms: List of specific medical terms mentioned
+    - relevance_score: Score from 0.0 to 1.0
+
+    Format as a JSON list where each article is a properly structured object with all required fields.
 
   agent: researcher
 
 indexing_task:
   description: >
-    Review the medical articles provided by the researcher. Design an efficient,
-    searchable format for storing medical knowledge in OpenSearch that will be
-    suitable for LLM access and semantic search.
+    Review the medical articles provided by the researcher and index them into OpenSearch
+    using the OpenSearchTool. The researcher will provide articles in the correct format.
 
-    Create the medical-knowledge-base index in OpenSearch with proper mapping.
-    Process each article and extract structured data including title, content,
-    source, publication date, and relevant medical terms.
+    Your job is to:
+    1. Use the OpenSearchTool to create the medical-knowledge-base index if it doesn't exist
+    2. Index each article using the OpenSearchTool's index_document operation
+    3. Verify that articles are properly indexed by searching for them
+    4. Provide a summary of the indexing results
 
-    Write comprehensive documentation describing the index structure and how
-    to query it effectively for medical knowledge retrieval.
+    The articles should be categorized by topic_category:
+    - patient_monitoring: Articles about live monitoring of patient vitals
+    - post_op_recovery: Articles about cardio post-operative recovery
+    - vital_signs: Articles about normal/abnormal ranges for vital signs
+    - complications: Articles about complications to watch out for
+    - intervention_protocols: Articles about intervention protocols
 
   expected_output: >
     - Medical-knowledge-base index created in OpenSearch
-    - All articles indexed with proper structure
-    - knowledge_indexing.md file with schema documentation
-    - knowledge_base_indexing.py with Pydantic models
+    - All articles successfully indexed using OpenSearchTool
     - Verification that articles can be retrieved via search
+    - Summary of indexing results including document counts
+    - Any errors or warnings encountered during indexing
 
   agent: indexer
   context: [research_task]

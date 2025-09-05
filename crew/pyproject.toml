@@ -1,0 +1,37 @@
+[project]
+name = "care-guard-crews"
+version = "0.1.0"
+description = "Consolidated CrewAI implementations for patient monitoring"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai[tools]>=0.140.0,<1.0.0",
+    "crewai-tools>=0.59.0",
+    "opensearch-py>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "chromadb>=0.5.23",
+    "sentence-transformers>=5.1.0",
+    "tiktoken>=0.9.0",
+]
+
+[project.scripts]
+# Cardio Monitor scripts
+cardio_monitor = "cardio_monitor.main:run"
+cardio_run_crew = "cardio_monitor.main:run"
+cardio_train = "cardio_monitor.main:train"
+cardio_replay = "cardio_monitor.main:replay"
+cardio_test = "cardio_monitor.main:test"
+
+# Knowledge Base Crew scripts
+knowledge_base_crew = "knowledge_base_crew.main:run"
+kb_run_crew = "knowledge_base_crew.main:run"
+kb_train = "knowledge_base_crew.main:train"
+kb_replay = "knowledge_base_crew.main:replay"
+kb_test = "knowledge_base_crew.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"

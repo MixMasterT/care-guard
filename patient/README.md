@@ -1,133 +1,282 @@
-# Patient Monitor
+# Patient Monitoring System - Care Guard Agentic AI
 
-A Streamlit application that displays patient information from Synthea-generated FHIR data with integrated agentic AI analysis capabilities.
+This directory contains the core patient monitoring system, including real-time biometric data streaming, medical record integration, and agentic AI analysis capabilities.
 
-## Features
+## 📁 Directory Structure
 
-- 🎲 Dropdown patient selection
-- 👤 Patient demographics display
-- 🏥 Biometric scenarios -- 5 minute biometric streams for three scenarios: regular, irregular, and critical
-- 🎨 Modern, responsive UI
-- 🤖 **Agentic AI Integration** -- CrewAI-powered patient analysis with real-time monitoring
-
-## Setup
-
-### Using UV (Recommended)
-
-1. Create a virtual environment and install dependencies:
-
-```bash
-uv venv
-uv pip install -r requirements.txt
+```
+patient/
+├── monitor.py                      # Main monitoring dashboard (Streamlit)
+├── agentic_monitor_app.py         # Agentic analysis interface (Streamlit)
+├── biometric_scenario_server.py   # IoT device simulator (TCP/WebSocket)
+├── agentic_monitor_integration.py # Legacy integration (deprecated)
+├── agentic_data_loader.py         # Patient data loading utilities
+├── biometric_types.py             # Biometric data type definitions
+├── integrations/                  # Framework integration layer
+│   ├── __init__.py               # Framework registry
+│   ├── base_integration.py       # Base integration class
+│   ├── crewai_integration.py     # CrewAI integration
+│   └── langgraph_integration.py  # LangGraph integration
+├── monitor_components/            # Reusable UI components
+│   ├── heartbeat_component.py    # Heartbeat visualization
+│   ├── ekg_component.py          # EKG chart component
+│   └── timeline_component.py     # Patient timeline component
+├── utils/                         # Utility functions
+│   ├── fhir_observations.py      # FHIR data processing
+│   ├── generate_realistic_heartbeats.py # Heartbeat generation
+│   └── heartbeat_analysis.py     # Heartbeat analysis utilities
+├── biometric/                     # Biometric data and scenarios
+│   ├── buffer/                   # Real-time data buffer
+│   ├── demo_scenarios/           # Predefined medical scenarios
+│   └── weight/                   # Patient weight data
+├── generated_medical_records/     # Patient medical records
+│   ├── fhir/                     # FHIR-formatted records
+│   ├── metadata/                 # Record metadata
+│   └── pain_diaries/             # Patient pain diary entries
+├── agentic_monitor_logs/         # Analysis results and logs
+└── README.md                     # This file
 ```
 
-2. Activate the virtual environment:
+## 🚀 Quick Start
 
-```bash
-source .venv/bin/activate  # On macOS/Linux
-# or
-.venv\Scripts\activate     # On Windows
-```
+### Prerequisites
 
-### Alternative: Using pip
+- Python 3.12+
+- UV package manager
+- OpenAI API key
+- Docker (for OpenSearch)
 
-1. Install the required dependencies:
+### Running the System
 
-```bash
-pip install -r requirements.txt
-```
-
-2. Ensure you have Synthea-generated FHIR data in the `../synthea/output/fhir/` directory.
-
-## Running the Application
-
-Run the Streamlit app on port 8501:
-
-```bash
-streamlit run monitor.py --server.port 8501
-```
-
-The application will be available at `http://localhost:8501`
-
-## Usage
-
-1. **Select a Patient**: Use the sidebar to choose a patient from the dropdown list
-
-   - Allen is A-OK, Mark is just so-so, and Zach is really struggling
-
-2. **View Patient Information**: The main area displays:
-
-   - Patient name and demographics
-   - Diagnosis information
-
-3. **Run Agentic Analysis**:
-   - Click "🚀 Run Analysis" in the sidebar
-   - Agentic monitor opens in new window (port 8502)
-   - Monitor progress using refresh button
-   - View structured results when complete
-
-## Agentic AI Framework Integration
-
-The patient monitor now includes a modular agentic AI framework system that allows you to add new AI analysis solutions alongside the existing CrewAI implementation.
-
-### Current Frameworks
-
-- **CrewAI** (`crew/cardio_monitor/`): Multi-agent patient analysis system
-  - Biometric Data Reviewer
-  - Senior Cardiac Care Triage Nurse
-  - Medical Records Specialist
-
-### Adding a New Framework
-
-To add a new agentic AI framework:
-
-1. **Create Framework Directory**:
+1. **Start Biometric Server** (Terminal 1)
 
    ```bash
-   mkdir -p crew/your_framework_name/src/your_framework_name
+   python patient/biometric_scenario_server.py
    ```
 
-2. **Implement Framework Interface**:
+2. **Start Main Monitor** (Terminal 2)
 
-   - Create `crew.py` with a main crew class
-   - Implement `crew()` method that returns a crew object
-   - Ensure compatibility with `agentic_monitor_integration.py`
+   ```bash
+   streamlit run patient/monitor.py
+   ```
 
-3. **Update Integration Layer**:
+3. **Start Agentic Monitor** (Terminal 3)
+   ```bash
+   streamlit run patient/agentic_monitor_app.py --server.port 8502
+   ```
 
-   - Modify `agentic_monitor_integration.py` to support your framework
-   - Add framework detection logic
-   - Implement framework-specific execution paths
+## 🏥 Main Monitor (`monitor.py`)
 
-4. **Update UI**:
-   - Add framework option to the dropdown in `monitor.py`
-   - Implement framework-specific progress monitoring
-   - Handle framework-specific output formats
+**Purpose**: Real-time patient monitoring dashboard with live biometric visualization.
 
-### Framework Requirements
+### Features
 
-Your framework must provide:
+- **Patient Selection**: Choose from available patients (Allen, Mark, Zach)
+- **Real-time Visualization**: Live heartbeat, EKG, and vital signs display
+- **Scenario Controls**: Trigger different medical scenarios (normal, irregular, critical)
+- **Medical Records**: Display patient FHIR records and pain diaries
+- **Agentic Analysis**: Launch AI-powered patient analysis
 
-- **Crew/Agent Definition**: Clear agent roles and capabilities
-- **Task Execution**: Structured task processing
-- **Output Format**: Consistent result structure
-- **Error Handling**: Robust error management
-- **Progress Reporting**: Real-time execution status
+### Components
 
-See `crew/cardio_monitor/` for a complete implementation example.
+- **Heartbeat Component**: Real-time heartbeat visualization
+- **EKG Component**: Electrocardiogram chart display
+- **Timeline Component**: Patient data timeline
+- **Scenario Controls**: Medical scenario triggers
 
-## Data Structure
+### Data Sources
 
-The application parses FHIR Bundle resources and extracts:
+- **Biometric Server**: Real-time streaming data
+- **FHIR Records**: Patient medical history
+- **Pain Diaries**: Patient-reported symptoms
+- **Weight Data**: Patient weight measurements
 
-- **Patient**: Basic demographics, name, address
-- **Condition**: Diagnosis codes, descriptions, clinical status
-- **AllergyIntolerance**: Allergy information, criticality, categories
+## 🤖 Agentic Monitor App (`agentic_monitor_app.py`)
 
-The application also works together with the biometric_scenario_server (see `biometric_scenario_server.py`)
-to run pseudo scenarios with various biometric streamed from the scenario server.
+**Purpose**: Dedicated interface for running and monitoring AI-powered patient analysis.
 
-The monitor.py application receives these biometrics through a TCP connection, and then writes them in batches to:
-`biometric/buffer/simulation_biometrics.json`.
+### Features
 
-Agentic monitoring solutions consume the content from `simulation_biometrics.json` along with other health data.
+- **Framework Selection**: Choose between CrewAI, LangGraph, or other frameworks
+- **Background Execution**: Non-blocking analysis execution
+- **Progress Monitoring**: Real-time progress bars and status updates
+- **Result Display**: Structured presentation of analysis findings
+- **Log Integration**: Reads analysis results from logs directory
+
+### Workflow
+
+1. User selects framework and clicks "Run Analysis"
+2. Analysis launches in background thread
+3. Progress updates displayed in real-time
+4. Results shown when analysis completes
+5. Logs written to `agentic_monitor_logs/` directory
+
+## 📡 Biometric Scenario Server (`biometric_scenario_server.py`)
+
+**Purpose**: Simulates IoT medical monitoring devices by streaming realistic biometric data.
+
+### Features
+
+- **TCP Socket Server**: Handles client connections (port 5000)
+- **WebSocket Server**: Real-time event broadcasting (port 8092)
+- **Scenario Engine**: Loads predefined medical scenarios
+- **Event Streaming**: Sends timestamped biometric events
+- **Command Interface**: Accepts start/stop scenario commands
+
+### Scenarios
+
+- **Normal**: Healthy patient with stable vitals
+- **Irregular**: Patient with minor abnormalities
+- **Critical**: Patient requiring immediate attention
+
+### Data Types
+
+- **Heartbeat**: Heart rate and pulse strength
+- **SpO2**: Blood oxygen saturation
+- **Blood Pressure**: Systolic and diastolic pressure
+- **Temperature**: Body temperature
+- **Respiration**: Breathing rate
+- **ECG Rhythm**: Heart rhythm patterns
+
+## 🔗 Integration Layer (`integrations/`)
+
+**Purpose**: Connects the patient monitoring system with various agentic AI frameworks.
+
+### Supported Frameworks
+
+- **CrewAI**: Multi-agent crew-based analysis
+- **LangGraph**: State-based workflow analysis
+- **Extensible**: Easy addition of new frameworks
+
+### Key Components
+
+- **BaseIntegration**: Common utilities and performance tracking
+- **Framework Integrations**: Specific implementations for each framework
+- **Framework Registry**: Central registry for framework discovery
+
+See [Integration Layer Documentation](integrations/README.md) for detailed information.
+
+## 📊 Data Flow
+
+```
+Biometric Server → Main Monitor → Agentic Monitor → Framework Integration → Analysis Results
+     ↓                ↓              ↓                    ↓                    ↓
+  Real-time        Live Display   Framework         AI Analysis         Structured
+  Biometric        & Controls     Selection         Execution           Logs & Results
+  Events
+```
+
+## 🔧 Development
+
+### Adding New Patients
+
+1. **Create Patient Data**
+
+   ```bash
+   # Add weight data
+   echo '[]' > patient/biometric/weight/newpatient.json
+
+   # Add FHIR records
+   # Create patient FHIR record in generated_medical_records/fhir/
+
+   # Add pain diary
+   # Create pain diary in generated_medical_records/pain_diaries/
+   ```
+
+2. **Update Patient List**
+   ```python
+   # In monitor.py, add to patient list
+   patients = ["Allen", "Mark", "Zach", "NewPatient"]
+   ```
+
+### Adding New Scenarios
+
+1. **Create Scenario File**
+
+   ```bash
+   # Create new scenario in biometric/demo_scenarios/
+   echo '{"scenario": "new_scenario", "events": [...]}' > biometric/demo_scenarios/new_scenario.json
+   ```
+
+2. **Update Scenario Controls**
+   ```python
+   # In monitor.py, add scenario button
+   if st.button("New Scenario"):
+       # Trigger new scenario
+   ```
+
+### Customizing Components
+
+The system includes reusable UI components in `monitor_components/`:
+
+- **Heartbeat Component**: Customize heartbeat visualization
+- **EKG Component**: Modify EKG chart display
+- **Timeline Component**: Adjust patient timeline view
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Port Conflicts**: Ensure ports 5000, 8501, and 8502 are available
+2. **Biometric Data**: Main monitor requires biometric server to be running
+3. **Analysis Launch**: Agentic analysis needs both monitors running
+4. **File Paths**: Check that patient data files are accessible
+5. **Dependencies**: Run `uv sync` if encountering import errors
+
+### Debug Mode
+
+Enable debug logging:
+
+```bash
+export PATIENT_MONITOR_DEBUG=true
+export LOG_LEVEL=DEBUG
+```
+
+### Log Files
+
+- **Execution Logs**: `agentic_monitor_logs/` directory
+- **Biometric Buffer**: `biometric/buffer/simulation_biometrics.json`
+- **Patient Data**: `generated_medical_records/` directory
+
+## 📈 Performance Considerations
+
+### Optimization Tips
+
+- **Biometric Buffer**: Monitor buffer size to prevent memory issues
+- **Real-time Updates**: Adjust update frequency for performance
+- **Analysis Execution**: Use background threads for non-blocking operation
+- **File I/O**: Minimize file operations during real-time updates
+
+### Monitoring
+
+- **Memory Usage**: Monitor Streamlit app memory consumption
+- **CPU Usage**: Check biometric server CPU usage
+- **Network**: Monitor TCP/WebSocket connection performance
+- **Analysis Time**: Track agentic analysis execution duration
+
+## 🔄 Getting Back Into Development
+
+When returning to patient monitoring development:
+
+1. **Review System Architecture**: Understand data flow and component relationships
+2. **Check Integration Status**: Verify framework integrations are working
+3. **Test Patient Data**: Ensure patient records and scenarios are accessible
+4. **Run Full System**: Test complete monitoring workflow
+5. **Review Recent Logs**: Check analysis results and performance metrics
+
+## 📚 Additional Resources
+
+- [Integration Layer](integrations/README.md) - Framework integration details
+- [CrewAI Solutions](../crew/README.md) - CrewAI-based analysis
+- [LangGraph Solutions](../langgraph_agents/README.md) - LangGraph-based analysis
+- [OpenSearch RAG](../opensearch/README.md) - Knowledge base integration
+- [Shared Data Models](../agentic_types/models.py) - Common data structures
+
+## 🤝 Contributing
+
+1. **Follow UI Patterns**: Maintain consistent Streamlit interface design
+2. **Handle Errors Gracefully**: Implement proper error handling and user feedback
+3. **Optimize Performance**: Monitor and optimize real-time data processing
+4. **Add Tests**: Include comprehensive test coverage for new features
+5. **Document Changes**: Update README files for new functionality
+6. **Maintain Compatibility**: Ensure changes work with all supported frameworks

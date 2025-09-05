@@ -55,7 +55,7 @@ class LangGraphIntegration(BaseIntegration):
                 "error": f"Error testing LangGraph availability: {str(e)}"
             }
 
-    def run_agentic_analysis(self, patient_name: str, run_id: Optional[str] = None) -> Dict[str, Any]:
+    def run_agentic_analysis(self, patient_name: str, run_id: Optional[str] = None, timestamp: Optional[str] = None) -> Dict[str, Any]:
         """Run LangGraph analysis for a patient."""
         if self.workflow_module is None:
             return {
@@ -78,9 +78,15 @@ class LangGraphIntegration(BaseIntegration):
             logs_dir.mkdir(exist_ok=True)
             
             # Create execution log
-            timestamp = datetime.now().strftime('%Y_%m_%d_%H_%M')
+            if timestamp:
+                # Use provided timestamp
+                log_timestamp = timestamp
+            else:
+                # Generate new timestamp
+                log_timestamp = datetime.now().strftime('%Y_%m_%d_%H_%M')
+            
             formatted_patient_name = patient_name.title() if patient_name else "Unknown"
-            execution_log_file = logs_dir / f"{timestamp}_{run_id}_{formatted_patient_name}_execution_log.json"
+            execution_log_file = logs_dir / f"{log_timestamp}_{formatted_patient_name}_execution_log.json"
             
             execution_log = {
                 "run_id": run_id,
@@ -138,7 +144,7 @@ class LangGraphIntegration(BaseIntegration):
             add_event("workflow_started", "LangGraph workflow started")
             add_progress(20, "running", "Workflow execution started")
             
-            result = self.workflow_module(patient_name, run_id)
+            result = self.workflow_module(patient_name, run_id, timestamp=log_timestamp)
             
             # Update progress based on result
             if result.get("success"):

@@ -38,7 +38,18 @@ from agentic_types.models import (
 )
 
 # Import the new integration system
-from integrations import get_integration, BaseIntegration
+try:
+    # Try relative import first (when used as part of the patient package)
+    from .integrations import get_integration, BaseIntegration
+except ImportError:
+    try:
+        # Try absolute import from patient package
+        from patient.integrations import get_integration, BaseIntegration
+    except ImportError:
+        # Final fallback - try direct import
+        import sys
+        sys.path.insert(0, str(Path(__file__).parent))
+        from integrations import get_integration, BaseIntegration
 
 
 class AgenticMonitorIntegration:
@@ -184,7 +195,7 @@ class AgenticMonitorIntegration:
         """
         return self._discover_patient_file_paths(patient_name)
 
-    def run_agentic_analysis(self, patient_name: str, run_id: Optional[str] = None, framework: str = "crewai") -> Dict[str, Any]:
+    def run_agentic_analysis(self, patient_name: str, run_id: Optional[str] = None, framework: str = "crewai", timestamp: Optional[str] = None) -> Dict[str, Any]:
         """
         Public method to run agentic analysis for a specific patient using the specified framework.
         
@@ -192,20 +203,26 @@ class AgenticMonitorIntegration:
             patient_name: Name of the patient to analyze
             run_id: Optional run ID (will generate one if not provided)
             framework: Framework to use for analysis (defaults to "crewai")
+            timestamp: Optional timestamp from URL parameter (format: YYYY_MM_DD_HH_MM)
             
         Returns:
             Dictionary containing the analysis results
         """
         try:
-            # Try to use the new integration system first
+            # Use the new integration system
             try:
                 integration = get_integration(framework)
                 print(f"🚀 Using {framework} integration for analysis")
-                return integration.run_agentic_analysis(patient_name, run_id)
+                return integration.run_agentic_analysis(patient_name, run_id, timestamp=timestamp)
             except (ImportError, ValueError) as e:
-                print(f"⚠️ New integration system not available, falling back to legacy CrewAI: {e}")
-                # Fall back to legacy CrewAI implementation
-                return self._run_legacy_crewai_analysis(patient_name, run_id)
+                print(f"❌ Integration system not available: {e}")
+                return {
+                    "success": False,
+                    "error": f"Integration system not available: {str(e)}",
+                    "run_id": run_id,
+                    "patient_name": patient_name,
+                    "framework": framework
+                }
                 
         except Exception as e:
             print(f"❌ Error in agentic analysis: {e}")
@@ -218,17 +235,6 @@ class AgenticMonitorIntegration:
                 "patient_name": patient_name,
                 "framework": framework
             }
-
-    def _run_legacy_crewai_analysis(self, patient_name: str, run_id: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Legacy CrewAI analysis implementation.
-        This method preserves all the existing functionality for backward compatibility.
-        """
-        # Import the legacy CrewAI implementation here to avoid circular imports
-        from ._legacy_crewai_integration import LegacyCrewaiIntegration
-        
-        legacy_integration = LegacyCrewaiIntegration()
-        return legacy_integration.run_agentic_analysis(patient_name, run_id)
 
     def get_latest_logs(self, patient_name: str, limit: int = 5) -> list:
         """
@@ -257,27 +263,18 @@ class AgenticMonitorIntegration:
             Dictionary with test results
         """
         try:
-            # Try the new integration system first
+            # Use the new integration system
             try:
                 integration = get_integration("crewai")
                 return integration.test_availability()
-            except (ImportError, ValueError):
-                # Fall back to legacy test
-                return self._test_legacy_crew_availability()
+            except (ImportError, ValueError) as e:
+                return {
+                    "available": False,
+                    "error": f"Integration system not available: {str(e)}"
+                }
                 
         except Exception as e:
             return {
                 "available": False,
                 "error": f"Error testing crew availability: {str(e)}"
             }
-    
-    def _test_legacy_crew_availability(self) -> Dict[str, Any]:
-        """
-        Legacy crew availability test.
-        This method preserves the existing functionality for backward compatibility.
-        """
-        # Import the legacy CrewAI implementation here to avoid circular imports
-        from ._legacy_crewai_integration import LegacyCrewaiIntegration
-        
-        legacy_integration = LegacyCrewaiIntegration()
-        return legacy_integration.test_crew_availability()

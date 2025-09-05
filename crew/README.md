@@ -1,188 +1,246 @@
-# Agentic AI Frameworks
+# CrewAI Solutions - Care Guard Agentic AI
 
-This directory contains the agentic AI frameworks that power the patient monitoring system's intelligent analysis capabilities.
+This directory contains CrewAI-based agentic AI solutions for patient monitoring and medical knowledge management.
 
-## Overview
-
-The agentic framework system provides a modular approach to AI-powered patient analysis, allowing different AI solutions to be integrated while maintaining a consistent interface and user experience.
-
-## Current Frameworks
-
-### CrewAI (`cardio_monitor/`)
-
-**Status**: ✅ Production Ready
-
-A multi-agent system for comprehensive patient analysis:
-
-- **Biometric Data Reviewer**: Analyzes real-time biometric streams
-- **Senior Cardiac Care Triage Nurse**: Evaluates patient status and makes triage decisions
-- **Medical Records Specialist**: Creates comprehensive medical logs and recommendations
-
-**Key Features**:
-
-- Real-time biometric analysis
-- Structured medical decision making
-- Comprehensive output formatting
-- Progress tracking and logging
-
-**Implementation**: `crew/cardio_monitor/src/cardio_monitor/crew.py`
-
-## Framework Architecture
-
-### Standard Framework Structure
+## 📁 Directory Structure
 
 ```
 crew/
-├── your_framework_name/
-│   ├── src/
-│   │   └── your_framework_name/
-│   │       ├── __init__.py
-│   │       ├── crew.py          # Main framework implementation
-│   │       ├── config/          # Configuration files
-│   │       │   ├── agents.yaml
-│   │       │   └── tasks.yaml
-│   │       └── tools/           # Framework-specific tools
-│   ├── pyproject.toml          # Dependencies
-│   └── README.md               # Framework documentation
+├── cardio_monitor/              # Cardiac monitoring crew
+│   ├── src/cardio_monitor/     # Main crew implementation
+│   │   ├── crew.py            # Crew definition and agents
+│   │   ├── main.py            # Entry point and execution
+│   │   ├── config/            # Agent and task configurations
+│   │   └── tools/             # Custom tools and utilities
+│   ├── tests/                 # Unit and integration tests
+│   └── README.md              # Detailed crew documentation
+├── knowledge_base_crew/        # Medical knowledge research crew
+│   ├── src/knowledge_base_crew/ # Main crew implementation
+│   │   ├── crew.py            # Crew definition and agents
+│   │   ├── main.py            # Entry point and execution
+│   │   ├── config/            # Agent and task configurations
+│   │   └── tools/             # Custom tools and utilities
+│   ├── tests/                 # Unit and integration tests
+│   └── README.md              # Detailed crew documentation
+├── pyproject.toml             # Project configuration and dependencies
+├── requirements.txt           # Python dependencies
+└── README.md                  # This file
 ```
 
-### Required Interface
+## 🚀 Quick Start
 
-Your framework must implement:
+### Prerequisites
 
-```python
-class YourFramework:
-    def crew(self, **kwargs):
-        """
-        Main framework method that returns a crew/agent object.
+- Python 3.12+
+- UV package manager
+- OpenAI API key
+- OpenSearch (for knowledge base crew)
 
-        Args:
-            **kwargs: Framework-specific parameters
-
-        Returns:
-            A crew/agent object with a .kickoff() method
-        """
-        # Your framework implementation
-        pass
-```
-
-### Integration Requirements
-
-1. **Compatible with `agentic_monitor_integration.py`**
-2. **Structured output format** (JSON-compatible)
-3. **Progress reporting** capability
-4. **Error handling** and logging
-5. **Configurable parameters** for different use cases
-
-## Adding a New Framework
-
-### Step 1: Create Framework Structure
+### Installation
 
 ```bash
-mkdir -p crew/your_framework_name/src/your_framework_name
-cd crew/your_framework_name
+# From project root
+cd crew/
+uv sync
 ```
 
-### Step 2: Implement Core Framework
+### Running Individual Crews
 
-Create `crew.py` with your framework implementation:
-
-```python
-class YourFramework:
-    def __init__(self):
-        # Initialize your framework
-        pass
-
-    def crew(self, **kwargs):
-        # Return your crew/agent object
-        return YourCrew(**kwargs)
-```
-
-### Step 3: Update Integration Layer
-
-Modify `patient/agentic_monitor_integration.py`:
-
-```python
-# Add framework detection
-if framework_name == "your_framework":
-    from crew.your_framework.src.your_framework.crew import YourFramework
-    crew = YourFramework()
-```
-
-### Step 4: Update UI
-
-Add framework option in `patient/monitor.py`:
-
-```python
-solution_options = ["Crewai", "YourFramework"]
-```
-
-### Step 5: Test Integration
-
-1. Run the patient monitor
-2. Select your framework from dropdown
-3. Test analysis execution
-4. Verify output and progress tracking
-
-## Framework Development Guidelines
-
-### Best Practices
-
-1. **Modular Design**: Keep framework logic separate from integration
-2. **Error Handling**: Implement robust error handling and logging
-3. **Configuration**: Use YAML configs for easy customization
-4. **Documentation**: Provide clear usage examples and API docs
-5. **Testing**: Include unit tests and integration tests
-
-### Common Patterns
-
-- **Agent Definition**: Clear role definitions and capabilities
-- **Task Processing**: Structured task execution pipeline
-- **Output Formatting**: Consistent result structure
-- **Progress Tracking**: Real-time execution status updates
-- **Resource Management**: Efficient memory and CPU usage
-
-### Example Implementation
-
-See `crew/cardio_monitor/` for a complete, production-ready framework implementation that demonstrates all these patterns.
-
-## Testing Your Framework
-
-### Local Testing
+#### Cardio Monitor Crew
 
 ```bash
-cd crew/your_framework_name
+cd cardio_monitor/
+python src/cardio_monitor/main.py
+```
+
+#### Knowledge Base Crew
+
+```bash
+cd knowledge_base_crew/
+python src/knowledge_base_crew/main.py
+```
+
+## 🏥 Cardio Monitor Crew
+
+**Purpose**: Real-time cardiac patient monitoring and analysis using CrewAI agents.
+
+### Features
+
+- **Biometric Analysis**: Reviews heart rate, SpO2, blood pressure, and other vital signs
+- **Triage Decision Making**: Determines appropriate care actions based on biometric data
+- **Medical Logging**: Creates structured medical logs with findings and recommendations
+- **RAG Integration**: Uses medical knowledge base for enhanced analysis
+
+### Agents
+
+1. **Biometric Reviewer**: Analyzes real-time biometric data and identifies anomalies
+2. **Triage Nurse**: Makes care decisions based on biometric analysis and medical history
+3. **Log Writer**: Creates comprehensive medical logs with findings and recommendations
+
+### Configuration
+
+- **Agents**: Defined in `src/cardio_monitor/config/agents.yaml`
+- **Tasks**: Defined in `src/cardio_monitor/config/tasks.yaml`
+- **Tools**: Custom tools in `src/cardio_monitor/tools/`
+
+### Integration
+
+The cardio monitor crew is integrated into the main patient monitoring system via:
+
+- `patient/integrations/crewai_integration.py`
+- Called from the agentic monitor app when "CrewAI" is selected
+
+## 📚 Knowledge Base Crew
+
+**Purpose**: Medical knowledge research and indexing for RAG-enhanced analysis.
+
+### Features
+
+- **Medical Research**: Searches and retrieves relevant medical articles
+- **Knowledge Indexing**: Indexes articles into OpenSearch for RAG queries
+- **Content Processing**: Extracts and structures medical information
+- **Search Integration**: Provides searchable medical knowledge base
+
+### Agents
+
+1. **Medical Researcher**: Searches for relevant medical articles and information
+2. **Knowledge Indexer**: Processes and indexes articles into OpenSearch
+
+### Configuration
+
+- **Agents**: Defined in `src/knowledge_base_crew/config/agents.yaml`
+- **Tasks**: Defined in `src/knowledge_base_crew/config/tasks.yaml`
+- **Tools**: Custom tools in `src/knowledge_base_crew/tools/`
+
+### Integration
+
+The knowledge base crew works with:
+
+- OpenSearch for article storage and retrieval
+- RAG tools for enhanced medical analysis
+- Other crews for knowledge-enhanced decision making
+
+## 🔧 Development
+
+### Adding a New Crew
+
+1. **Create Directory Structure**
+
+   ```bash
+   mkdir -p new_crew/src/new_crew/{config,tools}
+   mkdir -p new_crew/tests
+   ```
+
+2. **Define Crew Configuration**
+
+   - Create `config/agents.yaml` with agent definitions
+   - Create `config/tasks.yaml` with task definitions
+   - Implement custom tools in `tools/`
+
+3. **Implement Crew Logic**
+
+   - Create `crew.py` with crew definition
+   - Create `main.py` with entry point
+   - Add tests in `tests/`
+
+4. **Update Dependencies**
+   - Add crew-specific dependencies to `requirements.txt`
+   - Update `pyproject.toml` if needed
+
+### Testing
+
+```bash
+# Run all tests
+cd crew/
+python -m pytest
+
+# Run specific crew tests
+cd cardio_monitor/
+python -m pytest tests/
+
+cd knowledge_base_crew/
 python -m pytest tests/
 ```
 
-### Integration Testing
+### Configuration Management
 
-1. Start the patient monitor
-2. Select your framework
-3. Run analysis on test patient
-4. Verify output and progress
+Each crew uses YAML configuration files for:
 
-### Performance Testing
+- **Agent definitions**: Roles, goals, backstories
+- **Task definitions**: Descriptions, expected outputs, context
+- **Tool configurations**: Parameters and settings
 
-- Monitor memory usage during execution
-- Check execution time for different patient datasets
-- Validate output quality and consistency
+## 🔗 Integration with Main System
 
-## Contributing
+### Data Flow
 
-When adding a new framework:
+```
+Patient Monitor → Integration Layer → CrewAI Crew → Analysis Results → Logs
+```
 
-1. **Follow the established structure** and patterns
-2. **Include comprehensive documentation**
-3. **Add appropriate tests**
-4. **Update this README** with framework details
-5. **Test integration** with the main system
+### Shared Components
 
-## Support
+- **Data Models**: Uses `agentic_types/models.py` for consistent output
+- **File Discovery**: Inherits from `BaseIntegration` for patient data access
+- **Logging**: Writes structured logs to `patient/agentic_monitor_logs/`
 
-For questions about framework development or integration:
+### Framework Registry
 
-1. Check the existing CrewAI implementation as reference
-2. Review `patient/agentic_monitor_integration.py` for integration patterns
-3. Examine the UI integration in `patient/monitor.py`
-4. Consult the main project documentation
+Crews are registered in `patient/integrations/__init__.py`:
+
+```python
+FRAMEWORK_REGISTRY = {
+    "crewai": CrewaiIntegration,
+    # Other frameworks...
+}
+```
+
+## 📊 Performance Monitoring
+
+The system includes performance tracking for:
+
+- **Execution Time**: Duration of crew execution
+- **Token Usage**: LLM token consumption
+- **Tool Calls**: Number of tool invocations
+- **Success Rates**: Analysis completion rates
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Import Errors**: Ensure all dependencies are installed with `uv sync`
+2. **OpenAI API**: Verify API key is set in `.env` file
+3. **OpenSearch**: Ensure OpenSearch is running for knowledge base crew
+4. **File Paths**: Check that patient data files are accessible
+
+### Debug Mode
+
+Enable debug logging by setting environment variables:
+
+```bash
+export CREWAI_DEBUG=true
+export LOG_LEVEL=DEBUG
+```
+
+## 📈 Future Enhancements
+
+- **Additional Medical Specialties**: Expand beyond cardiac monitoring
+- **Multi-Patient Analysis**: Support for multiple patients simultaneously
+- **Advanced RAG**: Enhanced knowledge base integration
+- **Performance Optimization**: Improved execution speed and resource usage
+- **Custom Tools**: Additional medical analysis tools and utilities
+
+## 🤝 Contributing
+
+1. **Follow CrewAI Best Practices**: Use proper agent and task definitions
+2. **Maintain Configuration**: Keep YAML files well-documented
+3. **Add Tests**: Include comprehensive test coverage
+4. **Document Changes**: Update README files for new features
+5. **Performance**: Monitor and optimize crew execution times
+
+## 📚 Additional Resources
+
+- [CrewAI Documentation](https://docs.crewai.com/)
+- [Individual Crew READMEs](cardio_monitor/README.md) and [Knowledge Base Crew](knowledge_base_crew/README.md)
+- [Integration Layer Documentation](../patient/integrations/README.md)
+- [Shared Data Models](../agentic_types/models.py)

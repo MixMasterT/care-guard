@@ -8,7 +8,7 @@ import json
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, TypedDict, List
+from typing import Dict, Any, TypedDict, List, Optional
 from langgraph.graph import StateGraph, START, END
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -29,7 +29,8 @@ load_dotenv()
 # Import Pydantic models for structured output
 from agentic_types.models import (
     TrendInsightPayload, DecisionPayload, AgenticFinalOutput,
-    Finding, Recommendation, PatientIdentity, ExecutionMetrics, Artifacts
+    Finding, Recommendation, PatientIdentity, ExecutionMetrics, Artifacts,
+    BiometricMetricStats
 )
 
 # State for the LangGraph workflow
@@ -401,22 +402,60 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
                 if temp_value is not None:
                     temperatures.append(float(temp_value))
         
-        # Calculate basic statistics
-        stats = {}
+        # Calculate basic statistics using BiometricMetricStats objects
+        stats = []
         if heart_rates:
-            stats['heart_rate'] = {
-                'avg': round(sum(heart_rates) / len(heart_rates), 1),
-                'min': round(min(heart_rates), 1),
-                'max': round(max(heart_rates), 1),
-                'count': len(heart_rates)
-            }
+            stats.append(BiometricMetricStats(
+                metric_name="heart_rate",
+                average=round(sum(heart_rates) / len(heart_rates), 1),
+                min_value=round(min(heart_rates), 1),
+                max_value=round(max(heart_rates), 1),
+                count=len(heart_rates),
+                unit="bpm",
+                trend="Stable"  # Could be enhanced with actual trend analysis
+            ))
         if spo2_values:
-            stats['spo2'] = {
-                'avg': round(sum(spo2_values) / len(spo2_values), 1),
-                'min': round(min(spo2_values), 1),
-                'max': round(max(spo2_values), 1),
-                'count': len(spo2_values)
-            }
+            stats.append(BiometricMetricStats(
+                metric_name="spo2",
+                average=round(sum(spo2_values) / len(spo2_values), 1),
+                min_value=round(min(spo2_values), 1),
+                max_value=round(max(spo2_values), 1),
+                count=len(spo2_values),
+                unit="%",
+                trend="Stable"  # Could be enhanced with actual trend analysis
+            ))
+        if blood_pressures:
+            systolic_values = [bp['systolic'] for bp in blood_pressures]
+            diastolic_values = [bp['diastolic'] for bp in blood_pressures]
+            stats.append(BiometricMetricStats(
+                metric_name="blood_pressure",
+                average=round((sum(systolic_values) / len(systolic_values) + sum(diastolic_values) / len(diastolic_values)) / 2, 1),
+                min_value=round(min(systolic_values), 1),
+                max_value=round(max(systolic_values), 1),
+                count=len(blood_pressures),
+                unit="mmHg",
+                trend="Stable"
+            ))
+        if respiration_rates:
+            stats.append(BiometricMetricStats(
+                metric_name="respiration",
+                average=round(sum(respiration_rates) / len(respiration_rates), 1),
+                min_value=round(min(respiration_rates), 1),
+                max_value=round(max(respiration_rates), 1),
+                count=len(respiration_rates),
+                unit="breaths/min",
+                trend="Stable"
+            ))
+        if temperatures:
+            stats.append(BiometricMetricStats(
+                metric_name="temperature",
+                average=round(sum(temperatures) / len(temperatures), 1),
+                min_value=round(min(temperatures), 1),
+                max_value=round(max(temperatures), 1),
+                count=len(temperatures),
+                unit="°C",
+                trend="Stable"
+            ))
         
         system_prompt = """You are an experienced technical expert in real-time patient monitoring and interpreting time-series biosignals.
         Review live and recent biometric signals to extract concise observations and identify any immediate risks.
@@ -427,7 +466,6 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
             "metric": "comprehensive_biometrics",
             "description": "brief summary of what the data shows",
             "window": "Recent monitoring period",
-            "stats": {"heart_rate": {...}, "spo2": {...}},
             "support_score": 0.85,
             "confidence_level": "high",
             "risk_assessment": "low|moderate|high|critical",
@@ -436,6 +474,8 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
             "requires_attention": true/false,
             "next_action": "immediate next step"
         }
+        
+        Note: The stats field will be populated automatically from the calculated statistics.
         
         RISK ASSESSMENT GUIDELINES:
         - LOW: All values within normal ranges, stable trends
@@ -448,13 +488,14 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
         - SpO2 < 90% → critical
         - Blood pressure < 90/60 or > 180/110 → high"""
         
+        # Create a summary of the calculated statistics
+        stats_summary = []
+        for stat in stats:
+            stats_summary.append(f"{stat.metric_name}: avg={stat.average}{stat.unit}, range={stat.min_value}-{stat.max_value}{stat.unit}, count={stat.count}")
+        
         analysis_summary = f"""
         Biometric Data Summary:
-        Heart Rate: {stats.get('heart_rate', {})}
-        SpO2: {stats.get('spo2', {})}
-        Blood Pressure Records: {len(blood_pressures)}
-        Respiration Records: {len(respiration_rates)}
-        Temperature Records: {len(temperatures)}
+        {chr(10).join(stats_summary)}
         Total Records: {len(biometric_data)}
         """
         
@@ -483,8 +524,15 @@ def biometric_reviewer_step(state: LangGraphState) -> LangGraphState:
             biometric_analysis = TrendInsightPayload(**result_data)
         else:
             # Fallback analysis
-            hr_avg = stats.get('heart_rate', {}).get('avg', 0)
-            spo2_avg = stats.get('spo2', {}).get('avg', 0)
+            hr_avg = 0
+            spo2_avg = 0
+            
+            # Extract values from stats list
+            for stat in stats:
+                if stat.metric_name == "heart_rate":
+                    hr_avg = stat.average or 0
+                elif stat.metric_name == "spo2":
+                    spo2_avg = stat.average or 0
             
             risk_level = "low"
             requires_attention = False
@@ -634,24 +682,6 @@ WEIGHT DATA: {len(weight_data)} measurements available
                 "timestamp": datetime.now().isoformat(),
                 "type": "patient_data_loaded",
                 "message": f"Step {state.get('current_step', 0) + 1}: Loaded patient data for {patient_name} using OpenSearch RAG ({len(pain_diary_entries)} pain entries, {len(fhir_entries)} FHIR records)"
-            }]
-        }
-        
-        return {
-            **state,
-            "pain_diary_data": pain_diary_data,
-            "weight_data": weight_data,
-            "fhir_records": fhir_records,
-            "patient_context": patient_context,
-            "current_step": state.get("current_step", 0) + 1,
-            "tool_calls": state.get("tool_calls", 0) + 0,  # No LLM calls in this step
-            "error": None,
-            "progress": 60,
-            "status": "patient_data_loaded",
-            "events": state.get("events", []) + [{
-                "timestamp": datetime.now().isoformat(),
-                "type": "patient_data_loaded",
-                "message": f"Step {state.get('current_step', 0) + 1}: Loaded patient data for {patient_name}"
             }]
         }
     except Exception as e:
@@ -851,6 +881,12 @@ def log_writer_step(state: LangGraphState) -> LangGraphState:
             "status": "error"
         }
 
+def should_continue(state: LangGraphState) -> str:
+    """Determine if workflow should continue or end due to error."""
+    if state.get("error"):
+        return "end"
+    return "continue"
+
 def create_patient_monitoring_graph():
     """Create the patient monitoring workflow."""
     workflow = StateGraph(LangGraphState)
@@ -862,17 +898,29 @@ def create_patient_monitoring_graph():
     workflow.add_node("triage_nurse", triage_nurse_step)
     workflow.add_node("log_writer", log_writer_step)
     
-    # Add edges
+    # Add edges with conditional logic
     workflow.add_edge(START, "load_biometric_data")
-    workflow.add_edge("load_biometric_data", "biometric_reviewer")
-    workflow.add_edge("biometric_reviewer", "load_patient_data")
-    workflow.add_edge("load_patient_data", "triage_nurse")
-    workflow.add_edge("triage_nurse", "log_writer")
+    workflow.add_conditional_edges("load_biometric_data", should_continue, {
+        "continue": "biometric_reviewer",
+        "end": END
+    })
+    workflow.add_conditional_edges("biometric_reviewer", should_continue, {
+        "continue": "load_patient_data",
+        "end": END
+    })
+    workflow.add_conditional_edges("load_patient_data", should_continue, {
+        "continue": "triage_nurse",
+        "end": END
+    })
+    workflow.add_conditional_edges("triage_nurse", should_continue, {
+        "continue": "log_writer",
+        "end": END
+    })
     workflow.add_edge("log_writer", END)
     
     return workflow.compile()
 
-def run_patient_monitoring(patient_name: str, run_id: str) -> Dict[str, Any]:
+def run_patient_monitoring(patient_name: str, run_id: str, timestamp: Optional[str] = None) -> Dict[str, Any]:
     """Run the patient monitoring workflow."""
     try:
         app = create_patient_monitoring_graph()
@@ -899,28 +947,64 @@ def run_patient_monitoring(patient_name: str, run_id: str) -> Dict[str, Any]:
         
         result = app.invoke(initial_state)
         
+        # Debug: Print the result to understand what was generated
+        # print(f"🔍 LangGraph workflow result keys: {list(result.keys())}")
+        # print(f"🔍 Biometric analysis present: {result.get('biometric_analysis') is not None}")
+        # print(f"🔍 Triage decision present: {result.get('triage_decision') is not None}")
+        # print(f"🔍 Medical log present: {result.get('medical_log') is not None}")
+        # print(f"🔍 Error present: {result.get('error') is not None}")
+        if result.get('error'):
+            print(f"❌ Workflow error: {result.get('error')}")
+        
         # Generate output files
-        timestamp = datetime.now().strftime('%Y_%m_%d_%H_%M')
-        logs_dir = Path("patient/agentic_monitor_logs")
+        if timestamp:
+            # Use provided timestamp
+            file_timestamp = timestamp
+        else:
+            # Generate new timestamp
+            file_timestamp = datetime.now().strftime('%Y_%m_%d_%H_%M')
+        
+        # Use absolute path to ensure files are created in the correct location
+        workspace_root = Path(__file__).parent.parent.parent
+        logs_dir = workspace_root / "patient" / "agentic_monitor_logs"
         logs_dir.mkdir(exist_ok=True)
+        
+        # Format patient name to match expected naming convention (title case)
+        formatted_patient_name = patient_name.title() if patient_name else "Unknown"
+        
+        # Debug: file creation
+        # print(f"📁 Creating output files in: {logs_dir}")
+        # print(f"📝 Using formatted patient name: {formatted_patient_name}")
         
         # Biometric analysis file
         if result.get("biometric_analysis"):
-            biometric_file = logs_dir / f"{timestamp}_{run_id}_{patient_name}_biometric_analysis.json"
-            with open(biometric_file, 'w') as f:
-                json.dump(result["biometric_analysis"].dict(), f, indent=2, default=str)
+            biometric_file = logs_dir / f"{file_timestamp}_{formatted_patient_name}_biometric_analysis.json"
+            try:
+                with open(biometric_file, 'w') as f:
+                    json.dump(result["biometric_analysis"].dict(), f, indent=2, default=str)
+                # print(f"✅ Created biometric analysis file: {biometric_file.name}")
+            except Exception as e:
+                print(f"❌ Error creating biometric analysis file: {e}")
         
         # Triage decision file
         if result.get("triage_decision"):
-            triage_file = logs_dir / f"{timestamp}_{run_id}_{patient_name}_triage_decision.json"
-            with open(triage_file, 'w') as f:
-                json.dump(result["triage_decision"].dict(), f, indent=2, default=str)
+            triage_file = logs_dir / f"{file_timestamp}_{formatted_patient_name}_triage_decision.json"
+            try:
+                with open(triage_file, 'w') as f:
+                    json.dump(result["triage_decision"].dict(), f, indent=2, default=str)
+                # print(f"✅ Created triage decision file: {triage_file.name}")
+            except Exception as e:
+                print(f"❌ Error creating triage decision file: {e}")
         
         # Medical log file
         if result.get("medical_log"):
-            medical_file = logs_dir / f"{timestamp}_{run_id}_{patient_name}_medical_log.json"
-            with open(medical_file, 'w') as f:
-                json.dump(result["medical_log"].dict(), f, indent=2, default=str)
+            medical_file = logs_dir / f"{file_timestamp}_{formatted_patient_name}_medical_log.json"
+            try:
+                with open(medical_file, 'w') as f:
+                    json.dump(result["medical_log"].dict(), f, indent=2, default=str)
+                # print(f"✅ Created medical log file: {medical_file.name}")
+            except Exception as e:
+                print(f"❌ Error creating medical log file: {e}")
         
         return {
             "success": True,

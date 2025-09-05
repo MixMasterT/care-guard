@@ -5,7 +5,10 @@
     "pain_level": 8,
     "sleep_quality": 3,
     "mood": "low",
-    "notes": "Very sore all day. Sleep was poor. Felt discouraged."
+    "notes": "Very sore all day. Sleep was poor. Felt discouraged.",
+    "offset_ms": 864000000,
+    "timestamp": "2025-08-08T22:02:45.238864",
+    "days_ago": 10
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -13,7 +16,10 @@
     "pain_level": 7,
     "sleep_quality": 4,
     "mood": "tired",
-    "notes": "Pain a bit better, but still stiff. Slept slightly longer."
+    "notes": "Pain a bit better, but still stiff. Slept slightly longer.",
+    "offset_ms": 777600000,
+    "timestamp": "2025-08-09T22:02:45.238862",
+    "days_ago": 9
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -21,7 +27,10 @@
     "pain_level": 6,
     "sleep_quality": 5,
     "mood": "neutral",
-    "notes": "Less pain in the morning. Mood more balanced today."
+    "notes": "Less pain in the morning. Mood more balanced today.",
+    "offset_ms": 691200000,
+    "timestamp": "2025-08-10T22:02:45.238860",
+    "days_ago": 8
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -29,7 +38,10 @@
     "pain_level": 6,
     "sleep_quality": 6,
     "mood": "calm",
-    "notes": "Able to move around more easily. Sleep felt more restful."
+    "notes": "Able to move around more easily. Sleep felt more restful.",
+    "offset_ms": 604800000,
+    "timestamp": "2025-08-11T22:02:45.238858",
+    "days_ago": 7
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -37,7 +49,10 @@
     "pain_level": 5,
     "sleep_quality": 6,
     "mood": "optimistic",
-    "notes": "Stretched in the morning, pain decreased throughout the day."
+    "notes": "Stretched in the morning, pain decreased throughout the day.",
+    "offset_ms": 518400000,
+    "timestamp": "2025-08-12T22:02:45.238855",
+    "days_ago": 6
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -45,7 +60,10 @@
     "pain_level": 4,
     "sleep_quality": 7,
     "mood": "good",
-    "notes": "Felt motivated today. Slept well and woke up refreshed."
+    "notes": "Felt motivated today. Slept well and woke up refreshed.",
+    "offset_ms": 432000000,
+    "timestamp": "2025-08-13T22:02:45.238853",
+    "days_ago": 5
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -53,7 +71,10 @@
     "pain_level": 3,
     "sleep_quality": 7,
     "mood": "cheerful",
-    "notes": "Pain is still present but tolerable. Spent time outside."
+    "notes": "Pain is still present but tolerable. Spent time outside.",
+    "offset_ms": 345600000,
+    "timestamp": "2025-08-14T22:02:45.238851",
+    "days_ago": 4
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -61,7 +82,10 @@
     "pain_level": 2,
     "sleep_quality": 8,
     "mood": "happy",
-    "notes": "Best sleep in weeks. Pain barely noticeable today."
+    "notes": "Best sleep in weeks. Pain barely noticeable today.",
+    "offset_ms": 259200000,
+    "timestamp": "2025-08-15T22:02:45.238849",
+    "days_ago": 3
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -69,7 +93,10 @@
     "pain_level": 1,
     "sleep_quality": 9,
     "mood": "very positive",
-    "notes": "Woke up pain-free. Great energy and mood all day."
+    "notes": "Woke up pain-free. Great energy and mood all day.",
+    "offset_ms": 172800000,
+    "timestamp": "2025-08-16T22:02:45.238846",
+    "days_ago": 2
   },
   {
     "patient_id": "f420e6d4-55db-974f-05cb-52d06375b65f",
@@ -77,7 +104,9 @@
     "pain_level": 0,
     "sleep_quality": 10,
     "mood": "excellent",
-    "notes": "No pain today. Slept deeply. Feeling completely back to normal."
+    "notes": "No pain today. Slept deeply. Feeling completely back to normal.",
+    "offset_ms": 86400000,
+    "timestamp": "2025-08-17T22:02:45.238842",
+    "days_ago": 1
   }
 ]
-

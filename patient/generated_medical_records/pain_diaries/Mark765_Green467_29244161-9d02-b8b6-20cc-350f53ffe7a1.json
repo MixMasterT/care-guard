@@ -5,7 +5,10 @@
     "pain_level": 5,
     "sleep_quality": 6,
     "mood": "neutral",
-    "notes": "Typical day. Some soreness in the afternoon."
+    "notes": "Typical day. Some soreness in the afternoon.",
+    "offset_ms": 864000000,
+    "timestamp": "2025-08-08T22:02:45.238602",
+    "days_ago": 10
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -13,7 +16,10 @@
     "pain_level": 4,
     "sleep_quality": 7,
     "mood": "calm",
-    "notes": "Slept better last night. Pain stayed manageable."
+    "notes": "Slept better last night. Pain stayed manageable.",
+    "offset_ms": 777600000,
+    "timestamp": "2025-08-09T22:02:45.238600",
+    "days_ago": 9
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -21,7 +27,10 @@
     "pain_level": 5,
     "sleep_quality": 6,
     "mood": "neutral",
-    "notes": "Back to normal. Light discomfort in lower back."
+    "notes": "Back to normal. Light discomfort in lower back.",
+    "offset_ms": 691200000,
+    "timestamp": "2025-08-10T22:02:45.238597",
+    "days_ago": 8
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -29,7 +38,10 @@
     "pain_level": 6,
     "sleep_quality": 5,
     "mood": "slightly irritable",
-    "notes": "Woke up a few times during the night. A bit tense today."
+    "notes": "Woke up a few times during the night. A bit tense today.",
+    "offset_ms": 604800000,
+    "timestamp": "2025-08-11T22:02:45.238595",
+    "days_ago": 7
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -37,7 +49,10 @@
     "pain_level": 5,
     "sleep_quality": 6,
     "mood": "neutral",
-    "notes": "Average day. Took a short walk."
+    "notes": "Average day. Took a short walk.",
+    "offset_ms": 518400000,
+    "timestamp": "2025-08-12T22:02:45.238593",
+    "days_ago": 6
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -45,7 +60,10 @@
     "pain_level": 4,
     "sleep_quality": 7,
     "mood": "good",
-    "notes": "Felt a little better. Less tension than usual."
+    "notes": "Felt a little better. Less tension than usual.",
+    "offset_ms": 432000000,
+    "timestamp": "2025-08-13T22:02:45.238591",
+    "days_ago": 5
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -53,7 +71,10 @@
     "pain_level": 5,
     "sleep_quality": 6,
     "mood": "neutral",
-    "notes": "No major changes. Energy level steady."
+    "notes": "No major changes. Energy level steady.",
+    "offset_ms": 345600000,
+    "timestamp": "2025-08-14T22:02:45.238589",
+    "days_ago": 4
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -61,7 +82,10 @@
     "pain_level": 5,
     "sleep_quality": 5,
     "mood": "a bit tired",
-    "notes": "Slightly worse sleep. More yawning today."
+    "notes": "Slightly worse sleep. More yawning today.",
+    "offset_ms": 259200000,
+    "timestamp": "2025-08-15T22:02:45.238586",
+    "days_ago": 3
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -69,7 +93,10 @@
     "pain_level": 6,
     "sleep_quality": 5,
     "mood": "okay",
-    "notes": "Back felt tight in the morning. Did some stretches."
+    "notes": "Back felt tight in the morning. Did some stretches.",
+    "offset_ms": 172800000,
+    "timestamp": "2025-08-16T22:02:45.238584",
+    "days_ago": 2
   },
   {
     "patient_id": "29244161-9d02-b8b6-20cc-350f53ffe7a1",
@@ -77,7 +104,9 @@
     "pain_level": 5,
     "sleep_quality": 6,
     "mood": "neutral",
-    "notes": "Pretty normal. Took a short nap in the afternoon."
+    "notes": "Pretty normal. Took a short nap in the afternoon.",
+    "offset_ms": 86400000,
+    "timestamp": "2025-08-17T22:02:45.238579",
+    "days_ago": 1
   }
 ]
-

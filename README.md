@@ -1,21 +1,18 @@
 # Care Guard Agentic AI - Patient Monitoring System
 
-A real-time patient monitoring system with synthetic heartbeat data streaming, medical record integration, and agentic AI analysis capabilities.
+A real-time patient monitoring system with synthetic heartbeat data streaming, medical record integration, and multi-framework agentic AI analysis capabilities.
 
 ## Quick Start
 
 **Prerequisites**: Python 3.12+, UV package manager, and Docker
 
 ### Setup
+
 1. Install Python 3.12+
-
 2. Install UV package manager
-
 3. Install Docker
-
 4. Clone this repo
-
-5. Copy the example `.env.example` file to a file named `.env`, and set a value for `OPENAI_API_KEY`
+5. Copy the example `.env.example` file to a file named `.env`, and set a value for `OPENAI_API_KEY` and any other API keys that you intend to use
 
 ### Run
 
@@ -27,29 +24,24 @@ A real-time patient monitoring system with synthetic heartbeat data streaming, m
    # Install dependencies (only needed if not already installed)
    uv sync
 
-   # Alternative two-step installation:
-   # uv venv
-   # uv pip install -r requirements.txt
-
    # Start the biometric scenario server (simulates medical device data)
    python patient/biometric_scenario_server.py
    ```
 
    This server simulates IoT medical devices and streams biometric events to the monitoring system.
 
-3. **Terminal 2: Start Opensearch in Docker**
+3. **Terminal 2: Start OpenSearch in Docker**
 
-```bash
-# Navigate to the OpenSearch directory
-cd opensearch/
+   ```bash
+   # Navigate to the OpenSearch directory
+   cd opensearch/
 
-# Start OpenSearch using Docker Compose
-docker-compose up -d
+   # Start OpenSearch using Docker Compose
+   docker-compose up -d
 
-# Verify OpenSearch is running (should show "green" status)
-curl http://localhost:9200/_cluster/health
-```
-
+   # Verify OpenSearch is running (should show "green" status)
+   curl http://localhost:9200/_cluster/health
+   ```
 
 4. **Terminal 3: Start the main patient monitor**
 
@@ -65,7 +57,7 @@ curl http://localhost:9200/_cluster/health
 
    The main monitor will open at `http://localhost:8501` and display real-time patient data.
 
-4. **Terminal 3: Start the agentic monitor (when needed)**
+5. **Terminal 4: Start the agentic monitor (when needed)**
 
    ```bash
    # Activate the virtual environment
@@ -81,9 +73,24 @@ curl http://localhost:9200/_cluster/health
 
 **Note**: The biometric scenario server (Terminal 1) must be running for the patient monitor to receive heartbeat data and run scenarios.
 
-### Optional: 
+## 📚 Documentation
 
-## System Architecture
+### Core System
+
+- **[Patient Monitoring System](patient/README.md)** - Main monitoring dashboard and biometric data handling
+- **[Integration Layer](patient/integrations/README.md)** - How to add new agentic AI frameworks
+
+### Agentic AI Solutions
+
+- **[CrewAI Solutions](crew/README.md)** - CrewAI-based cardiac monitoring and knowledge base research
+- **[LangGraph Solutions](langgraph_agents/README.md)** - LangGraph-based patient monitoring workflows
+
+### Supporting Systems
+
+- **[OpenSearch RAG](opensearch/README.md)** - Knowledge base and RAG integration for enhanced medical insights
+- **[Shared Types](agentic_types/)** - Common data models used across all frameworks
+
+## 🏗️ System Architecture
 
 ### 1. Biometric Scenario Server (`patient/biometric_scenario_server.py`)
 
@@ -121,84 +128,25 @@ curl http://localhost:9200/_cluster/health
 **Implementation**:
 
 - **Separate Streamlit App**: Runs on port 8502 to avoid conflicts with main monitor
-- **Background Analysis**: Launches CrewAI analysis in background threads for non-blocking operation
+- **Background Analysis**: Launches agentic analysis in background threads for non-blocking operation
 - **Progress Monitoring**: Real-time progress bars and status updates during analysis
 - **Result Display**: Structured presentation of medical analysis findings and recommendations
 - **Log Integration**: Reads analysis results from `patient/agentic_monitor_logs/` directory
 
-**Data Flow**: Receives analysis requests → Launches CrewAI agents → Monitors progress → Displays structured results → Writes logs to filesystem
+**Data Flow**: Receives analysis requests → Launches agentic frameworks → Monitors progress → Displays structured results → Writes logs to filesystem
 
-## Adding New Agentic Frameworks
+## 🔧 Adding New Agentic Frameworks
 
-The system is designed to support multiple agentic AI frameworks beyond CrewAI. Here's how to integrate a new framework:
+The system is designed to support multiple agentic AI frameworks. See the **[Integration Layer Documentation](patient/integrations/README.md)** for detailed instructions on adding new frameworks.
 
-### 1. Update Monitor Options
+### Quick Integration Steps:
 
-Add your framework to the dropdown in `patient/monitor.py`:
+1. Create integration class inheriting from `BaseIntegration`
+2. Implement `run_agentic_analysis()` and `test_availability()` methods
+3. Register in `patient/integrations/__init__.py`
+4. Add to monitor dropdown in `patient/monitor.py`
 
-```python
-solution_options = ["Crewai", "YourFramework"]  # Add your framework here
-```
-
-### 2. Create Framework Integration
-
-Create a new integration class in `patient/integrations/your_framework_integration.py`:
-
-```python
-from .base_integration import BaseIntegration
-
-class YourFrameworkIntegration(BaseIntegration):
-    def __init__(self):
-        super().__init__()
-        self.framework_name = "YourFramework"
-        # Initialize your framework-specific components
-
-    def run_agentic_analysis(self, patient_name: str, run_id: Optional[str] = None) -> Dict[str, Any]:
-        """Run analysis using your framework."""
-        # Implement your framework's analysis logic
-        # Use inherited methods: self._discover_patient_file_paths(), self._process_temporal_data()
-        pass
-
-    def test_availability(self) -> Dict[str, Any]:
-        """Test if your framework is available."""
-        # Return availability status
-        pass
-```
-
-### 3. Register Your Integration
-
-Add your integration to `patient/integrations/__init__.py`:
-
-```python
-FRAMEWORK_REGISTRY = {
-    "crewai": CrewaiIntegration,
-    "yourframework": YourFrameworkIntegration,  # Add this line
-}
-```
-
-### 4. Framework-Specific Implementation
-
-Your integration should:
-
-- **Inherit from `BaseIntegration`** to get common utilities (file path discovery, temporal data processing)
-- **Implement required methods**: `run_agentic_analysis()`, `test_availability()`
-- **Use shared data models** from `agentic_types/models.py` for consistent output
-- **Handle file paths** passed from the integration layer
-- **Write structured output** to the `patient/agentic_monitor_logs/` directory
-
-### 5. Testing Your Integration
-
-```bash
-# Test framework availability
-python -c "from patient.integrations import get_integration; print(get_integration('yourframework').test_availability())"
-
-# Run analysis through the UI
-# Select your framework in the monitor dropdown and click "Run Analysis"
-```
-
-**Key Benefits**: Your framework automatically gets access to patient data discovery, temporal processing, and standardized output formats without additional development.
-
-## Data Flow Overview
+## 📊 Data Flow Overview
 
 ```
 Biometric Server (Terminal 1)
@@ -207,23 +155,22 @@ Main Monitor (Terminal 2, port 8501)
     ↓ displays real-time data
     ↓ user clicks "Run Analysis"
 Agentic Monitor (Terminal 3, port 8502)
-    ↓ prepares data for agentic-monitoring-solution (via agentic_monitor_integration.py)
-    ↓ runs CrewAI analysis
+    ↓ prepares data for agentic framework
+    ↓ runs analysis (CrewAI, LangGraph, etc.)
     ↓ writes results to logs
 ```
 
-## Key Features
+## ✨ Key Features
 
 - **Real-time Monitoring**: Live biometric data streaming with animated visualizations
 - **Scenario Simulation**: Predefined medical scenarios for testing and demonstration
 - **Patient Records**: FHIR-based patient data display and timeline visualization
-- **Agentic AI**: Automated patient status analysis using CrewAI framework
-- **Framework Extensibility**: Easy integration of additional agentic frameworks (LangGraph, custom solutions)
+- **Multi-Framework AI**: Support for CrewAI, LangGraph, and extensible framework architecture
 - **Non-blocking UI**: Background analysis execution with real-time progress updates
 - **Structured Output**: Standardized medical analysis results with actionable recommendations
 - **RAG Enhancement**: Optional knowledge base integration via OpenSearch for enhanced medical insights
 
-## File Structure
+## 📁 File Structure
 
 ```
 care-guard-agentic-ai/
@@ -233,23 +180,22 @@ care-guard-agentic-ai/
 │   ├── agentic_monitor_app.py         # AI analysis interface
 │   ├── agentic_monitor_logs/          # Analysis results and logs
 │   ├── biometric/                     # Scenario data files
-│   └── generated_medical_records/     # Patient FHIR data
-├── crew/                           # Agentic AI solutions
-│   ├── cardio_monitor/             # CrewAI-based cardiac monitoring
-│   ├── knowledge_base_crew/        # Medical knowledge research and indexing
-│   └── [future_solutions]/         # Additional agentic frameworks
+│   ├── generated_medical_records/     # Patient FHIR data
+│   └── integrations/                  # Framework integration layer
+├── crew/                           # CrewAI-based solutions
+│   ├── cardio_monitor/             # Cardiac monitoring crew
+│   └── knowledge_base_crew/        # Medical knowledge research crew
+├── langgraph_agents/               # LangGraph-based solutions
+│   ├── workflows/                  # Patient monitoring workflows
+│   └── agents/                     # Individual agent implementations
 ├── opensearch/                     # Knowledge base for RAG enhancement
 │   ├── docker-compose.yml          # OpenSearch container setup
-│   ├── document_indexer.py         # Document indexing utilities
-│   └── rag_agent.py                # RAG integration tools
+│   └── [RAG utilities]             # Document indexing and search tools
 ├── agentic_types/                  # Shared data models and types
-├── langgraph_agents/               # LangGraph-based agentic solutions
 └── utils/                          # Shared utilities and helpers
 ```
 
-**Note**: Each agentic monitoring solution (CrewAI, LangGraph, etc.) lives in its own root-level directory, allowing for independent development and deployment while sharing common infrastructure.
-
-## Troubleshooting
+## 🚨 Troubleshooting
 
 - **Port Conflicts**: Ensure ports 5000, 8501, and 8502 are available
 - **Dependencies**: Run `uv sync` in project root if you encounter import errors
@@ -257,4 +203,20 @@ care-guard-agentic-ai/
 - **Analysis Launch**: Agentic analysis only works when both monitors are running
 - **OpenSearch**: If using RAG features, ensure OpenSearch is running via Docker Compose
 
-For detailed development information and adding new agentic frameworks, see the "Adding New Agentic Frameworks" section above and individual component documentation.
+## 🔄 Getting Back Into Development
+
+When returning to this project:
+
+1. **Review the documentation** in each solution directory to understand current implementations
+2. **Check the integration layer** to see how frameworks are connected
+3. **Run the system** using the Quick Start guide above
+4. **Test both frameworks** (CrewAI and LangGraph) to ensure they're working
+5. **Review recent logs** in `patient/agentic_monitor_logs/` to see what's been tested
+
+## 🤝 Contributing
+
+See individual solution documentation for framework-specific contribution guidelines:
+
+- [CrewAI Solutions](crew/README.md)
+- [LangGraph Solutions](langgraph_agents/README.md)
+- [Integration Layer](patient/integrations/README.md)
